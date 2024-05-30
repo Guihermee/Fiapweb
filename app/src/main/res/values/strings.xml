@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Fiapweb</string>
+    <string name="pesquisar_no_email">Pesquisar no Email</string>
 </resources>

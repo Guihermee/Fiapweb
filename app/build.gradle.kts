@@ -1,6 +1,10 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+
+    // Puglin para o ROOM/kapt
+    id ("kotlin-kapt")
+
 }
 
 android {
@@ -66,4 +70,24 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //Dependência do Navigation
+    implementation(libs.androidx.navigation.compose)
+
+    // Dependências do Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    //Dependência do Coil
+    implementation(libs.coil.compose)
+
+    // Dependências do Room
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    //noinspection KaptUsageInsteadOfKsp
+    kapt(libs.androidx.room.compiler)
+
+    // Dependência do LiveData
+    implementation(libs.androidx.runtime.livedata)
+
 }
