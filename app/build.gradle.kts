@@ -90,4 +90,7 @@ dependencies {
     // Dependência do LiveData
     implementation(libs.androidx.runtime.livedata)
 
+    // Extensão de icones
+    implementation(libs.androidx.material.icons.extended)
+
 }
