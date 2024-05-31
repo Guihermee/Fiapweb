@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.fiap.fiapweb.R
@@ -39,8 +38,9 @@ import br.com.fiap.fiapweb.R
 
 
 
+
 @Composable
-fun ModalDialog(onDismiss: () -> Unit) {
+fun ModalDialogPerfil(onDismiss: () -> Unit) {
     var text by remember { mutableStateOf("") }
 
     Box(
@@ -165,8 +165,8 @@ fun ModalItem(icon: ImageVector, label: String, onClick: () -> Unit) {
     }
 }
 
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun SidebarPreviw() {
-    ModalDialog() {}
-}
+//@Preview(showSystemUi = true, showBackground = true)
+//@Composable
+//fun SidebarPreviw() {
+//    ModalDialog() {}
+//}

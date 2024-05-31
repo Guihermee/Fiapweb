@@ -93,4 +93,8 @@ dependencies {
     // Extensão de icones
     implementation(libs.androidx.material.icons.extended)
 
+    // Extensão do Navigation Drawer
+    implementation(libs.androidx.navigation.compose)
+
+
 }
