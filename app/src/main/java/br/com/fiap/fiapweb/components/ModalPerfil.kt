@@ -8,10 +8,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,87 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import br.com.fiap.fiapweb.R
-
-//Essa parte deve ser implementada por quem for chamar o modal
-
-//    var showModal by remember { mutableStateOf(false) }
-//
-//        Button(onClick = { showModal = true }) {
-//            Text("Show Modal")
-//        }
-//
-//        if (showModal) {
-//            ModalDialog(onDismiss = { showModal = false })
-//        }
-
-
-
-@Composable
-fun ModalDialog(onDismiss: () -> Unit) {
-    var text by remember { mutableStateOf("") }
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black.copy(alpha = 0.5f))
-            .clickable(onClick = onDismiss)
-    ) {
-        Column(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .background(Color.White, shape = RoundedCornerShape(16.dp))
-                .padding(16.dp)
-                .width(300.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            ModalHeader()
-            Divider(color = Color.Gray, thickness = 1.dp)
-            ModalItem(
-                icon = Icons.Default.PersonAddAlt1,
-                label = "Adicionar outra conta",
-                onClick = onDismiss
-            )
-            ModalItem(
-                icon = Icons.Default.Person,
-                label = "Gerenciar minhas contas",
-                onClick = onDismiss
-            )
-            ModalItem(
-                icon = Icons.Default.Settings,
-                label = "Configurações gerais",
-                onClick = onDismiss
-            )
-            ModalItem(
-                icon = Icons.Default.Email,
-                label = "Gerar e-mail temporário",
-                onClick = onDismiss
-            )
-            Divider(color = Color.Gray, thickness = 1.dp)
-            Text(
-                text = "Emails temporários",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Normal
-            )
-            ModalItem(
-                icon = Icons.Default.Email,
-                label = "maria2654@email.com - 9 min",
-                onClick = onDismiss
-            )
-            ModalItem(
-                icon = Icons.Default.Email,
-                label = "mariana04@email.com - 2 min",
-                onClick = onDismiss
-            )
-            Divider(color = Color.Gray, thickness = 1.dp)
-            Spacer(modifier = Modifier.height(4.dp))
-            Button(onClick = onDismiss, modifier = Modifier.fillMaxWidth()) {
-                Text("Fechar")
-            }
-        }
-    }
-}
 
 @Composable
 fun ModalHeader() {
@@ -165,8 +88,87 @@ fun ModalItem(icon: ImageVector, label: String, onClick: () -> Unit) {
     }
 }
 
+@Composable
+fun ModalPerfil(
+    onDismissRequest: () -> Unit,
+    ) {
+    Dialog(onDismissRequest = { onDismissRequest() }) {
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                //.height(360.dp)
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp),
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.5f))
+                    .clickable(onClick = {})
+            ) {
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .background(Color.White, shape = RoundedCornerShape(16.dp))
+                        .padding(16.dp)
+                        .width(300.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    ModalHeader()
+                    Divider(color = Color.Gray, thickness = 1.dp)
+                    ModalItem(
+                        icon = Icons.Default.PersonAddAlt1,
+                        label = "Adicionar outra conta",
+                        onClick = { }
+                    )
+                    ModalItem(
+                        icon = Icons.Default.Person,
+                        label = "Gerenciar minhas contas",
+                        onClick = { }
+                    )
+                    ModalItem(
+                        icon = Icons.Default.Settings,
+                        label = "Configurações gerais",
+                        onClick = {}
+                    )
+                    ModalItem(
+                        icon = Icons.Default.Email,
+                        label = "Gerar e-mail temporário",
+                        onClick = {}
+                    )
+                    Divider(color = Color.Gray, thickness = 1.dp)
+                    Text(
+                        text = "Emails temporários",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal
+                    )
+                    ModalItem(
+                        icon = Icons.Default.Email,
+                        label = "maria2654@email.com - 9 min",
+                        onClick = {}
+                    )
+                    ModalItem(
+                        icon = Icons.Default.Email,
+                        label = "mariana04@email.com - 2 min",
+                        onClick = {}
+                    )
+                    Divider(color = Color.Gray, thickness = 1.dp)
+                    TextButton(
+                        onClick = { onDismissRequest() },
+                        modifier = Modifier.padding(8.dp),
+                    ) {
+                        Text("Cancelar")
+                    }
+                }
+            }
+        }
+    }
+}
+
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun SidebarPreviw() {
-    ModalDialog() {}
+    ModalPerfil() {}
 }
