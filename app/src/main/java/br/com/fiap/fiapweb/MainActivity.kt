@@ -27,9 +27,14 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     
                     NavHost(navController = navController, startDestination = "telaInicial" ) {
+
+                        // Tela Inicial
                         composable(route = "telaInicial") {
                             TelaInicialScreen(navController, TelaInicialViewModel())
                         }
+
+                        // Tela ...
+
                     }
 
                 }

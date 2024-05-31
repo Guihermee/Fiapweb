@@ -3,10 +3,19 @@ package br.com.fiap.fiapweb.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import br.com.fiap.fiapweb.model.HistoricoDeBusca
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class TelaInicialViewModel : ViewModel() {
+
+    // Sidebar
+    private val _sidebar = MutableLiveData<Boolean>()
+    val sidebar: LiveData<Boolean> = _sidebar
+
+    fun onSidebarChange(sidebarNewValue: Boolean) {
+        _sidebar.value = sidebarNewValue
+    }
 
     // TextField
     private val _textField = MutableLiveData<String>()
@@ -37,6 +46,14 @@ class TelaInicialViewModel : ViewModel() {
 
     fun setIsSearchingToFalse() {
         _isSearching.value = false
+    }
+
+    // Historico
+    private val _listaHistorico = MutableLiveData<List<HistoricoDeBusca>>()
+    val listaHistorico: LiveData<List<HistoricoDeBusca>> = _listaHistorico
+
+    fun onListaHistoricoChange(listaNovaHistorico: List<HistoricoDeBusca>) {
+        _listaHistorico.value = listaNovaHistorico
     }
 
 }
