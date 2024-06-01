@@ -9,12 +9,12 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class TelaInicialViewModel : ViewModel() {
 
-    // Sidebar
-    private val _sidebar = MutableLiveData<Boolean>()
-    val sidebar: LiveData<Boolean> = _sidebar
+    // showDialogPerfil
+    private val _showDialogPerfil = MutableLiveData<Boolean>()
+    val showDialogPerfil: LiveData<Boolean> = _showDialogPerfil
 
-    fun onSidebarChange(sidebarNewValue: Boolean) {
-        _sidebar.value = sidebarNewValue
+    fun onshowDialogPerfilChange(showDialogPerfilNewValue: Boolean) {
+        _showDialogPerfil.value = showDialogPerfilNewValue
     }
 
     // TextField

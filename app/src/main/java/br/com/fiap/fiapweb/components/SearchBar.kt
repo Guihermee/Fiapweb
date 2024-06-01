@@ -64,9 +64,7 @@ fun SearchBarHeader(
         query = textFieldValue,
         onQueryChange = { telaInicialViewModel.onTextFieldChange(it) },
         onSearch = {
-            // isso é um exemplo de como manipularia o History de pesquisa
             historicoRepository.db.salvar(HistoricoDeBusca(pesquisa = textFieldValue))
-
             telaInicialViewModel.setIsSearchingToFalse()
         },
         active = isSearching,
@@ -103,7 +101,7 @@ fun SearchBarHeader(
             } else {
                 IconButton(
                     onClick = {
-
+                        telaInicialViewModel.onshowDialogPerfilChange(true)
                     },
                     modifier = Modifier.padding(end = 8.dp)
                 ) {

@@ -103,8 +103,6 @@ fun ModalPerfil(
         ) {
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.5f))
                     .clickable(onClick = {})
             ) {
                 Column(
@@ -146,12 +144,12 @@ fun ModalPerfil(
                     )
                     ModalItem(
                         icon = Icons.Default.Email,
-                        label = "maria2654@email.com - 9 min",
+                        label = "maria2654@email.com",
                         onClick = {}
                     )
                     ModalItem(
                         icon = Icons.Default.Email,
-                        label = "mariana04@email.com - 2 min",
+                        label = "mariana04@email.com",
                         onClick = {}
                     )
                     Divider(color = Color.Gray, thickness = 1.dp)
@@ -159,7 +157,7 @@ fun ModalPerfil(
                         onClick = { onDismissRequest() },
                         modifier = Modifier.padding(8.dp),
                     ) {
-                        Text("Cancelar")
+                        Text("Fechar")
                     }
                 }
             }
