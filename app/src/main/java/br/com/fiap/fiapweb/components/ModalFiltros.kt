@@ -32,7 +32,7 @@ fun ModalItems(icon: ImageVector, label: String, onClick: () -> Unit) {
     var selected by remember { mutableStateOf(false) }
 
     FilterChip(
-        onClick = { selected = !selected },
+        onClick = {selected = !selected},
         label = {
             Row(
                 modifier = Modifier
@@ -73,6 +73,7 @@ fun ModalItems(icon: ImageVector, label: String, onClick: () -> Unit) {
 fun ModalFiltros(
     onDismissRequest: () -> Unit,
 ) {
+    var selected by remember { mutableStateOf(false) }
     Dialog(onDismissRequest = { onDismissRequest() }) {
 
         Card(
@@ -98,20 +99,26 @@ fun ModalFiltros(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
+                    Text(
+                        text = "Filtros",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Divider(color = Color.Gray, thickness = 1.dp)
                     ModalItems(
                         icon = Icons.Default.Email,
                         label = "Tudo",
-                        onClick = { }
+                        onClick = {selected = !selected}
                     )
                     ModalItems(
                         icon = Icons.Default.MarkEmailUnread,
                         label = "Não lidos",
-                        onClick = { }
+                        onClick = {selected = !selected}
                     )
                     ModalItems(
                         icon = Icons.Default.Star,
                         label = "Favoritos",
-                        onClick = { }
+                        onClick = {selected = !selected}
                     )
                     Divider(color = Color.Gray, thickness = 1.dp)
                     TextButton(
