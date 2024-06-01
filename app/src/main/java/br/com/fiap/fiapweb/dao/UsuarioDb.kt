@@ -34,7 +34,5 @@ abstract class UsuarioDb : RoomDatabase() {
             }
             return instance
         }
-
     }
-
 }

@@ -17,6 +17,14 @@ class TelaInicialViewModel : ViewModel() {
         _showDialogFiltros.value = showDialogFiltrosNewValue
     }
 
+    // onSelected
+    private val _onSelected = MutableLiveData<Boolean>()
+    val onSelected: LiveData<Boolean> = _onSelected
+
+    fun onSelectedChange(onSelectedNewValue: Boolean) {
+        _onSelected.value = onSelectedNewValue
+    }
+
     // showDialogPerfil
     private val _showDialogPerfil = MutableLiveData<Boolean>()
     val showDialogPerfil: LiveData<Boolean> = _showDialogPerfil

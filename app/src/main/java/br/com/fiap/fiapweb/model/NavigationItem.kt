@@ -5,15 +5,9 @@ import androidx.compose.material.icons.automirrored.outlined.InsertDriveFile
 import androidx.compose.material.icons.automirrored.outlined.Send
 import androidx.compose.material.icons.filled.AllInbox
 import androidx.compose.material.icons.filled.Drafts
-import androidx.compose.material.icons.filled.Draw
-import androidx.compose.material.icons.filled.MailOutline
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material.icons.outlined.AccessAlarms
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.InsertDriveFile
-import androidx.compose.material.icons.outlined.RestoreFromTrash
-import androidx.compose.material.icons.outlined.Send
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 

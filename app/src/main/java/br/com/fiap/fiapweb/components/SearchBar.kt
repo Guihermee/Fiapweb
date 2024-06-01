@@ -51,8 +51,7 @@ fun SearchBarHeader(
     val context = LocalContext.current
     val historicoRepository = HistoricoDeBuscaRespository(context)
 
-
-
+    // Barra de pesquisa
     SearchBar(
         modifier = Modifier
             .fillMaxWidth()
@@ -65,6 +64,7 @@ fun SearchBarHeader(
         onQueryChange = { telaInicialViewModel.onTextFieldChange(it) },
         onSearch = {
             historicoRepository.db.salvar(HistoricoDeBusca(pesquisa = textFieldValue))
+            telaInicialViewModel.onListaHistoricoChange(historicoRepository.db.listarHistorico())
             telaInicialViewModel.setIsSearchingToFalse()
         },
         active = isSearching,
@@ -166,9 +166,6 @@ fun SearchBarHeader(
                 )
             }
         }
-
-
-
     }
 }
 

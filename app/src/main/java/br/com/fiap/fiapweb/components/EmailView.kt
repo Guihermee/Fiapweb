@@ -1,8 +1,10 @@
 package br.com.fiap.fiapweb.components
 
-import android.widget.Space
+import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,12 +17,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -30,30 +29,37 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.fiap.fiapweb.model.Email
+import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import kotlin.math.log
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun EmailView(email: Email, onCLick: () -> Unit) {
+fun EmailView(email: Email, onCLick: () -> Unit, telaInicialViewModel: TelaInicialViewModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp)
-//            .background(Color.Red)
-            .clickable(onClick = onCLick)
+            .combinedClickable(
+                onClick = onCLick,
+                onLongClick = { telaInicialViewModel.onSelectedChange(true) },
+                onLongClickLabel = "Email"
+            )
             .padding(horizontal = 8.dp),
-//        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
 
         Row {
+
             // Esse é a "foto" do email
+            if (email.isSelected) {}
+
             Column(
                 modifier = Modifier
                     .width(50.dp)
@@ -67,24 +73,28 @@ fun EmailView(email: Email, onCLick: () -> Unit) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text(text = "N", fontSize = 30.sp)
+                    Text(text = email.remetente.first().uppercase(), fontSize = 30.sp)
                 }
             }
 
-            // Titulo
+            // Nome, titulo e preview do conteúdo do email
             Column {
                 Text(
                     text = email.remetente,
-                    modifier = Modifier.padding(horizontal = 8.dp).width(300.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .width(300.dp),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground,
                     maxLines = 1,
 
-                )
+                    )
                 Text(
                     text = email.subject,
-                    modifier = Modifier.padding(horizontal = 8.dp).width(300.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .width(300.dp),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onBackground,
@@ -92,7 +102,9 @@ fun EmailView(email: Email, onCLick: () -> Unit) {
                 )
                 Text(
                     text = email.body,
-                    modifier = Modifier.padding(horizontal = 8.dp).width(300.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .width(300.dp),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light,
                     color = MaterialTheme.colorScheme.onBackground,
@@ -101,9 +113,9 @@ fun EmailView(email: Email, onCLick: () -> Unit) {
             }
         }
 
+        // Estrela e a Data
         Column(
             modifier = Modifier
-//                .background(Color.Blue)
                 .fillMaxHeight()
                 .padding(vertical = 16.dp)
         ) {
@@ -111,6 +123,7 @@ fun EmailView(email: Email, onCLick: () -> Unit) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.End
             ) {
+                // Data
                 Text(
                     text = formatDate(email.timestamp),
                     modifier = Modifier.padding(horizontal = 8.dp),
@@ -120,6 +133,7 @@ fun EmailView(email: Email, onCLick: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(20.dp))
 
+                // Estrela
                 IconButton(onClick = { /*TODO*/ }) {
                     if (email.isFavorite) {
                         Icon(
@@ -135,11 +149,8 @@ fun EmailView(email: Email, onCLick: () -> Unit) {
                         )
                     }
                 }
-
             }
         }
-
-
     }
 }
 
