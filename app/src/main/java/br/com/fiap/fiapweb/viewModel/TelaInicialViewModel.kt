@@ -9,6 +9,14 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class TelaInicialViewModel : ViewModel() {
 
+    //showDialogFiltros
+    private val _showDialogFiltros = MutableLiveData<Boolean>()
+    val showDialogFiltros: LiveData<Boolean> = _showDialogFiltros
+
+    fun onshowDialogFiltrosChange(showDialogFiltrosNewValue: Boolean) {
+        _showDialogFiltros.value = showDialogFiltrosNewValue
+    }
+
     // showDialogPerfil
     private val _showDialogPerfil = MutableLiveData<Boolean>()
     val showDialogPerfil: LiveData<Boolean> = _showDialogPerfil
