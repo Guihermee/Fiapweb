@@ -134,7 +134,7 @@ fun TelaInicialScreen(
         // Aqui fica o Conteúdo da tela (recomendo um estudo sobre o Scaffold para melhor entendimento
         Scaffold(
             floatingActionButton = {
-                FloatingActionButton(onClick = { /*TODO Floating button*/ }) {
+                FloatingActionButton(onClick = {navController.navigate("telaEnvioEmail")}) {
                     Icon(imageVector = Icons.Outlined.Edit, contentDescription = "Edit Icon")
                 }
             },

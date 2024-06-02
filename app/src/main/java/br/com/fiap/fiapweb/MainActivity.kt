@@ -10,8 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import br.com.fiap.fiapweb.screens.TelaEnvioDeEmailScreen
 import br.com.fiap.fiapweb.screens.TelaInicialScreen
 import br.com.fiap.fiapweb.ui.theme.FiapwebTheme
+import br.com.fiap.fiapweb.viewModel.EnvioDeEmailViewModel
 import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
 
 class MainActivity : ComponentActivity() {
@@ -33,7 +35,10 @@ class MainActivity : ComponentActivity() {
                             TelaInicialScreen(navController, TelaInicialViewModel())
                         }
 
-                        // Tela ...
+                        // Tela envio de email
+                        composable(route = "telaEnvioEmail"){
+                            TelaEnvioDeEmailScreen(navController, EnvioDeEmailViewModel())
+                        }
 
                     }
 

@@ -28,7 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import br.com.fiap.fiapweb.components.EmailAdress
 import br.com.fiap.fiapweb.components.EmailBody
-import br.com.fiap.fiapweb.components.Header
+import br.com.fiap.fiapweb.components.HeaderEscreverEmail
+import br.com.fiap.fiapweb.components.SelecionadosHeader
 import br.com.fiap.fiapweb.components.SendButton
 import br.com.fiap.fiapweb.viewModel.EnvioDeEmailViewModel
 
@@ -39,18 +40,25 @@ fun TelaEnvioDeEmailScreen(
     envioDeEmailViewModel: EnvioDeEmailViewModel) {
 
   //  Column(modifier = Modifier.fillMaxSize()) {
-        Header(textContent = "") {}
+   //     Header(textContent = "") {}
+
+    HeaderEscreverEmail(textContent = "") {
+
+    }
+
 
     val toFieldValue by envioDeEmailViewModel.toFieldValue.observeAsState(initial = "")
     val subjectFieldValue by envioDeEmailViewModel.subjectFieldValue.observeAsState(initial = "")
     val fromFieldValue by envioDeEmailViewModel.fromFieldValue.observeAsState(initial = "")
     val emailBodyFieldValue by envioDeEmailViewModel.emailBodyFieldValue.observeAsState(initial = "")
 
-//    Box(
-//        modifier = Modifier.fillMaxSize(),
-//        contentAlignment = Alignment.TopCenter
-//    ) {
-        Column(modifier = Modifier.fillMaxWidth().padding(vertical = 55.dp)) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        //contentAlignment = Alignment.TopCenter
+    ) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 55.dp)) {
 
 
             EmailAdress(
@@ -58,7 +66,7 @@ fun TelaEnvioDeEmailScreen(
                 modifier = Modifier,
                 keyboardType = KeyboardType.Email,
                 text = "De: ",
-                updateValue = {envioDeEmailViewModel.onFromFieldValueChanged(it)}
+                updateValue = { envioDeEmailViewModel.onFromFieldValueChanged(it) }
             )
             Divider()
 
@@ -67,7 +75,7 @@ fun TelaEnvioDeEmailScreen(
                 modifier = Modifier,
                 keyboardType = KeyboardType.Email,
                 text = "Para: ",
-                updateValue = {envioDeEmailViewModel.onToFieldValueChanged(it)}
+                updateValue = { envioDeEmailViewModel.onToFieldValueChanged(it) }
             )
             Divider()
 
@@ -77,7 +85,7 @@ fun TelaEnvioDeEmailScreen(
                 modifier = Modifier,
                 keyboardType = KeyboardType.Text,
                 text = "Assunto: ",
-                updateValue = {envioDeEmailViewModel.onSubjectFieldValueChanged(it)}
+                updateValue = { envioDeEmailViewModel.onSubjectFieldValueChanged(it) }
             )
             Divider()
 
@@ -87,9 +95,13 @@ fun TelaEnvioDeEmailScreen(
                 modifier = Modifier
                     .fillMaxWidth(),
                 keyboardType = KeyboardType.Text,
-                updateValue = {envioDeEmailViewModel.onEmailBodyFieldValueChanged(it)}
+                updateValue = { envioDeEmailViewModel.onEmailBodyFieldValueChanged(it) }
             )
 
-            SendButton(modifier = Modifier
-                .fillMaxWidth())}
+            SendButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+        }
     }
+}
