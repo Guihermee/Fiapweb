@@ -12,9 +12,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.com.fiap.fiapweb.screens.TelaEnvioDeEmailScreen
 import br.com.fiap.fiapweb.screens.TelaInicialScreen
+import br.com.fiap.fiapweb.screens.TelaLerEmailScreen
 import br.com.fiap.fiapweb.ui.theme.FiapwebTheme
 import br.com.fiap.fiapweb.viewModel.EnvioDeEmailViewModel
 import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
+import br.com.fiap.fiapweb.viewModel.TelaLerEmailViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +40,11 @@ class MainActivity : ComponentActivity() {
                         // Tela envio de email
                         composable(route = "telaEnvioEmail"){
                             TelaEnvioDeEmailScreen(navController, EnvioDeEmailViewModel())
+                        }
+
+                        //Tela leitura de email
+                        composable(route = "telaLeituraEmail"){
+                            TelaLerEmailScreen(navController, TelaLerEmailViewModel())
                         }
 
                     }

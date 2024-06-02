@@ -31,12 +31,13 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import br.com.fiap.fiapweb.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HeaderEscreverEmail(textContent: String, onClickVoltar: () -> Unit) {
-    MediumTopAppBar(
+    MediumTopAppBar(modifier = Modifier.height(42.dp),
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
             titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -59,7 +60,7 @@ fun HeaderEscreverEmail(textContent: String, onClickVoltar: () -> Unit) {
 
         },
         actions = {
-            IconButton(onClick = { /* do something */ }) {
+            IconButton(onClick = { }) {
                 Icon(
                     imageVector = Icons.Outlined.AttachFile,
                     contentDescription = "Localized description",

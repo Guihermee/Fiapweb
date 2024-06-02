@@ -32,7 +32,11 @@ fun EmailBody(
 ) {
         Column(
             modifier = Modifier
-                .height(420.dp)) {
+                .fillMaxSize()
+         //       .height(450.dp)
+        )
+
+        {
 
             OutlinedTextField(
                 value = value,

@@ -36,7 +36,7 @@ import br.com.fiap.fiapweb.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HeaderLerEmail(textContent: String, onClickVoltar: () -> Unit) {
-    MediumTopAppBar(
+    MediumTopAppBar(modifier = Modifier.height(42.dp),
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
             titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
