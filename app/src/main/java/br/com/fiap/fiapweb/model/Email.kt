@@ -6,9 +6,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.LocalDateTime
 
-@Entity
+@Entity(tableName = "tbl_email")
 data class Email(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Long,
     val remetente: String,
     val destinatario: String,
@@ -21,7 +21,8 @@ data class Email(
     @ColumnInfo(name = "is_read") val isRead: Boolean = false,
     @ColumnInfo(name = "is_favorito") val isFavorite: Boolean = false,
     val priority: Priority = Priority.NORMAL,
-    val isSelected: Boolean = false
+    @ColumnInfo(name = "is_selected") val isSelected: Boolean = false,
+    val categoria: String = ""
 )
 
 enum class Priority {

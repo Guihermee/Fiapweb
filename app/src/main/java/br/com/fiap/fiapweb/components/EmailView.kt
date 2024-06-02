@@ -1,6 +1,5 @@
 package br.com.fiap.fiapweb.components
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Icon
@@ -37,18 +37,18 @@ import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
-import kotlin.math.log
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun EmailView(email: Email, onCLick: () -> Unit, telaInicialViewModel: TelaInicialViewModel) {
+fun EmailView(email: Email, onCLick: () -> Unit, onLongClick: () -> Unit, telaInicialViewModel: TelaInicialViewModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp)
+            .background(if (email.isSelected) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.background)
             .combinedClickable(
                 onClick = onCLick,
-                onLongClick = { telaInicialViewModel.onSelectedChange(true) },
+                onLongClick = onLongClick,
                 onLongClickLabel = "Email"
             )
             .padding(horizontal = 8.dp),
@@ -58,24 +58,45 @@ fun EmailView(email: Email, onCLick: () -> Unit, telaInicialViewModel: TelaInici
         Row {
 
             // Esse é a "foto" do email
-            if (email.isSelected) {}
-
-            Column(
-                modifier = Modifier
-                    .width(50.dp)
-                    .height(50.dp)
-                    .clip(CircleShape),
-            ) {
+            if (email.isSelected) {
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color(0xFFEFB8C8)),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                        .width(50.dp)
+                        .height(50.dp)
+                        .clip(CircleShape)
+                        .clickable { /*TODO*/ },
                 ) {
-                    Text(text = email.remetente.first().uppercase(), fontSize = 30.sp)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color(0xFFEFB8C8)),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Icon(imageVector = Icons.Outlined.Check, contentDescription = "Check Incon")
+                    }
+                }
+            } else {
+                Column(
+                    modifier = Modifier
+                        .width(50.dp)
+                        .height(50.dp)
+                        .clip(CircleShape)
+                        .clickable { /*TODO*/ },
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color(0xFFEFB8C8)),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = email.remetente.first().uppercase(), fontSize = 30.sp)
+                    }
                 }
             }
+
+
 
             // Nome, titulo e preview do conteúdo do email
             Column {

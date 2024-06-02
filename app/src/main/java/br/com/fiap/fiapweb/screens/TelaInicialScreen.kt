@@ -1,13 +1,17 @@
 package br.com.fiap.fiapweb.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.FilterAlt
@@ -30,10 +34,12 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import br.com.fiap.fiapweb.R
+import br.com.fiap.fiapweb.Repository.EmailRepository
 import br.com.fiap.fiapweb.components.EmailView
 import br.com.fiap.fiapweb.components.ModalFiltros
 import br.com.fiap.fiapweb.components.ModalPerfil
@@ -43,7 +49,10 @@ import br.com.fiap.fiapweb.components.SelecionadosHeader
 import br.com.fiap.fiapweb.model.Email
 import br.com.fiap.fiapweb.model.NavigationItem
 import br.com.fiap.fiapweb.model.Priority
+import br.com.fiap.fiapweb.utils.converterParaListaDeEmails
 import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 
@@ -58,6 +67,39 @@ fun TelaInicialScreen(
     val showDialogPerfil by telaInicialViewModel.showDialogPerfil.observeAsState(initial = false)
     val showDialogFiltros by telaInicialViewModel.showDialogFiltros.observeAsState(initial = false)
     val onSelected by telaInicialViewModel.onSelected.observeAsState(initial = false)
+    val listaDeEmail by telaInicialViewModel.listaCompletaEmailDb.observeAsState(initial = listOf())
+
+    val context = LocalContext.current
+    val usuarioRepository = EmailRepository(context)
+
+    fun inserirEmailsFicticios(repository: EmailRepository) {
+        GlobalScope.launch {
+            for (i in 1..20) {
+                val email = Email(
+                    id = 0, // O ID será gerado automaticamente
+                    remetente = "remetente$i@example.com",
+                    destinatario = "destinatario$i@example.com",
+                    cc = listOf("cc$i@example.com"),
+                    bcc = listOf("bcc$i@example.com"),
+                    subject = "Assunto $i",
+                    body = "Corpo do email $i",
+                    attachments = listOf("anexo$i.pdf"),
+                    timestamp = LocalDateTime.now(),
+                    isRead = false,
+                    isFavorite = false,
+                    priority = Priority.NORMAL,
+                    isSelected = false,
+                    categoria = "Categoria $i"
+                )
+                repository.salvar(email)
+            }
+        }
+    }
+
+    if (false) {
+        inserirEmailsFicticios(usuarioRepository)
+    }
+
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -165,19 +207,20 @@ fun TelaInicialScreen(
                         })
                     }
 
-                    val email = Email(
-                        id = 1,
-                        remetente = "john.doe@example.com",
-                        destinatario = "jane.doe@example.com",
-                        cc = listOf("cc1@example.com", "cc2@example.com"),
-                        bcc = listOf("bcc1@example.com"),
-                        subject = "Meeting Reminder",
-                        body = "Hi Jane,\n\nJust a reminder about our meeting tomorrow at 10 AM.\n\nBest,\nJohn",
-                        attachments = listOf("file1.pdf", "file2.png"),
-                        timestamp = LocalDateTime.now(),
-                        isRead = false,
-                        priority = Priority.HIGH
-                    )
+//                    val email = Email(
+//                        id = 1,
+//                        remetente = "john.doe@example.com",
+//                        destinatario = "jane.doe@example.com",
+//                        cc = listOf("cc1@example.com", "cc2@example.com"),
+//                        bcc = listOf("bcc1@example.com"),
+//                        subject = "Meeting Reminder",
+//                        body = "Hi Jane,\n\nJust a reminder about our meeting tomorrow at 10 AM.\n\nBest,\nJohn",
+//                        attachments = listOf("file1.pdf", "file2.png"),
+//                        timestamp = LocalDateTime.now(),
+//                        isRead = false,
+//                        priority = Priority.HIGH,
+//                        isSelected = true
+//                    )
 
 //                    var itens by remember {
 //                        mutableStateOf(
@@ -198,18 +241,38 @@ fun TelaInicialScreen(
 //                            }
 //                        )
 //                    }
-//                    // Emails
-//                    LazyColumn(
-//                        modifier = Modifier.fillMaxSize()
-//                    ) {
-//                        items(itens.size) {
-//                            Row {
-//
-//                            }
-//                        }
-//                    }
 
-                    EmailView(email = email, onCLick = {}, telaInicialViewModel)
+                    // modificando a ListaDeEmail com uma função que retorna o banco de dados do Usuário
+                    telaInicialViewModel.onListaCompletaEmailDbChange(
+                        telaInicialViewModel.getListaCompletaEmailDb(
+                            context
+                        )
+                    )
+
+                    // Emails
+                    LazyColumn {
+                        val tamanhoDalistaDeEmail = listaDeEmail.size
+
+
+                        items(tamanhoDalistaDeEmail) {indexDoEmail ->
+                            var _listaDeEmailSendoManipulada = listaDeEmail
+                            EmailView(
+                                email = listaDeEmail[indexDoEmail],
+                                onCLick = {},
+                                onLongClick = {
+                                    Log.i("FIAP", "TelaInicialScreen: Este butão foi clicado")
+
+
+
+
+
+                                },
+                                telaInicialViewModel = telaInicialViewModel
+                            )
+                        }
+                    }
+
+//                    EmailView(email = email, onCLick = {}, telaInicialViewModel)
 
                 }
             }

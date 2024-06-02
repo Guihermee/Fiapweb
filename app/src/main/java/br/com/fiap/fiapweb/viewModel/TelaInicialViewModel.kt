@@ -1,13 +1,43 @@
 package br.com.fiap.fiapweb.viewModel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import br.com.fiap.fiapweb.Repository.EmailRepository
+import br.com.fiap.fiapweb.model.Email
 import br.com.fiap.fiapweb.model.HistoricoDeBusca
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class TelaInicialViewModel : ViewModel() {
+
+    // Manipulação da Lista Completa do Email do Banco da dados do Usuário e outros métodos
+    private val _listaCompletaEmailDb = MutableLiveData<List<Email>>()
+    val listaCompletaEmailDb: LiveData<List<Email>> = _listaCompletaEmailDb
+
+    fun onListaCompletaEmailDbChange(novaLista: List<Email>) {
+        _listaCompletaEmailDb.value = novaLista
+    }
+
+    fun getListaCompletaEmailDb(context: Context): List<Email> {
+        val usuarioRepository = EmailRepository(context)
+        return usuarioRepository.db.listarHistorico()
+    }
+
+    fun onIsSelectedEmailDb(context: Context, emailASerAtualizado: Email) {
+        val usuarioRepository = EmailRepository(context)
+        usuarioRepository.db.atualizar(emailASerAtualizado)
+    }
+
+//    fun OnIsSelectedEmailListaLazyColumn(index: Int, novoEmail: Email) {
+//
+//        if (index in 0 until (_listaCompletaEmailDb.value?.size!!)) {
+//            _listaCompletaEmailDb.value[index] = novoEmail
+//        } else {}
+//
+//
+//    }
 
     //showDialogFiltros
     private val _showDialogFiltros = MutableLiveData<Boolean>()
