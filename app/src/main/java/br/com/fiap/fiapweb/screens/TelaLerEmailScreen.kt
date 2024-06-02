@@ -2,6 +2,7 @@ package br.com.fiap.fiapweb.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -14,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import br.com.fiap.fiapweb.components.CorpoDoEMail
 import br.com.fiap.fiapweb.components.HeaderLerEmail
 import br.com.fiap.fiapweb.components.ResumoEmail
 import br.com.fiap.fiapweb.model.Email
@@ -50,9 +52,11 @@ fun TelaLerEmailScreen(
         //INSERIR O BODY DO EMAIL
 
     }
+    Column (modifier = Modifier.fillMaxSize()) {
+        CorpoDoEMail()
+    }
 
 }
-
 
 val emailExemplo = Email(
     id = 0,
@@ -61,7 +65,7 @@ val emailExemplo = Email(
     cc = listOf("cc@example.com"),
     bcc = listOf("bcc@example.com"),
     subject = "Assunto",
-    body = "Corpo do email",
+    body = "email@example.com, email2@example.com", //precisa apontar para o cc
     attachments = listOf("anexo.pdf"),
     timestamp = LocalDateTime.now(),
     isRead = false,
