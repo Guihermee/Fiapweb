@@ -55,11 +55,6 @@ fun HeaderEscreverEmail(textContent: String, onClickVoltar: () -> Unit) {
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-                Spacer(modifier = Modifier.width(16.dp))
-//                Text(
-//                    text = "0",
-//                    fontSize = 24.sp
-//                )
             }
 
         },

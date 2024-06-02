@@ -7,11 +7,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,69 +44,80 @@ fun TelaEnvioDeEmailScreen(
     navController: NavController,
     envioDeEmailViewModel: EnvioDeEmailViewModel) {
 
-  //  Column(modifier = Modifier.fillMaxSize()) {
-   //     Header(textContent = "") {}
-
-    HeaderEscreverEmail(textContent = "") {
-
-    }
-
 
     val toFieldValue by envioDeEmailViewModel.toFieldValue.observeAsState(initial = "")
     val subjectFieldValue by envioDeEmailViewModel.subjectFieldValue.observeAsState(initial = "")
     val fromFieldValue by envioDeEmailViewModel.fromFieldValue.observeAsState(initial = "")
     val emailBodyFieldValue by envioDeEmailViewModel.emailBodyFieldValue.observeAsState(initial = "")
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        //contentAlignment = Alignment.TopCenter
-    ) {
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 55.dp)) {
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(onClick = {navController.navigate("")}) {
+                Icon(imageVector = Icons.Outlined.AutoAwesome, contentDescription = "Generate Icon")
+            }
+        },
+
+        topBar = { HeaderEscreverEmail(textContent = "") {
+
+        }}
 
 
-            EmailAdress(
-                value = fromFieldValue,
-                modifier = Modifier,
-                keyboardType = KeyboardType.Email,
-                text = "De: ",
-                updateValue = { envioDeEmailViewModel.onFromFieldValueChanged(it) }
-            )
-            Divider()
+    ) { contentPadding ->
+        Box(modifier = Modifier.padding(contentPadding)) {
+        }
 
-            EmailAdress(
-                value = toFieldValue,
-                modifier = Modifier,
-                keyboardType = KeyboardType.Email,
-                text = "Para: ",
-                updateValue = { envioDeEmailViewModel.onToFieldValueChanged(it) }
-            )
-            Divider()
-
-
-            EmailAdress(
-                value = subjectFieldValue,
-                modifier = Modifier,
-                keyboardType = KeyboardType.Text,
-                text = "Assunto: ",
-                updateValue = { envioDeEmailViewModel.onSubjectFieldValueChanged(it) }
-            )
-            Divider()
-
-
-            EmailBody(
-                value = emailBodyFieldValue,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                keyboardType = KeyboardType.Text,
-                updateValue = { envioDeEmailViewModel.onEmailBodyFieldValueChanged(it) }
-            )
-
-            SendButton(
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            //contentAlignment = Alignment.TopCenter
+        ) {
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-            )
+                    .padding(vertical = 55.dp)
+            ) {
+
+
+                EmailAdress(
+                    value = fromFieldValue,
+                    modifier = Modifier,
+                    keyboardType = KeyboardType.Email,
+                    text = "De: ",
+                    updateValue = { envioDeEmailViewModel.onFromFieldValueChanged(it) }
+                )
+                Divider()
+
+                EmailAdress(
+                    value = toFieldValue,
+                    modifier = Modifier,
+                    keyboardType = KeyboardType.Email,
+                    text = "Para: ",
+                    updateValue = { envioDeEmailViewModel.onToFieldValueChanged(it) }
+                )
+                Divider()
+
+
+                EmailAdress(
+                    value = subjectFieldValue,
+                    modifier = Modifier,
+                    keyboardType = KeyboardType.Text,
+                    text = "Assunto: ",
+                    updateValue = { envioDeEmailViewModel.onSubjectFieldValueChanged(it) }
+                )
+                Divider()
+
+
+                EmailBody(
+                    value = emailBodyFieldValue,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    keyboardType = KeyboardType.Text,
+                    updateValue = { envioDeEmailViewModel.onEmailBodyFieldValueChanged(it) }
+                )
+
+                SendButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
         }
-    }
-}
+    }}
