@@ -23,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,13 +37,14 @@ import br.com.fiap.fiapweb.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HeaderLerEmail(textContent: String, onClickVoltar: () -> Unit) {
-    MediumTopAppBar(modifier = Modifier.height(42.dp),
+    TopAppBar(//modifier = Modifier.height(.dp),
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
             titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
         ),
         title = {
-            TextButton(onClick = { /*TODO*/ }){}
+//            TextButton(onClick = { /*TODO*/ }){}/
+                Text(text = "")
         },
         navigationIcon = {
             Row(verticalAlignment = Alignment.CenterVertically) {

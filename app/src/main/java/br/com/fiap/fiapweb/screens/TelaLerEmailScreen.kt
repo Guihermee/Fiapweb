@@ -36,25 +36,27 @@ fun TelaLerEmailScreen(
             { Icon(imageVector = Icons.Outlined.AutoAwesome, contentDescription = "Generate Icon") }
         }
 
-    ) {
-            contentPadding ->
-        Box(modifier = Modifier.padding(contentPadding))}
+    ) { contentPadding ->
+        Box(modifier = Modifier.padding(contentPadding)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+//                    .padding(vertical = 50.dp)
 
-    Column (
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 50.dp)
+            ) {
+                ResumoEmail(email = emailExemplo, onCLick = { /*TODO*/ }) {
+                }
 
-    ){
-        ResumoEmail(email = emailExemplo , onCLick = { /*TODO*/ }) {
+                //INSERIR O BODY DO EMAIL
+
+            }
+            Column(modifier = Modifier.fillMaxSize()) {
+                CorpoDoEMail()
+            }
         }
-
-        //INSERIR O BODY DO EMAIL
-
     }
-    Column (modifier = Modifier.fillMaxSize()) {
-        CorpoDoEMail()
-    }
+
+
 
 }
 

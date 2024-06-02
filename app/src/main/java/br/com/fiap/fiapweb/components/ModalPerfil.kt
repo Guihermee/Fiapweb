@@ -22,6 +22,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -120,7 +121,7 @@ fun ModalPerfil(
                 Column(
                     modifier = Modifier
                         .align(Alignment.Center)
-                        .background(Color.White, shape = RoundedCornerShape(16.dp))
+                        .background(MaterialTheme.colorScheme.background, shape = RoundedCornerShape(16.dp))
                         .padding(16.dp)
                         .width(300.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,

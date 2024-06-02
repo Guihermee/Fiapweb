@@ -67,7 +67,9 @@ fun TelaInicialScreen(
     val showDialogPerfil by telaInicialViewModel.showDialogPerfil.observeAsState(initial = false)
     val showDialogFiltros by telaInicialViewModel.showDialogFiltros.observeAsState(initial = false)
     val onSelected by telaInicialViewModel.onSelected.observeAsState(initial = false)
+    val qtdEmailSelecionada by telaInicialViewModel.qtdEmailSelecionada.observeAsState(initial = 1)
     val listaDeEmail by telaInicialViewModel.listaCompletaEmailDb.observeAsState(initial = listOf())
+    val todosEmailSelecionados by telaInicialViewModel.todosEmailSelecionados.observeAsState(initial = false)
 
     val context = LocalContext.current
     val usuarioRepository = EmailRepository(context)
@@ -134,7 +136,7 @@ fun TelaInicialScreen(
         // Aqui fica o Conteúdo da tela (recomendo um estudo sobre o Scaffold para melhor entendimento
         Scaffold(
             floatingActionButton = {
-                FloatingActionButton(onClick = {navController.navigate("telaEnvioEmail")}) {
+                FloatingActionButton(onClick = { navController.navigate("telaEnvioEmail") }) {
                     Icon(imageVector = Icons.Outlined.Edit, contentDescription = "Edit Icon")
                 }
             },
@@ -143,7 +145,23 @@ fun TelaInicialScreen(
             // Se Algum email estiver selecionado esse "Header" substituirá o SearchBar
             topBar = {
                 if (onSelected) {
-                    SelecionadosHeader(telaInicialViewModel)
+                    SelecionadosHeader(
+                        telaInicialViewModel,
+                        qtdEmailSelecionada,
+                        onDeleteClick = {},
+                        onDraftClick = {},
+                        onSelectAllClick = {
+                            if (todosEmailSelecionados) {
+                                telaInicialViewModel.changeAllEmailToNotSelected(context)
+                                telaInicialViewModel.onTodosEmailSelecionadosChange(false)
+                            } else {
+                                (telaInicialViewModel.changeAllEmailToSelected(context))
+                                telaInicialViewModel.onTodosEmailSelecionadosChange(true)
+                            }
+
+                        },
+                        todosEmailSelecionados
+                    )
                 }
             }
 
@@ -156,7 +174,7 @@ fun TelaInicialScreen(
 
                 Column {
 
-                    //  Barra de pesquisa
+                    //  Barra de pesquisa se nenhum item tiver selecionado
                     if (!onSelected) {
                         SearchBarHeader(
                             telaInicialViewModel = telaInicialViewModel,
@@ -165,34 +183,37 @@ fun TelaInicialScreen(
                         )
                     }
 
-                    // Titulo e Filtro em Row
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-
-                        // Titulo Do email
-                        Text(text = "Todos os emails", modifier = Modifier.padding(16.dp))
-
-                        // Filtro
-                        Button(
-                            onClick = { telaInicialViewModel.onshowDialogFiltrosChange(true) },
-                            modifier = Modifier.padding(end = 16.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.background,
-                                contentColor = MaterialTheme.colorScheme.onBackground
-                            )
+                    // Titulo e Filtro em Row (se tiver selecionado ela some)
+                    if (!onSelected) {
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
                         ) {
-                            Icon(
-                                imageVector = Icons.Outlined.FilterAlt,
-                                contentDescription = "Filter Icon",
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
-                            Text(text = "Filtros")
-                        }
 
+                            // Titulo Do email
+                            Text(text = "Todos os emails", modifier = Modifier.padding(16.dp))
+
+                            // Filtro
+                            Button(
+                                onClick = { telaInicialViewModel.onshowDialogFiltrosChange(true) },
+                                modifier = Modifier.padding(end = 16.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.background,
+                                    contentColor = MaterialTheme.colorScheme.onBackground
+                                )
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.FilterAlt,
+                                    contentDescription = "Filter Icon",
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                                Text(text = "Filtros")
+                            }
+
+                        }
                     }
+
 
                     // Dialogs
                     if (showDialogFiltros) {
@@ -207,40 +228,6 @@ fun TelaInicialScreen(
                         })
                     }
 
-//                    val email = Email(
-//                        id = 1,
-//                        remetente = "john.doe@example.com",
-//                        destinatario = "jane.doe@example.com",
-//                        cc = listOf("cc1@example.com", "cc2@example.com"),
-//                        bcc = listOf("bcc1@example.com"),
-//                        subject = "Meeting Reminder",
-//                        body = "Hi Jane,\n\nJust a reminder about our meeting tomorrow at 10 AM.\n\nBest,\nJohn",
-//                        attachments = listOf("file1.pdf", "file2.png"),
-//                        timestamp = LocalDateTime.now(),
-//                        isRead = false,
-//                        priority = Priority.HIGH,
-//                        isSelected = true
-//                    )
-
-//                    var itens by remember {
-//                        mutableStateOf(
-//                            (1..20).map {
-//                                val email = Email(
-//                                    id = 0,
-//                                    remetente = "john.doe${it}@example.com",
-//                                    destinatario = "jane.doe${it}@example.com",
-//                                    cc = listOf("cc1@example.com", "cc2@example.com"),
-//                                    bcc = listOf("bcc1@example.com"),
-//                                    subject = "Meeting Reminder${it}",
-//                                    body = "Hi Jane${it},\n\nJust a reminder about our meeting tomorrow at 10 AM.\n\nBest,\nJohn",
-//                                    attachments = listOf("file1.pdf", "file2.png"),
-//                                    timestamp = LocalDateTime.now(),
-//                                    isRead = false,
-//                                    priority = Priority.HIGH
-//                                )
-//                            }
-//                        )
-//                    }
 
                     // modificando a ListaDeEmail com uma função que retorna o banco de dados do Usuário
                     telaInicialViewModel.onListaCompletaEmailDbChange(
@@ -249,31 +236,61 @@ fun TelaInicialScreen(
                         )
                     )
 
-                    // Emails
+                    // Percorrendo a lista de Emails
                     LazyColumn {
-                        val tamanhoDalistaDeEmail = listaDeEmail.size
-
-
-                        items(tamanhoDalistaDeEmail) {indexDoEmail ->
+                        items(listaDeEmail.size) { indexDoEmail ->
                             var _listaDeEmailSendoManipulada = listaDeEmail
                             EmailView(
                                 email = listaDeEmail[indexDoEmail],
-                                onCLick = {},
+                                onCLick = {
+                                          if (onSelected) {
+                                              _listaDeEmailSendoManipulada.mapIndexed { index, email ->
+                                                  if (index == indexDoEmail) {
+                                                      val emailAlterado = email.copy(isSelected = !email.isSelected)
+
+                                                      // Alterando Email Selecionado no DB
+                                                      telaInicialViewModel.onIsSelectedEmailDb(context, emailAlterado)
+
+                                                      // Alterando Email Selecionado na Lista do Lazy Column
+                                                      telaInicialViewModel.onListaCompletaEmailDbChange(telaInicialViewModel.getListaCompletaEmailDb(context))
+
+                                                      //  Alterando onSelected para alterar o Header da aplicação
+                                                      if (telaInicialViewModel.hasSelectedEmail(context)) {
+                                                          telaInicialViewModel.onSelectedChange(true)
+                                                      } else {telaInicialViewModel.onSelectedChange(false)}
+
+                                                      // Alterando o valor da quantidade de email selecionado
+                                                      telaInicialViewModel.onQtdEmailSelecionada(telaInicialViewModel.countSelectedEmail(context))
+
+                                                  } else email
+                                              }
+                                          }
+                                },
                                 onLongClick = {
-                                    Log.i("FIAP", "TelaInicialScreen: Este butão foi clicado")
+                                    Log.i("FIAP", "TelaInicialScreen: Este botão foi clicado")
 
+                                    _listaDeEmailSendoManipulada.mapIndexed { index, email ->
+                                        if (index == indexDoEmail) {
+                                            val emailAlterado = email.copy(isSelected = !email.isSelected)
 
+                                            // Alterando Email Selecionado no DB
+                                            telaInicialViewModel.onIsSelectedEmailDb(context, emailAlterado)
 
+                                            // Alterando Email Selecionado na Lista do Lazy Column
+                                            telaInicialViewModel.onListaCompletaEmailDbChange(telaInicialViewModel.getListaCompletaEmailDb(context))
 
+                                            //  Alterando onSelected para alterar o Header da aplicação
+                                            if (telaInicialViewModel.hasSelectedEmail(context)) {
+                                                telaInicialViewModel.onSelectedChange(true)
+                                            } else {telaInicialViewModel.onSelectedChange(false)}
 
+                                        } else email
+                                    }
                                 },
                                 telaInicialViewModel = telaInicialViewModel
                             )
                         }
                     }
-
-//                    EmailView(email = email, onCLick = {}, telaInicialViewModel)
-
                 }
             }
         }
