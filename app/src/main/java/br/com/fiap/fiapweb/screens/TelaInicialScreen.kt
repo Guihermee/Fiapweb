@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -120,14 +121,40 @@ fun TelaInicialScreen(
                         onClick = {
                             coroutineScope.launch { drawerState.close() }
                             when (navigationItem.titulo) {
+
+                                "Todas as caixas de entrada" -> {
+                                    telaInicialViewModel.onCategoriaChange(Categoria.EMAIL)
+                                    telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Todos os Emails")
+                                }
+
+                                "Caixas de entrada" -> {
+                                    telaInicialViewModel.onCategoriaChange(Categoria.EMAIL)
+                                    telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Caixas de entrada")
+                                }
+
+                                "Não lidos" -> {
+                                    telaInicialViewModel.onCategoriaChange(Categoria.EMAIL)
+                                    telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Não lidos")
+                                }
+
+                                "Rascunhos" -> {
+                                    telaInicialViewModel.onCategoriaChange(Categoria.EMAIL)
+                                    telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Rascunhos")
+                                }
+
+                                "Enviados" -> {
+                                    telaInicialViewModel.onCategoriaChange(Categoria.ENVIADOS)
+                                    telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Enviados")
+                                }
+
                                 "Lixeira" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.LIXEIRA)
                                     telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Lixeira")
                                 }
 
-                                "Todas as caixas de entrada" -> {
-                                    telaInicialViewModel.onCategoriaChange(Categoria.EMAIL)
-                                    telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Todos os Emails")
+                                "Spam" -> {
+                                    telaInicialViewModel.onCategoriaChange(Categoria.SPAM)
+                                    telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Spam")
                                 }
                             }
                         }
@@ -156,7 +183,7 @@ fun TelaInicialScreen(
                         onDeleteClick = {
                             // Aqui é buscado no banco pelos Itens que estão selecionados
                             val listaDosSelecionados =
-                                usuarioRepository.db.listarEmailPorSelecionados()
+                                usuarioRepository.listarEmailPorSelecionados()
 
                             // Para cada item na lista retornada é "deletado" (adiconado um enum diferente) do banco
                             telaInicialViewModel.changeAllEmailToDelete(
@@ -260,14 +287,68 @@ fun TelaInicialScreen(
                         )
                     )
 
-                    // Percorrendo a listaDeEmail
-                    LazyColumn {
-                        items(listaDeEmail.size) { indexDoEmail ->
-                            val listaDeEmailSendoManipulada = listaDeEmail
-                            EmailView(
-                                email = listaDeEmail[indexDoEmail],
-                                onCLick = {
-                                    if (onSelected) {
+                    if (listaDeEmail.isEmpty()) {
+                        // Se a Lista estiver vazia:
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(text = "Nada em ${categoria.name}")
+                        }
+
+
+                    } else {
+                        // Percorrendo a listaDeEmail se a Lista tiver algo
+                        LazyColumn {
+                            items(listaDeEmail.size) { indexDoEmail ->
+                                val listaDeEmailSendoManipulada = listaDeEmail
+                                EmailView(
+                                    email = listaDeEmail[indexDoEmail],
+                                    onCLick = {
+                                        if (onSelected) {
+                                            listaDeEmailSendoManipulada.mapIndexed { index, email ->
+                                                if (index == indexDoEmail) {
+                                                    val emailAlterado =
+                                                        email.copy(isSelected = !email.isSelected)
+
+                                                    // Alterando Email Selecionado no DB
+                                                    telaInicialViewModel.atualizarEmail(
+                                                        context,
+                                                        emailAlterado
+                                                    )
+
+                                                    // Alterando Email Selecionado na ListaDeEmail do Lazy Column
+                                                    telaInicialViewModel.onListaCompletaEmailDbChange(
+                                                        telaInicialViewModel.getListaEmailPorCategoriaDb(
+                                                            context, categoria
+                                                        )
+                                                    )
+
+                                                    //  Alterando onSelected para alterar o Header da aplicação
+                                                    if (telaInicialViewModel.hasSelectedEmail(
+                                                            context
+                                                        )
+                                                    ) {
+                                                        telaInicialViewModel.onSelectedChange(true)
+                                                    } else {
+                                                        telaInicialViewModel.onSelectedChange(false)
+                                                    }
+
+                                                    // Alterando o valor da quantidade de email selecionado
+                                                    telaInicialViewModel.onQtdEmailSelecionada(
+                                                        telaInicialViewModel.countSelectedEmail(
+                                                            context
+                                                        )
+                                                    )
+
+                                                } else email
+                                            }
+                                        }
+                                    },
+                                    onLongClick = {
+                                        Log.i("FIAP", "TelaInicialScreen: Este botão foi clicado")
+
                                         listaDeEmailSendoManipulada.mapIndexed { index, email ->
                                             if (index == indexDoEmail) {
                                                 val emailAlterado =
@@ -293,50 +374,15 @@ fun TelaInicialScreen(
                                                     telaInicialViewModel.onSelectedChange(false)
                                                 }
 
-                                                // Alterando o valor da quantidade de email selecionado
-                                                telaInicialViewModel.onQtdEmailSelecionada(
-                                                    telaInicialViewModel.countSelectedEmail(context)
-                                                )
-
                                             } else email
                                         }
-                                    }
-                                },
-                                onLongClick = {
-                                    Log.i("FIAP", "TelaInicialScreen: Este botão foi clicado")
-
-                                    listaDeEmailSendoManipulada.mapIndexed { index, email ->
-                                        if (index == indexDoEmail) {
-                                            val emailAlterado =
-                                                email.copy(isSelected = !email.isSelected)
-
-                                            // Alterando Email Selecionado no DB
-                                            telaInicialViewModel.atualizarEmail(
-                                                context,
-                                                emailAlterado
-                                            )
-
-                                            // Alterando Email Selecionado na ListaDeEmail do Lazy Column
-                                            telaInicialViewModel.onListaCompletaEmailDbChange(
-                                                telaInicialViewModel.getListaEmailPorCategoriaDb(
-                                                    context, categoria
-                                                )
-                                            )
-
-                                            //  Alterando onSelected para alterar o Header da aplicação
-                                            if (telaInicialViewModel.hasSelectedEmail(context)) {
-                                                telaInicialViewModel.onSelectedChange(true)
-                                            } else {
-                                                telaInicialViewModel.onSelectedChange(false)
-                                            }
-
-                                        } else email
-                                    }
-                                },
-                                telaInicialViewModel = telaInicialViewModel
-                            )
+                                    },
+                                    telaInicialViewModel = telaInicialViewModel
+                                )
+                            }
                         }
                     }
+
                 }
             }
         }
