@@ -62,6 +62,7 @@ fun SelecionadosHeader(
                     telaInicialViewModel.onSelectedChange(false)
                     telaInicialViewModel.changeAllEmailToNotSelected(context)
                     telaInicialViewModel.onQtdEmailSelecionada(1)
+                    telaInicialViewModel.onTodosEmailSelecionadosChange(false)
                 }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,

@@ -10,10 +10,8 @@ import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import br.com.fiap.fiapweb.components.CorpoDoEMail
 import br.com.fiap.fiapweb.components.HeaderLerEmail
@@ -73,6 +71,5 @@ val emailExemplo = Email(
     isRead = false,
     isFavorite = false,
     priority = Priority.NORMAL,
-    isSelected = false,
-    categoria = "Categoria "
+    isSelected = false
 )
