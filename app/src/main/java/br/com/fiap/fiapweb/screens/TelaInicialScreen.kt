@@ -126,9 +126,7 @@ fun TelaInicialScreen(
                         .padding(16.dp)
                         .size(100.dp)
                 )
-
                 Divider()
-
                 // Itens do sidebar
                 listNavigationItem.forEachIndexed { index, navigationItem ->
                     NavigationItemView(
@@ -146,6 +144,11 @@ fun TelaInicialScreen(
                                 "Caixas de entrada" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.EMAIL)
                                     telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Caixas de entrada")
+                                }
+
+                                "Favoritos" -> {
+                                    telaInicialViewModel.onCategoriaChange(Categoria.EMAIL)
+                                    telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Favoritos")
                                 }
 
                                 "Não lidos" -> {
@@ -178,10 +181,7 @@ fun TelaInicialScreen(
                 }
             }
         }
-
-    ) {
-
-        // Aqui fica o Conteúdo da tela (recomendo um estudo sobre o Scaffold para melhor entendimento
+    ) { // Aqui fica o Conteúdo da tela (recomendo um estudo sobre o Scaffold para melhor entendimento
         Scaffold(
 
             floatingActionButton = {
@@ -208,17 +208,14 @@ fun TelaInicialScreen(
                             )
                             telaInicialViewModel.changeAllEmailToNotSelected(context)
 
-
                             // Aqui para segurança da Lista é atualizada a ListaEmail com os valores novos
                             telaInicialViewModel.onListaCompletaEmailDbChange(
                                 telaInicialViewModel.getListaCompletaEmailDb(
                                     context
                                 )
                             )
-
                             telaInicialViewModel.onSelectedChange(false)
                             telaInicialViewModel.onQtdEmailSelecionada(1)
-
                         },
                         onDraftClick = {},
                         onSelectAllClick = {
@@ -229,7 +226,6 @@ fun TelaInicialScreen(
                                 (telaInicialViewModel.changeAllEmailToSelected(context))
                                 telaInicialViewModel.onTodosEmailSelecionadosChange(true)
                             }
-
                         },
                         todosEmailSelecionados
                     )
@@ -279,7 +275,6 @@ fun TelaInicialScreen(
                                 )
                                 Text(text = "Filtros")
                             }
-
                         }
                     }
 
@@ -303,8 +298,8 @@ fun TelaInicialScreen(
                         )
                     )
 
+                    // Se a Lista estiver vazia:
                     if (listaDeEmail.isEmpty()) {
-                        // Se a Lista estiver vazia:
                         Column(
                             modifier = Modifier.fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -312,7 +307,6 @@ fun TelaInicialScreen(
                         ) {
                             Text(text = "Nada em ${categoria.name}")
                         }
-
 
                     } else {
                         // Percorrendo a listaDeEmail se a Lista tiver algo
@@ -398,7 +392,6 @@ fun TelaInicialScreen(
                             }
                         }
                     }
-
                 }
             }
         }
