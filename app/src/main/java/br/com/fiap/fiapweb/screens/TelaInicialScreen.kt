@@ -12,8 +12,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.InsertDriveFile
+import androidx.compose.material.icons.automirrored.outlined.Send
+import androidx.compose.material.icons.filled.AllInbox
+import androidx.compose.material.icons.filled.Drafts
+import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material.icons.outlined.AccessAlarms
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.FilterAlt
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
@@ -38,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import br.com.fiap.fiapweb.R
 import br.com.fiap.fiapweb.Repository.EmailRepository
+import br.com.fiap.fiapweb.Repository.NavigationItemRepository
 import br.com.fiap.fiapweb.components.EmailView
 import br.com.fiap.fiapweb.components.ModalFiltros
 import br.com.fiap.fiapweb.components.ModalPerfil
@@ -45,9 +54,13 @@ import br.com.fiap.fiapweb.components.NavigationItemView
 import br.com.fiap.fiapweb.components.SearchBarHeader
 import br.com.fiap.fiapweb.components.SelecionadosHeader
 import br.com.fiap.fiapweb.model.Categoria
+import br.com.fiap.fiapweb.model.Email
 import br.com.fiap.fiapweb.model.NavigationItem
+import br.com.fiap.fiapweb.model.Priority
 import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 @Composable
 fun TelaInicialScreen(
@@ -64,34 +77,36 @@ fun TelaInicialScreen(
     val todosEmailSelecionados by telaInicialViewModel.todosEmailSelecionados.observeAsState(initial = false)
     val categoria by telaInicialViewModel.categoria.observeAsState(initial = Categoria.EMAIL)
     val tituloDaCaixaDeEntrada by telaInicialViewModel.tituloDaCaixaDeEntrada.observeAsState(initial = "Todos os Emails")
+    val selectedItemIndex by telaInicialViewModel.selectedItemIndex.observeAsState(initial = 0)
+    val listNavigationItem = NavigationItemRepository().getNavigationItemList()
 
     val context = LocalContext.current
     val usuarioRepository = EmailRepository(context)
 
-//    fun inserirEmailsFicticios(repository: EmailRepository) {
-//        GlobalScope.launch {
-//            for (i in 1..20) {
-//                val email = Email(
-//                    id = 0, // O ID será gerado automaticamente
-//                    remetente = "remetente$i@example.com",
-//                    destinatario = "destinatario$i@example.com",
-//                    cc = listOf("cc$i@example.com"),
-//                    bcc = listOf("bcc$i@example.com"),
-//                    subject = "Assunto $i",
-//                    body = "Corpo do email $i",
-//                    attachments = listOf("anexo$i.pdf"),
-//                    timestamp = LocalDateTime.now(),
-//                    isRead = false,
-//                    isFavorite = false,
-//                    priority = Priority.NORMAL,
-//                    isSelected = false
-//                )
-//                repository.salvar(email)
-//            }
-//        }
-//    }
-//
-//    // Troque para True aqui para colocar 20 itens no banco de dados, mas coloque true rode a aplicação dps retorne pra fase pfv
+    fun inserirEmailsFicticios(repository: EmailRepository) {
+        GlobalScope.launch {
+            for (i in 1..20) {
+                val email = Email(
+                    id = 0, // O ID será gerado automaticamente
+                    remetente = "remetente$i@example.com",
+                    destinatario = "destinatario$i@example.com",
+                    cc = listOf("cc$i@example.com"),
+                    bcc = listOf("bcc$i@example.com"),
+                    subject = "Assunto $i",
+                    body = "Corpo do email $i",
+                    attachments = listOf("anexo$i.pdf"),
+                    timestamp = LocalDateTime.now(),
+                    isRead = i == 1,
+                    isFavorite = false,
+                    priority = Priority.NORMAL,
+                    isSelected = false
+                )
+                repository.salvar(email)
+            }
+        }
+    }
+
+    // descomente, rode a aplicação e comente novamente, não rode esse comando abaixo 2 vezes (ele gera 20 email no banco de dados para testes)
 //    if (true) {
 //        inserirEmailsFicticios(usuarioRepository)
 //    }
@@ -113,15 +128,16 @@ fun TelaInicialScreen(
                 )
 
                 Divider()
+
                 // Itens do sidebar
-                NavigationItem.entries.toTypedArray().take(8).forEach { navigationItem ->
+                listNavigationItem.forEachIndexed { index, navigationItem ->
                     NavigationItemView(
                         navigationItem = navigationItem,
-                        selected = false,
+                        selected = index == selectedItemIndex,
                         onClick = {
+                            telaInicialViewModel.onSelectedItemIndex(index)
                             coroutineScope.launch { drawerState.close() }
                             when (navigationItem.titulo) {
-
                                 "Todas as caixas de entrada" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.EMAIL)
                                     telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Todos os Emails")

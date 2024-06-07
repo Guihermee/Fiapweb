@@ -106,8 +106,8 @@ fun EmailView(email: Email, onCLick: () -> Unit, onLongClick: () -> Unit, telaIn
                         .padding(horizontal = 8.dp)
                         .width(300.dp),
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    fontWeight = FontWeight.Medium,
+                    color = if (email.isRead) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onBackground,
                     maxLines = 1,
 
                     )
@@ -118,7 +118,7 @@ fun EmailView(email: Email, onCLick: () -> Unit, onLongClick: () -> Unit, telaIn
                         .width(300.dp),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = if (email.isRead) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onBackground,
                     maxLines = 1
                 )
                 Text(
@@ -127,8 +127,8 @@ fun EmailView(email: Email, onCLick: () -> Unit, onLongClick: () -> Unit, telaIn
                         .padding(horizontal = 8.dp)
                         .width(300.dp),
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.Light,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    fontWeight = FontWeight.Medium,
+                    color = if (email.isRead) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onBackground,
                     maxLines = 1
                 )
             }

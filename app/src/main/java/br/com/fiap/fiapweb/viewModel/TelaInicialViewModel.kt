@@ -183,4 +183,12 @@ class TelaInicialViewModel : ViewModel() {
         _tituloDaCaixaDeEntrada.value = novoTitulo
     }
 
+    // Sidebar
+    private val _selectedItemIndex = MutableLiveData<Int>()
+    val selectedItemIndex: LiveData<Int> = _selectedItemIndex
+
+    fun onSelectedItemIndex(novoValor: Int) {
+        _selectedItemIndex.value = novoValor
+    }
+
 }
