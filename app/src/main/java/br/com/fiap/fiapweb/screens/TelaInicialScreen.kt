@@ -12,20 +12,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.InsertDriveFile
-import androidx.compose.material.icons.automirrored.outlined.Send
-import androidx.compose.material.icons.filled.AllInbox
-import androidx.compose.material.icons.filled.Drafts
-import androidx.compose.material.icons.filled.StarBorder
-import androidx.compose.material.icons.outlined.AccessAlarms
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.FilterAlt
-import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.MarkEmailRead
+import androidx.compose.material.icons.outlined.MarkEmailUnread
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -55,13 +50,13 @@ import br.com.fiap.fiapweb.components.SearchBarHeader
 import br.com.fiap.fiapweb.components.SelecionadosHeader
 import br.com.fiap.fiapweb.model.Categoria
 import br.com.fiap.fiapweb.model.Email
-import br.com.fiap.fiapweb.model.NavigationItem
 import br.com.fiap.fiapweb.model.Priority
 import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TelaInicialScreen(
     navController: NavController,
@@ -79,6 +74,7 @@ fun TelaInicialScreen(
     val tituloDaCaixaDeEntrada by telaInicialViewModel.tituloDaCaixaDeEntrada.observeAsState(initial = "Todos os Emails")
     val selectedItemIndex by telaInicialViewModel.selectedItemIndex.observeAsState(initial = 0)
     val listNavigationItem = NavigationItemRepository().getNavigationItemList()
+    val iconDraftSelected by telaInicialViewModel.iconDraftSelected.observeAsState(initial = false)
 
     val context = LocalContext.current
     val usuarioRepository = EmailRepository(context)
@@ -197,6 +193,7 @@ fun TelaInicialScreen(
                         telaInicialViewModel,
                         qtdEmailSelecionada,
                         onDeleteClick = {
+
                             // Aqui é buscado no banco pelos Itens que estão selecionados
                             val listaDosSelecionados =
                                 usuarioRepository.listarEmailPorSelecionados()
@@ -217,7 +214,20 @@ fun TelaInicialScreen(
                             telaInicialViewModel.onSelectedChange(false)
                             telaInicialViewModel.onQtdEmailSelecionada(1)
                         },
-                        onDraftClick = {},
+                        IconDraft = if (iconDraftSelected) Icons.Outlined.MarkEmailUnread else Icons.Outlined.MarkEmailRead,
+                        onDraftClick = {
+                            val listaDosSelecionados =
+                                usuarioRepository.listarEmailPorSelecionados()
+
+                            // Mudando o IsRead do email
+                            telaInicialViewModel.changeAllEmailToOrNotRead(
+                                context,
+                                listaDosSelecionados,
+                                !iconDraftSelected
+                            )
+                            telaInicialViewModel.onIconDraftSelectedChange(!iconDraftSelected)
+
+                        },
                         onSelectAllClick = {
                             if (todosEmailSelecionados) {
                                 telaInicialViewModel.changeAllEmailToNotSelected(context)
@@ -363,6 +373,9 @@ fun TelaInicialScreen(
                                             if (index == indexDoEmail) {
                                                 val emailAlterado =
                                                     email.copy(isSelected = !email.isSelected)
+
+                                                // alterando iconDraftSelected
+                                                telaInicialViewModel.onIconDraftSelectedChange(email.isRead)
 
                                                 // Alterando Email Selecionado no DB
                                                 telaInicialViewModel.atualizarEmail(

@@ -21,6 +21,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +34,7 @@ fun SelecionadosHeader(
     telaInicialViewModel: TelaInicialViewModel,
     qtdEmailSelecionado: Int,
     onDeleteClick: () -> Unit,
+    IconDraft: ImageVector,
     onDraftClick: () -> Unit,
     onSelectAllClick: () -> Unit,
     todosEmailSelecionados: Boolean
@@ -88,7 +90,7 @@ fun SelecionadosHeader(
             }
             IconButton(onClick = onDraftClick) {
                 Icon(
-                    imageVector = Icons.Outlined.Drafts,
+                    imageVector = IconDraft,
                     contentDescription = "Localized description",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )

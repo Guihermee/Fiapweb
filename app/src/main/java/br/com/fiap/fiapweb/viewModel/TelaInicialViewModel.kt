@@ -112,6 +112,19 @@ class TelaInicialViewModel : ViewModel() {
         onListaCompletaEmailDbChange(listaAtualizadoDoBD)
     }
 
+    fun changeAllEmailToOrNotRead(context: Context, listaDosEmails: List<Email>, toOrNotRead: Boolean) {
+        for (email in listaDosEmails) {
+            _listaCompletaEmailDb.value?.map {
+                if (it == email) {
+                    val emailAlterado = it.copy(isRead = toOrNotRead)
+                    atualizarEmail(context, emailAlterado)
+                }
+            }
+        }
+        val listaAtualizada = getListaCompletaEmailDb(context)
+        onListaCompletaEmailDbChange(listaAtualizada)
+    }
+
     // showDialogPerfil
     private val _showDialogPerfil = MutableLiveData<Boolean>()
     val showDialogPerfil: LiveData<Boolean> = _showDialogPerfil
@@ -189,6 +202,14 @@ class TelaInicialViewModel : ViewModel() {
 
     fun onSelectedItemIndex(novoValor: Int) {
         _selectedItemIndex.value = novoValor
+    }
+
+    // iconDraftSelected
+    private val _iconDraftSelected = MutableLiveData<Boolean>()
+    val iconDraftSelected: LiveData<Boolean> = _iconDraftSelected
+
+    fun onIconDraftSelectedChange(novoValor: Boolean) {
+        _iconDraftSelected.value = novoValor
     }
 
 }
