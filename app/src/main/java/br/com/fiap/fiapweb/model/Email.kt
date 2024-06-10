@@ -35,6 +35,7 @@ enum class Categoria {
     EMAIL,
     LIXEIRA,
     SPAM,
-    ENVIADOS
+    ENVIADOS,
+    FAVORITOS
 }
 

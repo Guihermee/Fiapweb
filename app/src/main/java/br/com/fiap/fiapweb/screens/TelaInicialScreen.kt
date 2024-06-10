@@ -1,6 +1,5 @@
 package br.com.fiap.fiapweb.screens
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,7 +19,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -56,7 +54,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TelaInicialScreen(
     navController: NavController,
@@ -143,7 +140,7 @@ fun TelaInicialScreen(
                                 }
 
                                 "Favoritos" -> {
-                                    telaInicialViewModel.onCategoriaChange(Categoria.EMAIL)
+                                    telaInicialViewModel.onCategoriaChange(Categoria.FAVORITOS)
                                     telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Favoritos")
                                 }
 
@@ -290,9 +287,12 @@ fun TelaInicialScreen(
 
                     // Dialogs
                     if (showDialogFiltros) {
-                        ModalFiltros {
-                            telaInicialViewModel.onshowDialogFiltrosChange(false)
-                        }
+                        ModalFiltros(
+                            onDismissRequest = {
+                                telaInicialViewModel.onshowDialogFiltrosChange(false)
+                            },
+                            onAplicarRequest = {}
+                        )
                     }
 
                     if (showDialogPerfil) {
@@ -365,10 +365,11 @@ fun TelaInicialScreen(
                                                 } else email
                                             }
                                         }
+
+                                        // Quando clica no email?....
+
                                     },
                                     onLongClick = {
-                                        Log.i("FIAP", "TelaInicialScreen: Este botão foi clicado")
-
                                         listaDeEmailSendoManipulada.mapIndexed { index, email ->
                                             if (index == indexDoEmail) {
                                                 val emailAlterado =
@@ -400,7 +401,28 @@ fun TelaInicialScreen(
                                             } else email
                                         }
                                     },
-                                    telaInicialViewModel = telaInicialViewModel
+                                    onEstrelaClick = {
+                                        listaDeEmailSendoManipulada.mapIndexed { index, email ->
+                                            if (index == indexDoEmail) {
+                                                val emailAlterado = email.copy(
+                                                    isFavorite = !email.isFavorite
+                                                )
+
+                                                // Alterando Email Selecionado no DB
+                                                telaInicialViewModel.atualizarEmail(
+                                                    context,
+                                                    emailAlterado
+                                                )
+
+                                                // Alterando Email Selecionado na ListaDeEmail do Lazy Column
+                                                telaInicialViewModel.onListaCompletaEmailDbChange(
+                                                    telaInicialViewModel.getListaEmailPorCategoriaDb(
+                                                        context, categoria
+                                                    )
+                                                )
+                                            } else email
+                                        }
+                                    }
                                 )
                             }
                         }
