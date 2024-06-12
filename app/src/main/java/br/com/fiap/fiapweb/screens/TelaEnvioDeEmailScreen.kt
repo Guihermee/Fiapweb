@@ -53,11 +53,6 @@ fun TelaEnvioDeEmailScreen(
 
 
     Scaffold(
-//        floatingActionButton = {
-//            FloatingActionButton(onClick = {navController.navigate("telaLeituraEmail")}) {
-//                Icon(imageVector = Icons.Outlined.AutoAwesome, contentDescription = "Generate Icon")
-//            }
-//        }
 
         floatingActionButton = {
             Column(
