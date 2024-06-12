@@ -12,18 +12,17 @@ class EnvioDeEmailViewModel: ViewModel() {
     private val _subjectFieldValue = MutableLiveData<String>()
     val subjectFieldValue: LiveData<String> = _subjectFieldValue
 
-    private val _fromFieldValue = MutableLiveData<String>()
-    val fromFieldValue: LiveData<String> = _fromFieldValue
-
     private val _emailBodyFieldValue = MutableLiveData<String>()
     val emailBodyFieldValue: LiveData<String> = _emailBodyFieldValue
 
+    private val _ccFieldValue = MutableLiveData<String>()
+    val ccFieldValue: LiveData<String> = _ccFieldValue
+
+    private val _ccoFieldValue = MutableLiveData<String>()
+    val ccoFieldValue: LiveData<String> = _ccoFieldValue
+
     fun onToFieldValueChanged(novoToFieldValue: String){
         _toFieldValue.value = novoToFieldValue
-    }
-
-    fun onFromFieldValueChanged(novoFromFieldValue: String){
-        _fromFieldValue.value = novoFromFieldValue
     }
 
     fun onSubjectFieldValueChanged(novoSubjectFieldValue: String){
@@ -32,6 +31,14 @@ class EnvioDeEmailViewModel: ViewModel() {
 
     fun onEmailBodyFieldValueChanged(novoEmailBodyFieldValue: String){
         _emailBodyFieldValue.value = novoEmailBodyFieldValue
+    }
+
+    fun onCcFieldValueChanged(novoCcFieldValue: String) {
+        _ccFieldValue.value = novoCcFieldValue
+    }
+
+    fun onCcoFieldValueChanged(novoCcoFieldValue: String) {
+        _ccoFieldValue.value = novoCcoFieldValue
     }
 
 

@@ -2,6 +2,7 @@ package br.com.fiap.fiapweb.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -33,7 +34,10 @@ fun EmailBody(
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = Color.Transparent,
                     focusedBorderColor = Color.Transparent
-            ))
-
-    }
+                )
+            )
+        }
+        Column {
+            SendButton(modifier = Modifier.fillMaxWidth() )
+        }
 }

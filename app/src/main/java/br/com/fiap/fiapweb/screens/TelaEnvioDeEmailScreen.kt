@@ -15,6 +15,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,12 +36,12 @@ fun TelaEnvioDeEmailScreen(
     navController: NavController,
     envioDeEmailViewModel: EnvioDeEmailViewModel
 ) {
-
-
     val toFieldValue by envioDeEmailViewModel.toFieldValue.observeAsState(initial = "")
     val subjectFieldValue by envioDeEmailViewModel.subjectFieldValue.observeAsState(initial = "")
-    val fromFieldValue by envioDeEmailViewModel.fromFieldValue.observeAsState(initial = "")
     val emailBodyFieldValue by envioDeEmailViewModel.emailBodyFieldValue.observeAsState(initial = "")
+    val ccFieldValue by envioDeEmailViewModel.ccFieldValue.observeAsState(initial = "")
+    val ccoFieldValue by envioDeEmailViewModel.ccoFieldValue.observeAsState(initial = "")
+    var showCcCcoFields by remember { mutableStateOf(false) }
 
     Scaffold(
         floatingActionButton = {
@@ -55,26 +57,13 @@ fun TelaEnvioDeEmailScreen(
 
     ) { contentPadding ->
         Box(modifier = Modifier.padding(contentPadding)) {
-        }
 
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.TopCenter
-        ) {
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 42.dp)
             ) {
 
-
-                EmailAdress(
-                    value = fromFieldValue,
-                    modifier = Modifier,
-                    keyboardType = KeyboardType.Email,
-                    text = "De: ",
-                    updateValue = { envioDeEmailViewModel.onFromFieldValueChanged(it) }
-                )
                 Divider()
 
                 EmailAdress(
@@ -82,9 +71,31 @@ fun TelaEnvioDeEmailScreen(
                     modifier = Modifier,
                     keyboardType = KeyboardType.Email,
                     text = "Para: ",
-                    updateValue = { envioDeEmailViewModel.onToFieldValueChanged(it) }
+                    updateValue = { envioDeEmailViewModel.onToFieldValueChanged(it) },
+                    showDropDownIcon = true,
+                    onDropDownClick = { showCcCcoFields = !showCcCcoFields }
                 )
                 Divider()
+
+                if (showCcCcoFields) {
+                    EmailAdress(
+                        value = ccFieldValue,
+                        modifier = Modifier,
+                        keyboardType = KeyboardType.Email,
+                        text = "Cc: ",
+                        updateValue = { envioDeEmailViewModel.onCcFieldValueChanged(it) }
+                    )
+                    Divider()
+
+                    EmailAdress(
+                        value = ccoFieldValue,
+                        modifier = Modifier,
+                        keyboardType = KeyboardType.Email,
+                        text = "Cco: ",
+                        updateValue = { envioDeEmailViewModel.onCcoFieldValueChanged(it) }
+                    )
+                    Divider()
+                }
 
 
                 EmailAdress(
@@ -111,4 +122,5 @@ fun TelaEnvioDeEmailScreen(
                 )
             }
         }
-    }}
+    }
+}
