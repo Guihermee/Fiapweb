@@ -46,77 +46,88 @@ import java.util.Locale
 @Composable
 fun ResumoEmail(email: Email, onCLick: () -> Unit, onLongClick: () -> Unit) {
 
-    Row {
-
-        // Nome, titulo e preview do conteúdo do email
-        Column {
-            Text(
-                text = email.remetente,
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .width(300.dp),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground,
-                maxLines = 1,
-
+    Column {
+        Row (modifier = Modifier.padding(top = 8.dp)){
+            Column {
+                Text(
+                    text = email.subject,
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .width(300.dp),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    maxLines = 1
                 )
-            Text(
-                text = email.subject,
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .width(300.dp),
-                fontSize = 17.sp,
-                fontWeight = FontWeight.Normal,
-                color = MaterialTheme.colorScheme.onBackground,
-                maxLines = 1
-            )
-            Text(
-                text = email.destinatario,
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .width(300.dp),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Light,
-                color = MaterialTheme.colorScheme.onBackground,
-                maxLines = 1
-            )
-
+            }
         }
 
-        // Mais e a Data
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(vertical = 16.dp)
+
+        Row(
+            modifier = Modifier.padding(top = 5.dp)
         ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.End
-            ) {
-                // Data
+
+            // Nome, titulo e preview do conteúdo do email
+            Column {
+
                 Text(
-                    text = formatDate(email.timestamp),
-                    modifier = Modifier.padding(horizontal = 6.dp),
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.Light,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Spacer(modifier = Modifier.height(20.dp))
+                    text = email.remetente,
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .width(300.dp),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    maxLines = 1,
 
-                // Mais
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.Outlined.MoreHoriz,
-                        contentDescription = "More Icon",
-                        modifier = Modifier
-                            .size(20.dp)
                     )
-                }
 
+                Text(
+                    text = email.destinatario,
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .width(300.dp),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Light,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    maxLines = 1
+                )
 
             }
 
+            // Mais e a Data
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    // Data
+                    Text(
+                        text = formatDate(email.timestamp),
+                        modifier = Modifier.padding(horizontal = 6.dp),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Light,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    // Mais
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            imageVector = Icons.Outlined.MoreHoriz,
+                            contentDescription = "More Icon",
+                            modifier = Modifier
+                                .size(25.dp)
+                        )
+                    }
+
+
+                }
+
+            }
         }
     }
 }
