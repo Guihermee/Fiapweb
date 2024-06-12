@@ -29,7 +29,6 @@ fun HeaderEscreverEmail(textContent: String, onClickVoltar: () -> Unit) {
         navigationIcon = {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = {
-                    //    telaInicialViewModel.onSelectedChange(false)
                 }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
