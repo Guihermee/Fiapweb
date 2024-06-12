@@ -19,4 +19,8 @@ class HistoricoDeBuscaRespository(context: Context) {
         return db.listarHistorico()
     }
 
+    fun buscarHistoricoPorPesquisa(pesquisa: String): HistoricoDeBusca {
+        return db.listarHistoricoPorPesquisa(pesquisa)
+    }
+
 }

@@ -18,4 +18,7 @@ interface HistoricoDeBuscaDAO {
     @Query("SELECT * FROM tbl_historico_de_busca ORDER BY id DESC")
     fun listarHistorico(): List<HistoricoDeBusca>
 
+    @Query("SELECT * FROM tbl_historico_de_busca WHERE pesquisa = :pesquisa")
+    fun listarHistoricoPorPesquisa(pesquisa: String): HistoricoDeBusca
+
 }

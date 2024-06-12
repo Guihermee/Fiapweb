@@ -181,5 +181,5 @@ fun ModalPerfil(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun SidebarPreviw() {
-    ModalPerfil() {}
+    ModalPerfil {}
 }

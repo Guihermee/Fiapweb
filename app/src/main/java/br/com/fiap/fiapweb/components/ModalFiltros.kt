@@ -28,16 +28,14 @@ import androidx.compose.ui.window.Dialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ModalItems(icon: ImageVector, label: String, onClick: () -> Unit) {
-    var selected by remember { mutableStateOf(false) }
+fun ModalItems(icon: ImageVector, label: String, onClick: () -> Unit, selected: Boolean) {
 
     FilterChip(
-        onClick = {selected = !selected},
+        onClick = onClick,
         label = {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable(onClick = onClick)
                     .padding(vertical = 8.dp, horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -72,8 +70,10 @@ fun ModalItems(icon: ImageVector, label: String, onClick: () -> Unit) {
 @Composable
 fun ModalFiltros(
     onDismissRequest: () -> Unit,
+    onAplicarRequest: () -> Unit
 ) {
     var selected by remember { mutableStateOf(false) }
+
     Dialog(onDismissRequest = { onDismissRequest() }) {
 
         Card(
@@ -108,24 +108,36 @@ fun ModalFiltros(
                     ModalItems(
                         icon = Icons.Default.Email,
                         label = "Tudo",
-                        onClick = {selected = !selected}
+                        onClick = {selected = !selected},
+                        selected
                     )
                     ModalItems(
                         icon = Icons.Default.MarkEmailUnread,
                         label = "Não lidos",
-                        onClick = {selected = !selected}
+                        onClick = {selected = !selected},
+                        selected
                     )
                     ModalItems(
                         icon = Icons.Default.Star,
                         label = "Favoritos",
-                        onClick = {selected = !selected}
+                        onClick = {selected = !selected},
+                        selected
                     )
                     Divider(color = Color.Gray, thickness = 1.dp)
-                    TextButton(
-                        onClick = { onDismissRequest() },
-                        modifier = Modifier.padding(8.dp),
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
                     ) {
-                        Text("Fechar")
+                        TextButton(
+                            onClick = { onDismissRequest() },
+                            modifier = Modifier.padding(8.dp),
+                        ) {
+                            Text("Fechar")
+                        }
+                        TextButton(onClick = onAplicarRequest) {
+                            Text(text = "Aplicar")
+                        }
                     }
                 }
             }
@@ -133,8 +145,8 @@ fun ModalFiltros(
     }
 }
 
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun ModalPreviw() {
-    ModalFiltros() {}
-}
+//@Preview(showSystemUi = true, showBackground = true)
+//@Composable
+//fun ModalPreviw() {
+//    ModalFiltros {}
+//}

@@ -1,6 +1,7 @@
 package br.com.fiap.fiapweb.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -63,9 +64,17 @@ fun SearchBarHeader(
         query = textFieldValue,
         onQueryChange = { telaInicialViewModel.onTextFieldChange(it) },
         onSearch = {
+            val listaDoHistorico = historicoRepository.db.listarHistorico().map { it.pesquisa }
+
+            if (textFieldValue in listaDoHistorico) {
+                val pesquisaRepetida = historicoRepository.db.listarHistoricoPorPesquisa(textFieldValue)
+                historicoRepository.db.deletar(pesquisaRepetida)
+            }
+
             historicoRepository.db.salvar(HistoricoDeBusca(pesquisa = textFieldValue))
             telaInicialViewModel.onListaHistoricoChange(historicoRepository.db.listarHistorico())
             telaInicialViewModel.setIsSearchingToFalse()
+            telaInicialViewModel.onTodosEmailSelecionadosChange(false)
         },
         active = isSearching,
         onActiveChange = { telaInicialViewModel.onToogleSearch() },
@@ -116,8 +125,8 @@ fun SearchBarHeader(
         }
     ) {
 
-        var _listaHistorico = historicoRepository.db.listarHistorico()
-        val listaHistorico by telaInicialViewModel.listaHistorico.observeAsState(initial = _listaHistorico)
+        val listaHistoricoDb = historicoRepository.db.listarHistorico()
+        val listaHistorico by telaInicialViewModel.listaHistorico.observeAsState(initial = listaHistoricoDb)
 
         if (textFieldValue == "") {
             // Mini Texto quando Usuario não pesquisar
@@ -131,7 +140,10 @@ fun SearchBarHeader(
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 6.dp)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .clickable {
+                            telaInicialViewModel.onTextFieldChange(historicoItem.pesquisa)
+                        },
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {

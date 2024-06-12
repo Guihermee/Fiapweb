@@ -4,11 +4,10 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import br.com.fiap.fiapweb.Repository.EmailRepository
+import br.com.fiap.fiapweb.model.Categoria
 import br.com.fiap.fiapweb.model.Email
 import br.com.fiap.fiapweb.model.HistoricoDeBusca
-import br.com.fiap.fiapweb.utils.converterParaListaDeEmails
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -22,18 +21,19 @@ class TelaInicialViewModel : ViewModel() {
         _listaCompletaEmailDb.value = novaLista
     }
 
-    fun onListaCompletaEmailDbChangeNull(novaLista: List<Email>) {
-        _listaCompletaEmailDb.value = novaLista
-    }
-
     fun getListaCompletaEmailDb(context: Context): List<Email> {
         val usuarioRepository = EmailRepository(context)
         return usuarioRepository.db.listarHistorico()
     }
 
-    fun onIsSelectedEmailDb(context: Context, emailASerAtualizado: Email) {
+    fun getListaEmailPorCategoriaDb(context: Context, categoria: Categoria): List<Email> {
         val usuarioRepository = EmailRepository(context)
-        usuarioRepository.db.atualizar(emailASerAtualizado)
+        return usuarioRepository.listarEmailPorCategoria(categoria)
+    }
+
+    fun atualizarEmail(context: Context, emailASerAtualizado: Email) {
+        val usuarioRepository = EmailRepository(context)
+        usuarioRepository.atualizar(emailASerAtualizado)
     }
 
     //showDialogFiltros
@@ -61,24 +61,26 @@ class TelaInicialViewModel : ViewModel() {
     }
 
     fun hasSelectedEmail(context: Context): Boolean {
-        return getListaCompletaEmailDb(context).any {it.isSelected}
+        return getListaCompletaEmailDb(context).any { it.isSelected }
     }
 
     fun countSelectedEmail(context: Context): Int {
-        var quatidade = getListaCompletaEmailDb(context).count() {it.isSelected}
+        var quatidade = getListaCompletaEmailDb(context).count { it.isSelected }
 
-        if (quatidade == 0) {quatidade = 1}
+        if (quatidade == 0) {
+            quatidade = 1
+        }
 
         return quatidade
     }
 
     fun changeAllEmailToSelected(context: Context) {
-        var lista = mutableListOf<Email>()
+        val lista = mutableListOf<Email>()
 
         _listaCompletaEmailDb.value?.map {
 
             val emailAlterado = it.copy(isSelected = true)
-            onIsSelectedEmailDb(context, emailAlterado)
+            atualizarEmail(context, emailAlterado)
             lista.add(emailAlterado)
         }
         onListaCompletaEmailDbChange(lista)
@@ -87,14 +89,40 @@ class TelaInicialViewModel : ViewModel() {
     }
 
     fun changeAllEmailToNotSelected(context: Context) {
-        var lista = mutableListOf<Email>()
+        val lista = mutableListOf<Email>()
         _listaCompletaEmailDb.value?.map {
             val emailAlterado = it.copy(isSelected = false)
-            onIsSelectedEmailDb(context, emailAlterado)
+            atualizarEmail(context, emailAlterado)
             lista.add(emailAlterado)
         }
         onListaCompletaEmailDbChange(lista)
         _qtdEmailSelecionada.value = 0
+    }
+
+    fun changeAllEmailToDelete(context: Context, listaASerDeletada: List<Email>) {
+        for (deletado in listaASerDeletada) {
+            _listaCompletaEmailDb.value?.map {
+                if (deletado == it) {
+                    val emailDeletado = it.copy(categoria = Categoria.LIXEIRA)
+                    atualizarEmail(context, emailDeletado)
+                }
+            }
+        }
+        val listaAtualizadoDoBD = getListaCompletaEmailDb(context)
+        onListaCompletaEmailDbChange(listaAtualizadoDoBD)
+    }
+
+    fun changeAllEmailToOrNotRead(context: Context, listaDosEmails: List<Email>, toOrNotRead: Boolean) {
+        for (email in listaDosEmails) {
+            _listaCompletaEmailDb.value?.map {
+                if (it == email) {
+                    val emailAlterado = it.copy(isRead = toOrNotRead)
+                    atualizarEmail(context, emailAlterado)
+                }
+            }
+        }
+        val listaAtualizada = getListaCompletaEmailDb(context)
+        onListaCompletaEmailDbChange(listaAtualizada)
     }
 
     // showDialogPerfil
@@ -145,11 +173,43 @@ class TelaInicialViewModel : ViewModel() {
     }
 
     // todosEmailSelecionados
-    private val _todosEmailSelecionados = MutableLiveData<Boolean> ()
+    private val _todosEmailSelecionados = MutableLiveData<Boolean>()
     val todosEmailSelecionados: LiveData<Boolean> = _todosEmailSelecionados
 
     fun onTodosEmailSelecionadosChange(novoValor: Boolean) {
         _todosEmailSelecionados.value = novoValor
+    }
+
+    // Categoria
+    private val _categoria = MutableLiveData<Categoria>()
+    val categoria: LiveData<Categoria> = _categoria
+
+    fun onCategoriaChange(categoria: Categoria) {
+        _categoria.value = categoria
+    }
+
+    // tituloDaCaixaDeEntrada
+    private val _tituloDaCaixaDeEntrada = MutableLiveData<String>()
+    val tituloDaCaixaDeEntrada: LiveData<String> = _tituloDaCaixaDeEntrada
+
+    fun onTituloDaCaixaDeEntradaChange(novoTitulo: String) {
+        _tituloDaCaixaDeEntrada.value = novoTitulo
+    }
+
+    // Sidebar
+    private val _selectedItemIndex = MutableLiveData<Int>()
+    val selectedItemIndex: LiveData<Int> = _selectedItemIndex
+
+    fun onSelectedItemIndex(novoValor: Int) {
+        _selectedItemIndex.value = novoValor
+    }
+
+    // iconDraftSelected
+    private val _iconDraftSelected = MutableLiveData<Boolean>()
+    val iconDraftSelected: LiveData<Boolean> = _iconDraftSelected
+
+    fun onIconDraftSelectedChange(novoValor: Boolean) {
+        _iconDraftSelected.value = novoValor
     }
 
 }

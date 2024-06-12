@@ -2,6 +2,7 @@ package br.com.fiap.fiapweb.Repository
 
 import android.content.Context
 import br.com.fiap.fiapweb.dao.UsuarioDb
+import br.com.fiap.fiapweb.model.Categoria
 import br.com.fiap.fiapweb.model.Email
 
 class EmailRepository(context: Context) {
@@ -21,6 +22,14 @@ class EmailRepository(context: Context) {
 
     fun listarEmail(): List<Email> {
         return db.listarHistorico()
+    }
+
+    fun listarEmailPorSelecionados(): List<Email> {
+        return db.listarEmailPorSelecionados()
+    }
+
+    fun listarEmailPorCategoria(categoria: Categoria): List<Email> {
+        return db.listarEmailPorCategoria(categoria)
     }
 
 }

@@ -22,12 +22,20 @@ data class Email(
     @ColumnInfo(name = "is_favorito") val isFavorite: Boolean = false,
     val priority: Priority = Priority.NORMAL,
     @ColumnInfo(name = "is_selected") val isSelected: Boolean = false,
-    val categoria: String = ""
+    val categoria: Categoria = Categoria.EMAIL
 )
 
 enum class Priority {
     HIGH,
     NORMAL,
     LOW
+}
+
+enum class Categoria {
+    EMAIL,
+    LIXEIRA,
+    SPAM,
+    ENVIADOS,
+    FAVORITOS
 }
 

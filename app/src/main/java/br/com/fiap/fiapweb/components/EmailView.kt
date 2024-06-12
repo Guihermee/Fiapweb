@@ -40,7 +40,12 @@ import java.util.Locale
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun EmailView(email: Email, onCLick: () -> Unit, onLongClick: () -> Unit, telaInicialViewModel: TelaInicialViewModel) {
+fun EmailView(
+    email: Email,
+    onCLick: () -> Unit,
+    onLongClick: () -> Unit,
+    onEstrelaClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -48,8 +53,7 @@ fun EmailView(email: Email, onCLick: () -> Unit, onLongClick: () -> Unit, telaIn
             .background(if (email.isSelected) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.background)
             .combinedClickable(
                 onClick = onCLick,
-                onLongClick = onLongClick,
-                onLongClickLabel = "Email"
+                onLongClick = onLongClick
             )
             .padding(horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -96,8 +100,6 @@ fun EmailView(email: Email, onCLick: () -> Unit, onLongClick: () -> Unit, telaIn
                 }
             }
 
-
-
             // Nome, titulo e preview do conteúdo do email
             Column {
                 Text(
@@ -106,10 +108,9 @@ fun EmailView(email: Email, onCLick: () -> Unit, onLongClick: () -> Unit, telaIn
                         .padding(horizontal = 8.dp)
                         .width(300.dp),
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    maxLines = 1,
-
+                    fontWeight = FontWeight.Medium,
+                    color = if (email.isRead) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onBackground,
+                    maxLines = 1
                     )
                 Text(
                     text = email.subject,
@@ -118,7 +119,7 @@ fun EmailView(email: Email, onCLick: () -> Unit, onLongClick: () -> Unit, telaIn
                         .width(300.dp),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = if (email.isRead) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onBackground,
                     maxLines = 1
                 )
                 Text(
@@ -127,8 +128,8 @@ fun EmailView(email: Email, onCLick: () -> Unit, onLongClick: () -> Unit, telaIn
                         .padding(horizontal = 8.dp)
                         .width(300.dp),
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.Light,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    fontWeight = FontWeight.Medium,
+                    color = if (email.isRead) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onBackground,
                     maxLines = 1
                 )
             }
@@ -153,9 +154,8 @@ fun EmailView(email: Email, onCLick: () -> Unit, onLongClick: () -> Unit, telaIn
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 Spacer(modifier = Modifier.height(20.dp))
-
                 // Estrela
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = onEstrelaClick) {
                     if (email.isFavorite) {
                         Icon(
                             imageVector = Icons.Outlined.Star,
