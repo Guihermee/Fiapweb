@@ -90,7 +90,7 @@ fun TelaInicialScreen(
     val usuarioRepository = EmailRepository(context)
 
     fun inserirEmailsFicticios(repository: EmailRepository) {
-        var random = Random.nextInt(999)
+        val random = Random.nextInt(999)
 
         val email = Email(
             id = 0, // O ID será gerado automaticamente
@@ -360,7 +360,7 @@ fun TelaInicialScreen(
                             onSearch = {
                                 val listaDoHistorico =
                                     historicoRepository.listarHistorico().map { it.pesquisa }
-                                var textFieldValue = telaInicialViewModel.textField.value!!
+                                val textFieldValue = telaInicialViewModel.textField.value!!
 
                                 if (textFieldValue in listaDoHistorico) {
                                     val pesquisaRepetida =

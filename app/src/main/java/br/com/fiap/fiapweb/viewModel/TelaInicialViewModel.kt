@@ -108,16 +108,15 @@ class TelaInicialViewModel : ViewModel() {
     ) {
         for (deletado in listaASerDeletada) {
 
-            var listaASerPercorrida: List<Email> = emptyList()
-            if (categoria == Categoria.EMAIL) {
-                listaASerPercorrida = getListaCompletaEmailDb(context)
+            var listaASerPercorrida: List<Email>
+            listaASerPercorrida = if (categoria == Categoria.EMAIL) {
+                getListaCompletaEmailDb(context)
             } else {
-                listaASerPercorrida = _listaCompletaEmailDb.value!!
+                _listaCompletaEmailDb.value!!
             }
 
             listaASerPercorrida.map {
                 if (deletado.id == it.id) {
-                    val apargarDps = _listaCompletaEmailDb
                     val emailDeletado = it.copy(categoria = categoria)
                     atualizarEmail(context, emailDeletado)
                 }
