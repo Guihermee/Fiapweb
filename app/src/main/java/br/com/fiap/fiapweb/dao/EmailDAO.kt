@@ -29,4 +29,7 @@ interface EmailDAO {
     @Query("SELECT * FROM tbl_email WHERE categoria = :categoria")
     fun listarEmailPorCategoria(categoria: Categoria): List<Email>
 
+    @Query("SELECT * FROM tbl_email WHERE remetente LIKE :pesquisa")
+    fun listarEmailPorPesquisa(pesquisa: String): List<Email>
+
 }

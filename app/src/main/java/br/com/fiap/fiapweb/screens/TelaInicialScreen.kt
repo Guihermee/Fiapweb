@@ -174,7 +174,7 @@ fun TelaInicialScreen(
                 }
             }
         }
-    ) { // Aqui fica o Conteúdo da tela (recomendo um estudo sobre o Scaffold para melhor entendimento
+    ) { // Aqui fica o Conteúdo da tela (recomendo um estudo sobre o Scaffold para melhor entendimento)
         Scaffold(
 
             floatingActionButton = {

@@ -31,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.fiap.fiapweb.R
+import br.com.fiap.fiapweb.Repository.EmailRepository
 import br.com.fiap.fiapweb.Repository.HistoricoDeBuscaRespository
 import br.com.fiap.fiapweb.model.HistoricoDeBusca
 import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
@@ -51,6 +52,7 @@ fun SearchBarHeader(
     // Instância do HistoricoRepository
     val context = LocalContext.current
     val historicoRepository = HistoricoDeBuscaRespository(context)
+    val usuarioRepository = EmailRepository(context)
 
     // Barra de pesquisa
     SearchBar(
@@ -64,17 +66,21 @@ fun SearchBarHeader(
         query = textFieldValue,
         onQueryChange = { telaInicialViewModel.onTextFieldChange(it) },
         onSearch = {
-            val listaDoHistorico = historicoRepository.db.listarHistorico().map { it.pesquisa }
+            val listaDoHistorico = historicoRepository.listarHistorico().map { it.pesquisa }
 
             if (textFieldValue in listaDoHistorico) {
-                val pesquisaRepetida = historicoRepository.db.listarHistoricoPorPesquisa(textFieldValue)
-                historicoRepository.db.deletar(pesquisaRepetida)
+                val pesquisaRepetida = historicoRepository.buscarHistoricoPorPesquisa(textFieldValue)
+                historicoRepository.deletar(pesquisaRepetida)
             }
 
-            historicoRepository.db.salvar(HistoricoDeBusca(pesquisa = textFieldValue))
-            telaInicialViewModel.onListaHistoricoChange(historicoRepository.db.listarHistorico())
+            historicoRepository.salvar(HistoricoDeBusca(pesquisa = textFieldValue))
+            telaInicialViewModel.onListaHistoricoChange(historicoRepository.listarHistorico())
             telaInicialViewModel.setIsSearchingToFalse()
             telaInicialViewModel.onTodosEmailSelecionadosChange(false)
+
+            val pesquisaDoUsuario = usuarioRepository.listarEmailPorPesquisa(textFieldValue)
+            telaInicialViewModel.onListaCompletaEmailDbChange(pesquisaDoUsuario)
+
         },
         active = isSearching,
         onActiveChange = { telaInicialViewModel.onToogleSearch() },

@@ -38,6 +38,6 @@ fun EmailBody(
             )
         }
         Column {
-            SendButton(modifier = Modifier.fillMaxWidth() )
+            //SendButton(modifier = Modifier.fillMaxWidth() )
         }
 }

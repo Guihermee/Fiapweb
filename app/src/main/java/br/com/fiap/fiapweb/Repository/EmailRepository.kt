@@ -32,4 +32,9 @@ class EmailRepository(context: Context) {
         return db.listarEmailPorCategoria(categoria)
     }
 
+    fun listarEmailPorPesquisa(pesquisa: String): List<Email> {
+        val pesquisaConcatenada = "%${pesquisa}%"
+        return db.listarEmailPorPesquisa(pesquisa)
+    }
+
 }
