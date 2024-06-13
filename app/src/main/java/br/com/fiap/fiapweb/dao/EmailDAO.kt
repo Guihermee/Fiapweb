@@ -20,16 +20,16 @@ interface EmailDAO {
     @Update
     fun atualizar(email: Email): Int
 
-    @Query("SELECT * FROM tbl_email ORDER BY timestamp")
-    fun listarHistorico(): List<Email>
+    @Query("SELECT * FROM tbl_email ORDER BY timestamp DESC")
+    fun listarEmail(): List<Email>
 
     @Query("SELECT * FROM tbl_email WHERE is_selected = 1")
     fun listarEmailPorSelecionados(): List<Email>
 
-    @Query("SELECT * FROM tbl_email WHERE categoria = :categoria")
+    @Query("SELECT * FROM tbl_email WHERE categoria = :categoria ORDER BY timestamp DESC")
     fun listarEmailPorCategoria(categoria: Categoria): List<Email>
 
-    @Query("SELECT * FROM tbl_email WHERE remetente LIKE :pesquisa")
+    @Query("SELECT * FROM tbl_email WHERE remetente LIKE :pesquisa ORDER BY timestamp DESC")
     fun listarEmailPorPesquisa(pesquisa: String): List<Email>
 
 }

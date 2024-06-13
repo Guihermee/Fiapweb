@@ -21,7 +21,7 @@ class EmailRepository(context: Context) {
     }
 
     fun listarEmail(): List<Email> {
-        return db.listarHistorico()
+        return db.listarEmail()
     }
 
     fun listarEmailPorSelecionados(): List<Email> {

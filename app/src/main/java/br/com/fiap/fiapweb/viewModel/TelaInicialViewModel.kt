@@ -21,13 +21,9 @@ class TelaInicialViewModel : ViewModel() {
         _listaCompletaEmailDb.value = novaLista
     }
 
-    fun getListaEmailApp(): List<Email> {
-        return _listaCompletaEmailDb.value!!
-    }
-
     fun getListaCompletaEmailDb(context: Context): List<Email> {
         val usuarioRepository = EmailRepository(context)
-        return usuarioRepository.db.listarHistorico()
+        return usuarioRepository.listarEmail()
     }
 
     fun atualizarListaComPesquisaNoDb(

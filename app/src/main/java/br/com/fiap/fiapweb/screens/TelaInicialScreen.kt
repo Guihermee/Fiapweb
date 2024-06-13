@@ -1,6 +1,5 @@
 package br.com.fiap.fiapweb.screens
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material.icons.outlined.MarkEmailRead
@@ -20,6 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -59,9 +60,9 @@ import br.com.fiap.fiapweb.model.Email
 import br.com.fiap.fiapweb.model.HistoricoDeBusca
 import br.com.fiap.fiapweb.model.Priority
 import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import kotlin.random.Random
 
 @Composable
 fun TelaInicialScreen(
@@ -84,38 +85,30 @@ fun TelaInicialScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-
     val context = LocalContext.current
     val historicoRepository = HistoricoDeBuscaRespository(context)
     val usuarioRepository = EmailRepository(context)
 
     fun inserirEmailsFicticios(repository: EmailRepository) {
-        GlobalScope.launch {
-            for (i in 1..20) {
-                val email = Email(
-                    id = 0, // O ID será gerado automaticamente
-                    remetente = "remetente$i@example.com",
-                    destinatario = "destinatario$i@example.com",
-                    cc = listOf("cc$i@example.com"),
-                    bcc = listOf("bcc$i@example.com"),
-                    subject = "Assunto $i",
-                    body = "Corpo do email $i",
-                    attachments = listOf("anexo$i.pdf"),
-                    timestamp = LocalDateTime.now(),
-                    isRead = i == 1,
-                    isFavorite = false,
-                    priority = Priority.NORMAL,
-                    isSelected = false
-                )
-                repository.salvar(email)
-            }
-        }
-    }
+        var random = Random.nextInt(999)
 
-    // descomente, rode a aplicação e comente novamente, não rode esse comando abaixo 2 vezes (ele gera 20 email no banco de dados para testes)
-//    if (true) {
-//        inserirEmailsFicticios(usuarioRepository)
-//    }
+        val email = Email(
+            id = 0, // O ID será gerado automaticamente
+            remetente = "remetente$random@example.com",
+            destinatario = "destinatario$random@example.com",
+            cc = listOf("cc$random@example.com"),
+            bcc = listOf("bcc$random@example.com"),
+            subject = "Assunto $random",
+            body = "Corpo do email $random",
+            attachments = listOf("anexo$random.pdf"),
+            timestamp = LocalDateTime.now(),
+            isRead = random == 1,
+            isFavorite = false,
+            priority = Priority.NORMAL,
+            isSelected = false
+        )
+        repository.salvar(email)
+    }
 
     // Aqui é o Sidebar
     ModalNavigationDrawer(
@@ -144,49 +137,73 @@ fun TelaInicialScreen(
                             when (navigationItem.titulo) {
                                 "Todas as caixas de entrada" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.EMAIL)
-                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                        context,
+                                        categoria
+                                    )
                                     telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Todos os Emails")
                                 }
 
                                 "Caixas de entrada" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.EMAIL)
-                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                        context,
+                                        categoria
+                                    )
                                     telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Caixas de entrada")
                                 }
 
                                 "Favoritos" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.FAVORITOS)
-                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                        context,
+                                        categoria
+                                    )
                                     telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Favoritos")
                                 }
 
                                 "Não lidos" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.EMAIL)
-                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                        context,
+                                        categoria
+                                    )
                                     telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Não lidos")
                                 }
 
                                 "Rascunhos" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.EMAIL)
-                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                        context,
+                                        categoria
+                                    )
                                     telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Rascunhos")
                                 }
 
                                 "Enviados" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.ENVIADOS)
-                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                        context,
+                                        categoria
+                                    )
                                     telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Enviados")
                                 }
 
                                 "Lixeira" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.LIXEIRA)
-                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                        context,
+                                        categoria
+                                    )
                                     telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Lixeira")
                                 }
 
                                 "Spam" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.SPAM)
-                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                        context,
+                                        categoria
+                                    )
                                     telaInicialViewModel.onTituloDaCaixaDeEntradaChange("Spam")
                                 }
                             }
@@ -199,8 +216,21 @@ fun TelaInicialScreen(
         Scaffold(
 
             floatingActionButton = {
-                FloatingActionButton(onClick = { navController.navigate("telaEnvioEmail") }) {
-                    Icon(imageVector = Icons.Outlined.Edit, contentDescription = "Edit Icon")
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    FloatingActionButton(onClick = { navController.navigate("telaEnvioEmail") }) {
+                        Icon(imageVector = Icons.Outlined.Edit, contentDescription = "Edit Icon")
+                    }
+                    ExtendedFloatingActionButton(
+                        onClick = {
+                            inserirEmailsFicticios(usuarioRepository)
+                            telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+                        },
+                        icon = { Icon(Icons.Filled.Add, "Extended floating action button") },
+                        text = { Text(text = "Receber Email") },
+                    )
                 }
             },
 
@@ -252,7 +282,10 @@ fun TelaInicialScreen(
                                             Categoria.EMAIL
                                         )
                                         // Aqui para segurança da Lista é atualizada a ListaEmail com os valores novos
-                                        telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+                                        telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                            context,
+                                            categoria
+                                        )
                                     }
 
                                     SnackbarResult.Dismissed -> {
@@ -286,7 +319,10 @@ fun TelaInicialScreen(
                                 telaInicialViewModel.onQtdEmailSelecionada(0)
 
                                 // Aqui para segurança da Lista é atualizada a ListaEmail com os valores novos
-                                telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+                                telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                    context,
+                                    categoria
+                                )
                             } else {
                                 (telaInicialViewModel.changeAllEmailSelectTo(context, true))
                                 telaInicialViewModel.onTodosEmailSelecionadosChange(true)
@@ -297,7 +333,10 @@ fun TelaInicialScreen(
                                     )
                                 )
                                 // Aqui para segurança da Lista é atualizada a ListaEmail com os valores novos
-                                telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+                                telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                    context,
+                                    categoria
+                                )
                             }
                         },
                         todosEmailSelecionados
@@ -319,11 +358,15 @@ fun TelaInicialScreen(
                             couroutineScope = coroutineScope,
                             drawerState = drawerState,
                             onSearch = {
-                                val listaDoHistorico = historicoRepository.listarHistorico().map { it.pesquisa }
+                                val listaDoHistorico =
+                                    historicoRepository.listarHistorico().map { it.pesquisa }
                                 var textFieldValue = telaInicialViewModel.textField.value!!
 
                                 if (textFieldValue in listaDoHistorico) {
-                                    val pesquisaRepetida = historicoRepository.buscarHistoricoPorPesquisa(textFieldValue)
+                                    val pesquisaRepetida =
+                                        historicoRepository.buscarHistoricoPorPesquisa(
+                                            textFieldValue
+                                        )
                                     historicoRepository.deletar(pesquisaRepetida)
                                 }
 
@@ -332,7 +375,8 @@ fun TelaInicialScreen(
                                 telaInicialViewModel.setIsSearchingToFalse()
                                 telaInicialViewModel.onTodosEmailSelecionadosChange(false)
 
-                                val pesquisaDoUsuario = usuarioRepository.listarEmailPorPesquisa(textFieldValue)
+                                val pesquisaDoUsuario =
+                                    usuarioRepository.listarEmailPorPesquisa(textFieldValue)
                                 telaInicialViewModel.onListaCompletaEmailDbChange(pesquisaDoUsuario)
                             }
                         )
@@ -377,7 +421,6 @@ fun TelaInicialScreen(
                             onAplicarRequest = {}
                         )
                     }
-
                     if (showDialogPerfil) {
                         ModalPerfil(onDismissRequest = {
                             telaInicialViewModel.onshowDialogPerfilChange(false)
@@ -428,7 +471,10 @@ fun TelaInicialScreen(
                                                     )
 
                                                     // Alterando Email Selecionado na ListaDeEmail do Lazy Column
-                                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+                                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                                        context,
+                                                        categoria
+                                                    )
 
                                                     //  Alterando onSelected para alterar o Header da aplicação
                                                     if (telaInicialViewModel.hasSelectedEmail(
@@ -470,7 +516,10 @@ fun TelaInicialScreen(
                                                 )
 
                                                 // Alterando Email Selecionado na ListaDeEmail do Lazy Column
-                                                telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+                                                telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                                    context,
+                                                    categoria
+                                                )
 
                                                 //  Alterando onSelected para alterar o Header da aplicação
                                                 if (telaInicialViewModel.hasSelectedEmail(context)) {
@@ -478,7 +527,6 @@ fun TelaInicialScreen(
                                                 } else {
                                                     telaInicialViewModel.onSelectedChange(false)
                                                 }
-
                                             } else email
                                         }
                                     },
