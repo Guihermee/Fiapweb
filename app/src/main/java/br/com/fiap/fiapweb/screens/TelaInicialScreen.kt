@@ -137,7 +137,7 @@ fun TelaInicialScreen(
                             when (navigationItem.titulo) {
                                 "Todas as caixas de entrada" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.EMAIL)
-                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                    telaInicialViewModel.atualizarListaEmailPorCategoria(
                                         context,
                                         categoria
                                     )
@@ -146,7 +146,7 @@ fun TelaInicialScreen(
 
                                 "Caixas de entrada" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.EMAIL)
-                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                    telaInicialViewModel.atualizarListaEmailPorCategoria(
                                         context,
                                         categoria
                                     )
@@ -155,7 +155,7 @@ fun TelaInicialScreen(
 
                                 "Favoritos" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.FAVORITOS)
-                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                    telaInicialViewModel.atualizarListaEmailPorCategoria(
                                         context,
                                         categoria
                                     )
@@ -164,7 +164,7 @@ fun TelaInicialScreen(
 
                                 "Não lidos" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.EMAIL)
-                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                    telaInicialViewModel.atualizarListaEmailPorCategoria(
                                         context,
                                         categoria
                                     )
@@ -173,7 +173,7 @@ fun TelaInicialScreen(
 
                                 "Rascunhos" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.EMAIL)
-                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                    telaInicialViewModel.atualizarListaEmailPorCategoria(
                                         context,
                                         categoria
                                     )
@@ -182,7 +182,7 @@ fun TelaInicialScreen(
 
                                 "Enviados" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.ENVIADOS)
-                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                    telaInicialViewModel.atualizarListaEmailPorCategoria(
                                         context,
                                         categoria
                                     )
@@ -191,7 +191,7 @@ fun TelaInicialScreen(
 
                                 "Lixeira" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.LIXEIRA)
-                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                    telaInicialViewModel.atualizarListaEmailPorCategoria(
                                         context,
                                         categoria
                                     )
@@ -200,7 +200,7 @@ fun TelaInicialScreen(
 
                                 "Spam" -> {
                                     telaInicialViewModel.onCategoriaChange(Categoria.SPAM)
-                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                    telaInicialViewModel.atualizarListaEmailPorCategoria(
                                         context,
                                         categoria
                                     )
@@ -226,7 +226,7 @@ fun TelaInicialScreen(
                     ExtendedFloatingActionButton(
                         onClick = {
                             inserirEmailsFicticios(usuarioRepository)
-                            telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+                            telaInicialViewModel.atualizarListaEmailPorCategoria(context, categoria)
                         },
                         icon = { Icon(Icons.Filled.Add, "Extended floating action button") },
                         text = { Text(text = "Receber Email") },
@@ -260,7 +260,7 @@ fun TelaInicialScreen(
                             telaInicialViewModel.changeAllEmailSelectTo(context, false)
 
                             // Aqui para segurança da Lista é atualizada a ListaEmail com os valores novos
-                            telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+                            telaInicialViewModel.atualizarListaEmailPorCategoria(context, categoria)
 
                             telaInicialViewModel.onSelectedChange(false)
                             telaInicialViewModel.onQtdEmailSelecionada(1)
@@ -282,7 +282,7 @@ fun TelaInicialScreen(
                                             Categoria.EMAIL
                                         )
                                         // Aqui para segurança da Lista é atualizada a ListaEmail com os valores novos
-                                        telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                        telaInicialViewModel.atualizarListaEmailPorCategoria(
                                             context,
                                             categoria
                                         )
@@ -308,7 +308,7 @@ fun TelaInicialScreen(
                             telaInicialViewModel.onIconDraftSelectedChange(!iconDraftSelected)
 
                             // Aqui para segurança da Lista é atualizada a ListaEmail com os valores novos
-                            telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+                            telaInicialViewModel.atualizarListaEmailPorCategoria(context, categoria)
 
                         },
                         onSelectAllClick = {
@@ -319,7 +319,7 @@ fun TelaInicialScreen(
                                 telaInicialViewModel.onQtdEmailSelecionada(0)
 
                                 // Aqui para segurança da Lista é atualizada a ListaEmail com os valores novos
-                                telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                telaInicialViewModel.atualizarListaEmailPorCategoria(
                                     context,
                                     categoria
                                 )
@@ -333,7 +333,7 @@ fun TelaInicialScreen(
                                     )
                                 )
                                 // Aqui para segurança da Lista é atualizada a ListaEmail com os valores novos
-                                telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                telaInicialViewModel.atualizarListaEmailPorCategoria(
                                     context,
                                     categoria
                                 )
@@ -471,7 +471,7 @@ fun TelaInicialScreen(
                                                     )
 
                                                     // Alterando Email Selecionado na ListaDeEmail do Lazy Column
-                                                    telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                                    telaInicialViewModel.atualizarListaEmailPorCategoria(
                                                         context,
                                                         categoria
                                                     )
@@ -516,7 +516,7 @@ fun TelaInicialScreen(
                                                 )
 
                                                 // Alterando Email Selecionado na ListaDeEmail do Lazy Column
-                                                telaInicialViewModel.atualizarListaComPesquisaNoDb(
+                                                telaInicialViewModel.atualizarListaEmailPorCategoria(
                                                     context,
                                                     categoria
                                                 )

@@ -26,13 +26,16 @@ class TelaInicialViewModel : ViewModel() {
         return usuarioRepository.listarEmail()
     }
 
-    fun atualizarListaComPesquisaNoDb(
+    fun atualizarListaEmailPorCategoria(
         context: Context,
         categoria: Categoria,
         onLongClick: Boolean = false
     ) {
         if (onLongClick) {
             onListaCompletaEmailDbChange(getListaEmailPorCategoriaDb(context, categoria))
+        } else if (_categoria.value == Categoria.FAVORITOS) {
+            val usuarioRepository = EmailRepository(context)
+            onListaCompletaEmailDbChange(usuarioRepository.listarEmailPorFavorito())
         } else {
             onListaCompletaEmailDbChange(getListaEmailPorCategoriaDb(context, categoria))
         }

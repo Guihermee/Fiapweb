@@ -32,4 +32,7 @@ interface EmailDAO {
     @Query("SELECT * FROM tbl_email WHERE remetente LIKE :pesquisa ORDER BY timestamp DESC")
     fun listarEmailPorPesquisa(pesquisa: String): List<Email>
 
+    @Query("SELECT * FROM tbl_email WHERE is_favorito = 1 ORDER BY timestamp DESC")
+    fun listarEmailPorFavoritos(): List<Email>
+
 }
