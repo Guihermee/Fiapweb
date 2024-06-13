@@ -230,11 +230,8 @@ fun TelaInicialScreen(
                             telaInicialViewModel.changeAllEmailSelectTo(context, false)
 
                             // Aqui para segurança da Lista é atualizada a ListaEmail com os valores novos
-                            telaInicialViewModel.onListaCompletaEmailDbChange(
-                                telaInicialViewModel.getListaCompletaEmailDb(
-                                    context
-                                )
-                            )
+                            telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+
                             telaInicialViewModel.onSelectedChange(false)
                             telaInicialViewModel.onQtdEmailSelecionada(1)
 
@@ -255,11 +252,7 @@ fun TelaInicialScreen(
                                             Categoria.EMAIL
                                         )
                                         // Aqui para segurança da Lista é atualizada a ListaEmail com os valores novos
-                                        telaInicialViewModel.onListaCompletaEmailDbChange(
-                                            telaInicialViewModel.getListaCompletaEmailDb(
-                                                context
-                                            )
-                                        )
+                                        telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
                                     }
 
                                     SnackbarResult.Dismissed -> {
@@ -281,6 +274,9 @@ fun TelaInicialScreen(
                             )
                             telaInicialViewModel.onIconDraftSelectedChange(!iconDraftSelected)
 
+                            // Aqui para segurança da Lista é atualizada a ListaEmail com os valores novos
+                            telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
+
                         },
                         onSelectAllClick = {
                             if (todosEmailSelecionados) {
@@ -288,6 +284,9 @@ fun TelaInicialScreen(
                                 telaInicialViewModel.onTodosEmailSelecionadosChange(false)
                                 // Alterando o valor da quantidade de email selecionado
                                 telaInicialViewModel.onQtdEmailSelecionada(0)
+
+                                // Aqui para segurança da Lista é atualizada a ListaEmail com os valores novos
+                                telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
                             } else {
                                 (telaInicialViewModel.changeAllEmailSelectTo(context, true))
                                 telaInicialViewModel.onTodosEmailSelecionadosChange(true)
@@ -297,6 +296,8 @@ fun TelaInicialScreen(
                                         context
                                     )
                                 )
+                                // Aqui para segurança da Lista é atualizada a ListaEmail com os valores novos
+                                telaInicialViewModel.atualizarListaComPesquisaNoDb(context, categoria)
                             }
                         },
                         todosEmailSelecionados

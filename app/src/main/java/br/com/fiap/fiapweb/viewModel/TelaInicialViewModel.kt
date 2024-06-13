@@ -99,7 +99,6 @@ class TelaInicialViewModel : ViewModel() {
             atualizarEmail(context, emailAlterado)
             lista.add(emailAlterado)
         }
-        onListaCompletaEmailDbChange(lista)
         _qtdEmailSelecionada.value = getListaCompletaEmailDb(context).count()
     }
 
@@ -142,8 +141,6 @@ class TelaInicialViewModel : ViewModel() {
                 }
             }
         }
-        val listaAtualizada = getListaCompletaEmailDb(context)
-        onListaCompletaEmailDbChange(listaAtualizada)
     }
 
     // showDialogPerfil
