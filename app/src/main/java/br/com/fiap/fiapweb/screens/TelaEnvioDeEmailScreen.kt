@@ -1,7 +1,7 @@
 package br.com.fiap.fiapweb.screens
 
-//import br.com.fiap.fiapweb.components.SelecionadosHeader
-//import br.com.fiap.fiapweb.components.SendButton
+
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -21,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,21 +30,27 @@ import androidx.navigation.NavController
 import br.com.fiap.fiapweb.components.EmailAdress
 import br.com.fiap.fiapweb.components.EmailBody
 import br.com.fiap.fiapweb.components.HeaderEscreverEmail
+import br.com.fiap.fiapweb.components.ModalOpenAICompletion
+import br.com.fiap.fiapweb.service.getOpenAICompletion
 import br.com.fiap.fiapweb.viewModel.EnvioDeEmailViewModel
+import br.com.fiap.fiapweb.viewModel.ModalOpenAIViewModel
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TelaEnvioDeEmailScreen(
     navController: NavController,
-    envioDeEmailViewModel: EnvioDeEmailViewModel
+    envioDeEmailViewModel: EnvioDeEmailViewModel,
+    modalOpenAIViewModel: ModalOpenAIViewModel
 ) {
     val toFieldValue by envioDeEmailViewModel.toFieldValue.observeAsState(initial = "")
     val subjectFieldValue by envioDeEmailViewModel.subjectFieldValue.observeAsState(initial = "")
     val emailBodyFieldValue by envioDeEmailViewModel.emailBodyFieldValue.observeAsState(initial = "")
     val ccFieldValue by envioDeEmailViewModel.ccFieldValue.observeAsState(initial = "")
     val ccoFieldValue by envioDeEmailViewModel.ccoFieldValue.observeAsState(initial = "")
+    val modalOpenAICompletion by envioDeEmailViewModel.modalOpenAICompletion.observeAsState(initial = false)
+    val responseAI by envioDeEmailViewModel.responseAI.observeAsState(initial = "")
     var showCcCcoFields by remember { mutableStateOf(false) }
-
+    val scope = rememberCoroutineScope()
 
     Scaffold(
 
@@ -61,7 +67,9 @@ fun TelaEnvioDeEmailScreen(
                     Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Enviar")
                 }
                 FloatingActionButton(
-                    onClick = { /* Ação do segundo botão */ },
+                    onClick = {
+                        envioDeEmailViewModel.onModalOpenAICompletionChange(true)
+                    },
                     containerColor = MaterialTheme.colorScheme.secondary,
                     contentColor = MaterialTheme.colorScheme.onSecondary
                 ) {
@@ -71,15 +79,35 @@ fun TelaEnvioDeEmailScreen(
         },
 
         topBar = {
-            HeaderEscreverEmail(textContent = "") {
-
-            }
+            HeaderEscreverEmail(
+                textContent = "",
+                onClickVoltar = { navController.navigate("telaInicial") },
+                onClickAttachFile = {},
+                onClickMoreVert = {}
+            )
         }
-
 
     ) { contentPadding ->
         Box(modifier = Modifier.padding(contentPadding)) {
 
+            // Modal Open IA
+            if (modalOpenAICompletion) {
+                ModalOpenAICompletion(
+                    onDismissRequest = { envioDeEmailViewModel.onModalOpenAICompletionChange(false) },
+                    onConfirmation = {
+                        scope.launch {
+                            val response = getOpenAICompletion(prompt = modalOpenAIViewModel.promptValue.value!!)
+                            val teste1 = modalOpenAIViewModel.promptValue.value!!
+                            Log.i("FIAP", "TelaEnvioDeEmailScreen: ${teste1}")
+                            envioDeEmailViewModel.onResponseAIChange(response)
+                            val teste = modalOpenAIViewModel.promptValue.value!!
+                            envioDeEmailViewModel.onEmailBodyFieldValueChanged(response)
+                            envioDeEmailViewModel.onModalOpenAICompletionChange(false)
+                        }
+                    },
+                    modalOpenAIViewModel = modalOpenAIViewModel
+                )
+            }
 
             Column(
                 modifier = Modifier
@@ -119,7 +147,6 @@ fun TelaEnvioDeEmailScreen(
                     Divider()
                 }
 
-
                 EmailAdress(
                     value = subjectFieldValue,
                     modifier = Modifier,
@@ -128,7 +155,6 @@ fun TelaEnvioDeEmailScreen(
                     updateValue = { envioDeEmailViewModel.onSubjectFieldValueChanged(it) }
                 )
                 Divider()
-
 
                 EmailBody(
                     value = emailBodyFieldValue,

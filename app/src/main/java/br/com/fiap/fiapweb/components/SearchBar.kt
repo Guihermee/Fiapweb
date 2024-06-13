@@ -42,6 +42,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SearchBarHeader(
     telaInicialViewModel: TelaInicialViewModel,
+    onSearch: (String) -> Unit,
     couroutineScope: CoroutineScope,
     drawerState: DrawerState
 ) {
@@ -65,23 +66,7 @@ fun SearchBarHeader(
             ),
         query = textFieldValue,
         onQueryChange = { telaInicialViewModel.onTextFieldChange(it) },
-        onSearch = {
-            val listaDoHistorico = historicoRepository.listarHistorico().map { it.pesquisa }
-
-            if (textFieldValue in listaDoHistorico) {
-                val pesquisaRepetida = historicoRepository.buscarHistoricoPorPesquisa(textFieldValue)
-                historicoRepository.deletar(pesquisaRepetida)
-            }
-
-            historicoRepository.salvar(HistoricoDeBusca(pesquisa = textFieldValue))
-            telaInicialViewModel.onListaHistoricoChange(historicoRepository.listarHistorico())
-            telaInicialViewModel.setIsSearchingToFalse()
-            telaInicialViewModel.onTodosEmailSelecionadosChange(false)
-
-            val pesquisaDoUsuario = usuarioRepository.listarEmailPorPesquisa(textFieldValue)
-            telaInicialViewModel.onListaCompletaEmailDbChange(pesquisaDoUsuario)
-
-        },
+        onSearch = onSearch,
         active = isSearching,
         onActiveChange = { telaInicialViewModel.onToogleSearch() },
         placeholder = { Text(text = "Pesquisar no Email") },

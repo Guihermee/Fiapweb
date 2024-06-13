@@ -68,7 +68,6 @@ fun EmailAdress(
                             contentDescription = "Dropdown Arrow"
                         )
                     }
-
                 }
             }
         )

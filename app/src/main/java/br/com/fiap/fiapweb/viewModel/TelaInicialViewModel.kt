@@ -21,9 +21,25 @@ class TelaInicialViewModel : ViewModel() {
         _listaCompletaEmailDb.value = novaLista
     }
 
+    fun getListaEmailApp(): List<Email> {
+        return _listaCompletaEmailDb.value!!
+    }
+
     fun getListaCompletaEmailDb(context: Context): List<Email> {
         val usuarioRepository = EmailRepository(context)
         return usuarioRepository.db.listarHistorico()
+    }
+
+    fun atualizarListaComPesquisaNoDb(
+        context: Context,
+        categoria: Categoria,
+        onLongClick: Boolean = false
+    ) {
+        if (onLongClick) {
+            onListaCompletaEmailDbChange(getListaEmailPorCategoriaDb(context, categoria))
+        } else {
+            onListaCompletaEmailDbChange(getListaEmailPorCategoriaDb(context, categoria))
+        }
     }
 
     fun getListaEmailPorCategoriaDb(context: Context, categoria: Categoria): List<Email> {
@@ -74,36 +90,37 @@ class TelaInicialViewModel : ViewModel() {
         return quatidade
     }
 
-    fun changeAllEmailToSelected(context: Context) {
+    fun changeAllEmailSelectTo(context: Context, isSelected: Boolean) {
         val lista = mutableListOf<Email>()
 
         _listaCompletaEmailDb.value?.map {
 
-            val emailAlterado = it.copy(isSelected = true)
+            val emailAlterado = it.copy(isSelected = isSelected)
             atualizarEmail(context, emailAlterado)
             lista.add(emailAlterado)
         }
         onListaCompletaEmailDbChange(lista)
         _qtdEmailSelecionada.value = getListaCompletaEmailDb(context).count()
-
     }
 
-    fun changeAllEmailToNotSelected(context: Context) {
-        val lista = mutableListOf<Email>()
-        _listaCompletaEmailDb.value?.map {
-            val emailAlterado = it.copy(isSelected = false)
-            atualizarEmail(context, emailAlterado)
-            lista.add(emailAlterado)
-        }
-        onListaCompletaEmailDbChange(lista)
-        _qtdEmailSelecionada.value = 0
-    }
-
-    fun changeAllEmailToDelete(context: Context, listaASerDeletada: List<Email>) {
+    fun changeListaEmailCategoria(
+        context: Context,
+        listaASerDeletada: List<Email>,
+        categoria: Categoria
+    ) {
         for (deletado in listaASerDeletada) {
-            _listaCompletaEmailDb.value?.map {
-                if (deletado == it) {
-                    val emailDeletado = it.copy(categoria = Categoria.LIXEIRA)
+
+            var listaASerPercorrida: List<Email> = emptyList()
+            if (categoria == Categoria.EMAIL) {
+                listaASerPercorrida = getListaCompletaEmailDb(context)
+            } else {
+                listaASerPercorrida = _listaCompletaEmailDb.value!!
+            }
+
+            listaASerPercorrida.map {
+                if (deletado.id == it.id) {
+                    val apargarDps = _listaCompletaEmailDb
+                    val emailDeletado = it.copy(categoria = categoria)
                     atualizarEmail(context, emailDeletado)
                 }
             }
@@ -112,7 +129,11 @@ class TelaInicialViewModel : ViewModel() {
         onListaCompletaEmailDbChange(listaAtualizadoDoBD)
     }
 
-    fun changeAllEmailToOrNotRead(context: Context, listaDosEmails: List<Email>, toOrNotRead: Boolean) {
+    fun changeAllEmailToOrNotRead(
+        context: Context,
+        listaDosEmails: List<Email>,
+        toOrNotRead: Boolean
+    ) {
         for (email in listaDosEmails) {
             _listaCompletaEmailDb.value?.map {
                 if (it == email) {

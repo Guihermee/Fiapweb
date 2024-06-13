@@ -24,12 +24,11 @@ fun HeaderLerEmail(textContent: String, onClickVoltar: () -> Unit) {
             titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
         ),
         title = {
-//            TextButton(onClick = { /*TODO*/ }){}/
             Text(text = "")
         },
         navigationIcon = {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = {}) {
+                IconButton(onClick = onClickVoltar) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Localized description",

@@ -15,6 +15,7 @@ import br.com.fiap.fiapweb.screens.TelaInicialScreen
 import br.com.fiap.fiapweb.screens.TelaLerEmailScreen
 import br.com.fiap.fiapweb.ui.theme.FiapwebTheme
 import br.com.fiap.fiapweb.viewModel.EnvioDeEmailViewModel
+import br.com.fiap.fiapweb.viewModel.ModalOpenAIViewModel
 import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
 import br.com.fiap.fiapweb.viewModel.TelaLerEmailViewModel
 
@@ -23,14 +24,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FiapwebTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-
-                    NavHost(navController = navController, startDestination = "telaInicial" ) {
+                    NavHost(navController = navController, startDestination = "telaInicial") {
 
                         // Tela Inicial
                         composable(route = "telaInicial") {
@@ -38,17 +37,19 @@ class MainActivity : ComponentActivity() {
                         }
 
                         // Tela envio de email
-                        composable(route = "telaEnvioEmail"){
-                            TelaEnvioDeEmailScreen(navController, EnvioDeEmailViewModel())
+                        composable(route = "telaEnvioEmail") {
+                            TelaEnvioDeEmailScreen(
+                                navController,
+                                EnvioDeEmailViewModel(),
+                                ModalOpenAIViewModel()
+                            )
                         }
 
                         //Tela leitura de email
-                        composable(route = "telaLeituraEmail"){
+                        composable(route = "telaLeituraEmail") {
                             TelaLerEmailScreen(navController, TelaLerEmailViewModel())
                         }
-
                     }
-
                 }
             }
         }

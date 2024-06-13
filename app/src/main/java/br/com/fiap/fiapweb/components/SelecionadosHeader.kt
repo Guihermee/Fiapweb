@@ -62,7 +62,7 @@ fun SelecionadosHeader(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = {
                     telaInicialViewModel.onSelectedChange(false)
-                    telaInicialViewModel.changeAllEmailToNotSelected(context)
+                    telaInicialViewModel.changeAllEmailSelectTo(context, false)
                     telaInicialViewModel.onQtdEmailSelecionada(1)
                     telaInicialViewModel.onTodosEmailSelecionadosChange(false)
                 }) {

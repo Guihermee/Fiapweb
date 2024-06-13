@@ -41,10 +41,28 @@ class EnvioDeEmailViewModel: ViewModel() {
         _ccoFieldValue.value = novoCcoFieldValue
     }
 
+    // modalOpenAICompletion
+    private val _modalOpenAICompletion = MutableLiveData<Boolean>()
+    val modalOpenAICompletion: LiveData<Boolean> = _modalOpenAICompletion
 
+    fun onModalOpenAICompletionChange(modalOpenAINovoValor: Boolean) {
+        _modalOpenAICompletion.value = modalOpenAINovoValor
+    }
 
+    // Prompt
+    private val _promptValue = MutableLiveData<String>()
+    val promptValue: LiveData<String> = _promptValue
 
+    fun onPromptValueChange(promptNovoValor: String) {
+        _promptValue.value = promptNovoValor
+    }
 
+    // responseAI
+    private val _responseAI = MutableLiveData<String>()
+    val responseAI: LiveData<String> = _responseAI
 
+    fun onResponseAIChange(novaResponse: String) {
+        _responseAI.value = novaResponse
+    }
 
 }

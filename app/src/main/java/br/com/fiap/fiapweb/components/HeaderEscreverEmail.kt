@@ -9,7 +9,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -17,19 +17,23 @@ import androidx.compose.ui.Alignment
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HeaderEscreverEmail(textContent: String, onClickVoltar: () -> Unit) {
+fun HeaderEscreverEmail(
+    textContent: String,
+    onClickVoltar: () -> Unit,
+    onClickAttachFile: () -> Unit,
+    onClickMoreVert: () -> Unit
+) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
             titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
         ),
         title = {
-            TextButton(onClick = { /*TODO*/ }) {}
+            Text(text = textContent)
         },
         navigationIcon = {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = {
-                }) {
+                IconButton(onClick = onClickVoltar) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Localized description",
@@ -37,23 +41,21 @@ fun HeaderEscreverEmail(textContent: String, onClickVoltar: () -> Unit) {
                     )
                 }
             }
-
         },
         actions = {
-            IconButton(onClick = { }) {
+            IconButton(onClick = onClickAttachFile) {
                 Icon(
                     imageVector = Icons.Outlined.AttachFile,
                     contentDescription = "Localized description",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            IconButton(onClick = { /* do something */ }) {
+            IconButton(onClick = onClickMoreVert) {
                 Icon(
                     imageVector = Icons.Filled.MoreVert,
                     contentDescription = "Localized description",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-
             }
         }
     )
