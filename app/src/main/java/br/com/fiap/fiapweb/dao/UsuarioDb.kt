@@ -7,11 +7,12 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import br.com.fiap.fiapweb.model.Email
 import br.com.fiap.fiapweb.model.HistoricoDeBusca
+import br.com.fiap.fiapweb.model.Marcadores
 import br.com.fiap.fiapweb.utils.Converters
 
 @Database(
-    entities = [HistoricoDeBusca::class, Email::class],
-    version = 6
+    entities = [HistoricoDeBusca::class, Email::class, Marcadores::class],
+    version = 7
 )
 @TypeConverters(Converters::class)
 abstract class UsuarioDb : RoomDatabase() {
@@ -19,6 +20,8 @@ abstract class UsuarioDb : RoomDatabase() {
     abstract fun historicoDeBuscaDAO(): HistoricoDeBuscaDAO
 
     abstract fun emailDAO(): EmailDAO
+
+    abstract fun marcadoresDAO(): MarcadoresDAO
 
     companion object {
 

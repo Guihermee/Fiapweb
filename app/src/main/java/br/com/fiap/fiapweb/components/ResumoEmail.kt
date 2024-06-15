@@ -104,10 +104,7 @@ fun ResumoEmail(email: Email, onCLick: () -> Unit, onLongClick: () -> Unit) {
                                 .size(25.dp)
                         )
                     }
-
-
                 }
-
             }
         }
     }

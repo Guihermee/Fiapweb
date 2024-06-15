@@ -11,10 +11,13 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import br.com.fiap.fiapweb.components.CorpoDoEMail
 import br.com.fiap.fiapweb.components.HeaderLerEmail
+import br.com.fiap.fiapweb.components.ModalMarcadores
 import br.com.fiap.fiapweb.components.ResumoEmail
 import br.com.fiap.fiapweb.model.Email
 import br.com.fiap.fiapweb.model.Priority
@@ -26,16 +29,27 @@ fun TelaLerEmailScreen(
     navController: NavController,
     telaLerEmailViewModel: TelaLerEmailViewModel
 ) {
+
+    val bookMarkState by telaLerEmailViewModel.bookMarkState.observeAsState(initial = false)
+
     Scaffold(
-        topBar = { HeaderLerEmail(textContent = "") {} },
+        topBar = {
+            HeaderLerEmail(onClickVoltar = {}, telaLerEmailViewModel)
+        },
 
         floatingActionButton = {
-            FloatingActionButton(onClick = { navController.navigate("") })
+            FloatingActionButton(onClick = { /*navController.navigate("")*/ })
             { Icon(imageVector = Icons.Outlined.AutoAwesome, contentDescription = "Generate Icon") }
         }
 
     ) { contentPadding ->
         Box(modifier = Modifier.padding(contentPadding)) {
+
+            // Modal Book Mark
+            if (bookMarkState) {
+                ModalMarcadores(onDismissRequest = {telaLerEmailViewModel.onBookMarkStateChange(false)})
+            }
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -53,9 +67,6 @@ fun TelaLerEmailScreen(
             }
         }
     }
-
-
-
 }
 
 val emailExemplo = Email(
@@ -71,5 +82,6 @@ val emailExemplo = Email(
     isRead = false,
     isFavorite = false,
     priority = Priority.NORMAL,
-    isSelected = false
+    isSelected = false,
+    marcadorId = 1
 )

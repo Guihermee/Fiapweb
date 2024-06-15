@@ -176,10 +176,6 @@ class TelaInicialViewModel : ViewModel() {
         }
     }
 
-    fun setIsSearchingToFalse() {
-        _isSearching.value = false
-    }
-
     // Historico
     private val _listaHistorico = MutableLiveData<List<HistoricoDeBusca>>()
     val listaHistorico: LiveData<List<HistoricoDeBusca>> = _listaHistorico

@@ -72,7 +72,7 @@ fun SearchBarHeader(
         placeholder = { Text(text = "Pesquisar no Email") },
         leadingIcon = {
             if (isSearching) {
-                IconButton(onClick = { telaInicialViewModel.setIsSearchingToFalse() }) {
+                IconButton(onClick = { telaInicialViewModel.onToogleSearch() }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Icone de Voltar"

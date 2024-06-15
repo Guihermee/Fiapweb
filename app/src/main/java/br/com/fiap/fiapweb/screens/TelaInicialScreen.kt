@@ -41,6 +41,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -48,6 +49,7 @@ import androidx.navigation.NavController
 import br.com.fiap.fiapweb.R
 import br.com.fiap.fiapweb.Repository.EmailRepository
 import br.com.fiap.fiapweb.Repository.HistoricoDeBuscaRespository
+import br.com.fiap.fiapweb.Repository.MarcadoresRepository
 import br.com.fiap.fiapweb.Repository.NavigationItemRepository
 import br.com.fiap.fiapweb.components.EmailView
 import br.com.fiap.fiapweb.components.ModalFiltros
@@ -58,6 +60,7 @@ import br.com.fiap.fiapweb.components.SelecionadosHeader
 import br.com.fiap.fiapweb.model.Categoria
 import br.com.fiap.fiapweb.model.Email
 import br.com.fiap.fiapweb.model.HistoricoDeBusca
+import br.com.fiap.fiapweb.model.Marcadores
 import br.com.fiap.fiapweb.model.Priority
 import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
 import kotlinx.coroutines.launch
@@ -89,6 +92,18 @@ fun TelaInicialScreen(
     val historicoRepository = HistoricoDeBuscaRespository(context)
     val usuarioRepository = EmailRepository(context)
 
+    // Iniciando 1 marcador para popular todos os Emails nele
+    val marcadorRepository = MarcadoresRepository(context)
+    val listaMarcadores = marcadorRepository.listar()
+    if (listaMarcadores.isEmpty()) {
+        val marcadorInicial = Marcadores(
+            id = 0, // Gerado automaticamente
+            nome = "Generico",
+            cor = R.color.cinza_escuro
+        )
+        marcadorRepository.salvar(marcadorInicial)
+    }
+
     fun inserirEmailsFicticios(repository: EmailRepository) {
         val random = Random.nextInt(999)
 
@@ -105,7 +120,8 @@ fun TelaInicialScreen(
             isRead = random == 1,
             isFavorite = false,
             priority = Priority.NORMAL,
-            isSelected = false
+            isSelected = false,
+            marcadorId = 1
         )
         repository.salvar(email)
     }
@@ -372,7 +388,7 @@ fun TelaInicialScreen(
 
                                 historicoRepository.salvar(HistoricoDeBusca(pesquisa = textFieldValue))
                                 telaInicialViewModel.onListaHistoricoChange(historicoRepository.listarHistorico())
-                                telaInicialViewModel.setIsSearchingToFalse()
+                                telaInicialViewModel.onToogleSearch()
                                 telaInicialViewModel.onTodosEmailSelecionadosChange(false)
 
                                 val pesquisaDoUsuario =
@@ -492,12 +508,11 @@ fun TelaInicialScreen(
                                                             context
                                                         )
                                                     )
-
                                                 } else email
                                             }
                                         }
 
-                                        // Quando clica no email?....
+                                        // Quando clica no email?...
 
                                     },
                                     onLongClick = {
