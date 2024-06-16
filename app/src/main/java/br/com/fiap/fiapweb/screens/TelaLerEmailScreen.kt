@@ -34,7 +34,10 @@ fun TelaLerEmailScreen(
 
     Scaffold(
         topBar = {
-            HeaderLerEmail(onClickVoltar = {}, telaLerEmailViewModel)
+            HeaderLerEmail(
+                onClickVoltar = {},
+                telaLerEmailViewModel = telaLerEmailViewModel,
+                navController = navController)
         },
 
         floatingActionButton = {

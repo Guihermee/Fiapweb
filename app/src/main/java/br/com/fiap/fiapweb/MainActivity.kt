@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = "telaInicial") {
+                    NavHost(navController = navController, startDestination = "telaLeituraEmail") {
 
                         // Tela Inicial
                         composable(route = "telaInicial") {

@@ -41,7 +41,7 @@ fun TelaAdicionarEventoScreen(
         },
         topBar = {
             TopAppBar(
-                title = { Text(text = "Adicionar Evento") },
+                title = { Text(text = "Adicionar Evento ao Calendário") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBackIosNew, contentDescription = "Voltar")
