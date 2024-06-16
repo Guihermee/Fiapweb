@@ -133,14 +133,6 @@ fun TelaInicialScreen(
             ModalDrawerSheet {
                 val coroutineScope = rememberCoroutineScope()
 
-                // Aqui fica todos os conteudos do Sidebar Menu
-                Image(
-                    painter = painterResource(id = R.drawable.fiap_logo_sem_fundo),
-                    contentDescription = "Logo do Fiapweb",
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .size(100.dp)
-                )
                 Divider()
                 // Itens do sidebar
                 listNavigationItem.forEachIndexed { index, navigationItem ->
@@ -512,7 +504,9 @@ fun TelaInicialScreen(
                                             }
                                         }
 
-                                        // Quando clica no email?...
+                                        if(!onSelected){
+                                            navController.navigate("telaLeituraEmail")
+                                        }
 
                                     },
                                     onLongClick = {
