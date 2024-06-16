@@ -47,7 +47,11 @@ fun TelaLerEmailScreen(
 
             // Modal Book Mark
             if (bookMarkState) {
-                ModalMarcadores(onDismissRequest = {telaLerEmailViewModel.onBookMarkStateChange(false)})
+                ModalMarcadores(
+                    onDismissRequest = { telaLerEmailViewModel.onBookMarkStateChange(false) },
+                    onConfirmation = {},
+                    telaLerEmailViewModel
+                )
             }
 
             Column(
