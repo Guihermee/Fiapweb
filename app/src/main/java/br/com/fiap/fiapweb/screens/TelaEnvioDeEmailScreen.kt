@@ -78,7 +78,7 @@ fun TelaEnvioDeEmailScreen(
                     onClick = {
                               val emailEnviado = Email(
                                   id = 0,
-                                  remetente = "",
+                                  remetente = "email@teste.com.br",
                                   destinatario = toFieldValue,
                                   cc = ccFieldValue,
                                   bcc = ccoFieldValue,
