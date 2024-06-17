@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import br.com.fiap.fiapweb.components.EmailAdress
 import br.com.fiap.fiapweb.components.EmailBody
@@ -39,7 +40,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun TelaEnvioDeEmailScreen(
     navController: NavController,
-    envioDeEmailViewModel: EnvioDeEmailViewModel,
+    envioDeEmailViewModel: EnvioDeEmailViewModel = viewModel(),
     modalOpenAIViewModel: ModalOpenAIViewModel
 ) {
     val toFieldValue by envioDeEmailViewModel.toFieldValue.observeAsState(initial = "")

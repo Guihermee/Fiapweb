@@ -1,5 +1,6 @@
 package br.com.fiap.fiapweb
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,13 +8,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import br.com.fiap.fiapweb.screens.TelaAdicionarEventoScreen
 import br.com.fiap.fiapweb.screens.TelaEnvioDeEmailScreen
 import br.com.fiap.fiapweb.screens.TelaInicialScreen
 import br.com.fiap.fiapweb.screens.TelaLerEmailScreen
 import br.com.fiap.fiapweb.ui.theme.FiapwebTheme
+import br.com.fiap.fiapweb.viewModel.AdicionarEventoViewModel
 import br.com.fiap.fiapweb.viewModel.EnvioDeEmailViewModel
 import br.com.fiap.fiapweb.viewModel.ModalOpenAIViewModel
 import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
@@ -33,7 +37,9 @@ class MainActivity : ComponentActivity() {
 
                         // Tela Inicial
                         composable(route = "telaInicial") {
-                            TelaInicialScreen(navController, TelaInicialViewModel())
+                            TelaInicialScreen(
+                                navController,
+                                TelaInicialViewModel())
                         }
 
                         // Tela envio de email
@@ -47,7 +53,17 @@ class MainActivity : ComponentActivity() {
 
                         //Tela leitura de email
                         composable(route = "telaLeituraEmail") {
-                            TelaLerEmailScreen(navController, TelaLerEmailViewModel())
+                            TelaLerEmailScreen(
+                                navController,
+                                TelaLerEmailViewModel())
+                        }
+
+                        //Tela adicionar evento
+                        composable(route = "telaAdicionarEvento") {
+                            TelaAdicionarEventoScreen(
+                                navController,
+                                AdicionarEventoViewModel(LocalContext.current)
+                            )
                         }
                     }
                 }
