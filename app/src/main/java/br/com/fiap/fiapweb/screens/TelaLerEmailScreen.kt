@@ -39,7 +39,8 @@ fun TelaLerEmailScreen(
 
     Scaffold(
         topBar = {
-            HeaderLerEmail(onClickVoltar = { navController.navigate("telaInicial") }, telaLerEmailViewModel)
+            //HeaderLerEmail(onClickVoltar = { navController.navigate("telaInicial") }, telaLerEmailViewModel)
+            HeaderLerEmail(onClickVoltar = { navController.navigate("telaInicial") }, telaLerEmailViewModel, navController)
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { /*  */ }) {
@@ -48,9 +49,9 @@ fun TelaLerEmailScreen(
         }
     ) { contentPadding ->
         Box(modifier = Modifier.padding(contentPadding)) {
-            if (bookMarkState) {
-                ModalMarcadores(onDismissRequest = { telaLerEmailViewModel.onBookMarkStateChange(false) })
-            }
+//            if (bookMarkState) {
+//                ModalMarcadores(onDismissRequest = { telaLerEmailViewModel.onBookMarkStateChange(false) })
+//            }
 
             Column(
                 modifier = Modifier
