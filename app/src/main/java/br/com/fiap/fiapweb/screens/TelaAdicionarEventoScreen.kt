@@ -31,7 +31,11 @@ fun TelaAdicionarEventoScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    adicionarEventoViewModel.adicionarEventoAoCalendario(titulo.text, local.text, descricao.text)
+                    adicionarEventoViewModel.adicionarEventoAoCalendario(
+                        titulo.text,
+                        local.text,
+                        descricao.text)
+                    navController.navigate("telaLeituraEmail")
                 },
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary
