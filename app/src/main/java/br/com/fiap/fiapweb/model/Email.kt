@@ -20,7 +20,7 @@ import java.time.LocalDateTime
     )],
     indices = [Index(value = ["marcador_id"])]
 )
-data class Email(
+data class Email (
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val remetente: String,

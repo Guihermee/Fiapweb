@@ -12,7 +12,7 @@ import br.com.fiap.fiapweb.utils.Converters
 
 @Database(
     entities = [HistoricoDeBusca::class, Email::class, Marcadores::class],
-    version = 8
+    version = 11
 )
 @TypeConverters(Converters::class)
 abstract class UsuarioDb : RoomDatabase() {

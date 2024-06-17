@@ -224,4 +224,28 @@ class TelaInicialViewModel : ViewModel() {
         _iconDraftSelected.value = novoValor
     }
 
+    // Email
+    private val _email = MutableLiveData<Email>()
+    val email:LiveData<Email> = _email
+
+    fun onEmailChange(newValue: Email) {
+        _email.value = newValue
+    }
+
+    // marcadorVazio (verifica se o filtro aplicado do marcador está vazio)
+    private val _marcadorVazio = MutableLiveData<Boolean>()
+    val marcadorVazio:LiveData<Boolean> = _marcadorVazio
+
+    fun onMarcadorVazioChange(newValue: Boolean) {
+        _marcadorVazio.value = newValue
+    }
+
+    // filtroState
+    private val _filtroState = MutableLiveData<Boolean>()
+    val filtroState:LiveData<Boolean> = _filtroState
+
+    fun onFiltroStateChange(newValue: Boolean) {
+        _filtroState.value = newValue
+    }
+
 }

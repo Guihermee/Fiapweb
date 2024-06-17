@@ -29,9 +29,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.com.fiap.fiapweb.Repository.EmailRepository
+import br.com.fiap.fiapweb.Repository.MarcadoresRepository
 import br.com.fiap.fiapweb.model.Email
 import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
 import java.time.LocalDateTime
@@ -46,7 +49,10 @@ fun EmailView(
     onLongClick: () -> Unit,
     onEstrelaClick: () -> Unit
 ) {
-    Row(
+    val context = LocalContext.current
+    val usuarioRepository = MarcadoresRepository(context)
+
+        Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp)
@@ -154,20 +160,27 @@ fun EmailView(
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 Spacer(modifier = Modifier.height(20.dp))
-                // Estrela
-                IconButton(onClick = onEstrelaClick) {
-                    if (email.isFavorite) {
-                        Icon(
-                            imageVector = Icons.Outlined.Star,
-                            contentDescription = "Star Icon",
-                            modifier = Modifier.size(40.dp)
-                        )
-                    } else {
-                        Icon(
-                            imageVector = Icons.Outlined.StarOutline,
-                            contentDescription = "Star Icon",
-                            modifier = Modifier.size(40.dp)
-                        )
+
+                if (email.marcadorId.toInt() != 1) {
+                    val marcador = usuarioRepository.listarMarcadorPorId(email.marcadorId)
+                    Text(text = marcador.nome)
+                } else
+                {
+                    // Estrela
+                    IconButton(onClick = onEstrelaClick) {
+                        if (email.isFavorite) {
+                            Icon(
+                                imageVector = Icons.Outlined.Star,
+                                contentDescription = "Star Icon",
+                                modifier = Modifier.size(40.dp)
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Outlined.StarOutline,
+                                contentDescription = "Star Icon",
+                                modifier = Modifier.size(40.dp)
+                            )
+                        }
                     }
                 }
             }

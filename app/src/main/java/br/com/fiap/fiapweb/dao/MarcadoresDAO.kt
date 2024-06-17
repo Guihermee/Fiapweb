@@ -22,4 +22,7 @@ interface MarcadoresDAO  {
     @Query("SELECT * FROM tbl_marcadores")
     fun listarMarcadores(): List<Marcadores>
 
+    @Query("SELECT * FROM tbl_marcadores WHERE id = :id")
+    fun listarMarcadoresPorId(id: Long): Marcadores
+
 }

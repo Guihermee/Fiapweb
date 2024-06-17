@@ -23,4 +23,8 @@ class MarcadoresRepository(context: Context) {
         return db.listarMarcadores()
     }
 
+    fun listarMarcadorPorId(id: Long): Marcadores {
+        return db.listarMarcadoresPorId(id)
+    }
+
 }

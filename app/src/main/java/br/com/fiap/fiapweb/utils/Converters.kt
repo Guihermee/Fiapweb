@@ -3,9 +3,17 @@ package br.com.fiap.fiapweb.utils
 import androidx.room.TypeConverter
 import br.com.fiap.fiapweb.model.Email
 import com.google.gson.Gson
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.google.gson.JsonPrimitive
+import com.google.gson.JsonSerializationContext
+import com.google.gson.JsonSerializer
 import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import com.google.gson.GsonBuilder
 
 class Converters {
 
@@ -50,4 +58,45 @@ class Converters {
             LocalDateTime.parse(it, formatter)
         }
     }
+
+    fun emailToJson(email: Email): String {
+        val gson = createGson()
+        return gson.toJson(email)
+    }
+
+    fun jsonToEmail(jsonString: String): Email {
+        val gson = createGson()
+        return gson.fromJson(jsonString, Email::class.java)
+    }
+
+
+
 }
+
+fun createGson(): Gson {
+    return GsonBuilder()
+        .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter)
+        .create()
+}
+
+
+object LocalDateTimeAdapter : JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
+    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+
+    override fun serialize(
+        src: LocalDateTime?,
+        typeOfSrc: Type?,
+        context: JsonSerializationContext?
+    ): JsonElement {
+        return JsonPrimitive(formatter.format(src))
+    }
+
+    override fun deserialize(
+        json: JsonElement?,
+        typeOfT: Type?,
+        context: JsonDeserializationContext?
+    ): LocalDateTime {
+        return LocalDateTime.parse(json!!.asString, formatter)
+    }
+}
+

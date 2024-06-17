@@ -2,17 +2,39 @@ package br.com.fiap.fiapweb.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.MoreHoriz
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,54 +45,99 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.fiap.fiapweb.components.HeaderLerEmail
-import br.com.fiap.fiapweb.components.ModalMarcadores
+import br.com.fiap.fiapweb.components.ModalMarcadoresAdicionar
+import br.com.fiap.fiapweb.components.ModalMarcadoresCriar
+import br.com.fiap.fiapweb.components.ModalOpenAIResume
 import br.com.fiap.fiapweb.components.formatDate
 import br.com.fiap.fiapweb.model.Email
-import br.com.fiap.fiapweb.model.Priority
+import br.com.fiap.fiapweb.utils.Converters
 import br.com.fiap.fiapweb.viewModel.TelaLerEmailViewModel
-import java.time.LocalDateTime
 
 @Composable
 fun TelaLerEmailScreen(
     navController: NavController,
-    telaLerEmailViewModel: TelaLerEmailViewModel
+    telaLerEmailViewModel: TelaLerEmailViewModel,
+    emailString: String
 ) {
-    val bookMarkState by telaLerEmailViewModel.bookMarkState.observeAsState(initial = false)
+    val modalCriarState by telaLerEmailViewModel.modalCriarState.observeAsState(initial = false)
+    val modalAdiconarState by telaLerEmailViewModel.modalAdicionarState.observeAsState(initial = false)
+    val modalAIGenerateResumeState by telaLerEmailViewModel.modalAIGenerateResumeState.observeAsState(initial = false)
+    val email = Converters().jsonToEmail(emailString)
+
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
         topBar = {
-            //HeaderLerEmail(onClickVoltar = { navController.navigate("telaInicial") }, telaLerEmailViewModel)
-            HeaderLerEmail(onClickVoltar = { navController.navigate("telaInicial") }, telaLerEmailViewModel, navController)
+            HeaderLerEmail(
+                onClickVoltar = { navController.navigate("telaInicial") },
+                telaLerEmailViewModel,
+                navController
+            )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*  */ }) {
+            FloatingActionButton(onClick = { /*todo*/ }) {
                 Icon(imageVector = Icons.Outlined.AutoAwesome, contentDescription = "Generate Icon")
             }
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
         }
     ) { contentPadding ->
         Box(modifier = Modifier.padding(contentPadding)) {
-//            if (bookMarkState) {
-//                ModalMarcadores(onDismissRequest = { telaLerEmailViewModel.onBookMarkStateChange(false) })
-//            }
 
+            // Modais dos Marcadores
+            if (modalCriarState) {
+                ModalMarcadoresCriar(onDismissRequest = {
+                    telaLerEmailViewModel.onModalCriarStateChange(
+                        false
+                    )
+                }, telaLerEmailViewModel)
+            }
+
+            // Modal da AI
+            if (modalAIGenerateResumeState) {
+                ModalOpenAIResume(
+                    onDismissRequest = { telaLerEmailViewModel.onModalAIGenerateResumeStateChange(false) },
+                    onConfirmation = { /*TODO*/ },
+                    response = ""
+                )
+            }
+
+            if (modalAdiconarState) {
+                ModalMarcadoresAdicionar(
+                    onDismissRequest = {
+                        telaLerEmailViewModel.onModalAdicionarStateChange(
+                            false
+                        )
+                    },
+                    telaLerEmailViewModel = telaLerEmailViewModel,
+                    email = email,
+                    snackbarHostState = snackbarHostState,
+                    scope = scope
+                )
+            }
+
+            // Construção do Email
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
                     .padding(16.dp)
             ) {
-                EmailHeader()
+                EmailHeader(email)
                 Spacer(modifier = Modifier.height(16.dp))
-                EmailBody()
+                EmailBody(email)
                 Spacer(modifier = Modifier.weight(1f))
-                EmailFooter()
+                EmailFooter(email)
             }
         }
     }
 }
 
+// Componentes dos Emails
 @Composable
-fun EmailHeader() {
+fun EmailHeader(email: Email) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -78,23 +145,23 @@ fun EmailHeader() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row {
-            EmailAvatar()
-            EmailDetails()
+            EmailAvatar(email)
+            EmailDetails(email)
         }
-        EmailTimestamp()
+        EmailTimestamp(email)
     }
 }
 
 @Composable
-fun EmailAvatar() {
-    if (emailExemplo.isSelected) {
+fun EmailAvatar(email: Email) {
+    if (email.isSelected) {
         AvatarIcon(
             icon = Icons.Outlined.Check,
             backgroundColor = Color(0xFFEFB8C8)
         )
     } else {
         AvatarText(
-            text = emailExemplo.remetente.first().uppercase(),
+            text = email.remetente.first().uppercase(),
             backgroundColor = Color(0xFFEFB8C8)
         )
     }
@@ -131,26 +198,26 @@ fun AvatarText(text: String, backgroundColor: Color) {
 }
 
 @Composable
-fun EmailDetails() {
+fun EmailDetails(email: Email) {
     Column {
         Text(
-            text = emailExemplo.remetente,
+            text = email.remetente,
             modifier = Modifier
                 .padding(start = 8.dp)
                 .width(300.dp),
             fontSize = 24.sp,
             fontWeight = FontWeight.Medium,
-            color = if (emailExemplo.isRead) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onBackground,
+            color = if (email.isRead) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onBackground,
             maxLines = 1
         )
         Text(
-            text = emailExemplo.destinatario,
+            text = email.destinatario,
             modifier = Modifier
                 .padding(start = 8.dp)
                 .width(300.dp),
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium,
-            color = if (emailExemplo.isRead) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onBackground,
+            color = if (email.isRead) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onBackground,
             maxLines = 1
         )
     }
@@ -158,7 +225,7 @@ fun EmailDetails() {
 
 
 @Composable
-fun EmailTimestamp() {
+fun EmailTimestamp(email: Email) {
     Column(
         modifier = Modifier
             .fillMaxHeight(),
@@ -167,7 +234,7 @@ fun EmailTimestamp() {
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = formatDate(emailExemplo.timestamp),
+                text = formatDate(email.timestamp),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Light,
                 color = MaterialTheme.colorScheme.onBackground
@@ -184,29 +251,32 @@ fun EmailTimestamp() {
 }
 
 @Composable
-fun EmailBody() {
+fun EmailBody(email: Email) {
     Text(
-        text = emailExemplo.body,
+        text = email.body,
         style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp),
         modifier = Modifier.fillMaxWidth()
     )
 }
 
 @Composable
-fun EmailFooter() {
-    Column(
-    ) {
-        if (emailExemplo.attachments.isNotEmpty()) {
+fun EmailFooter(email: Email) {
+    Column {
+        if (email.attachments.isNotEmpty()) {
             Text(
                 text = "Assinatura",
                 style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp)
             )
             Divider(modifier = Modifier.padding(vertical = 8.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.AttachFile, contentDescription = "Anexos", tint = MaterialTheme.colorScheme.primary)
+                Icon(
+                    Icons.Default.AttachFile,
+                    contentDescription = "Anexos",
+                    tint = MaterialTheme.colorScheme.primary
+                )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Anexos: ${emailExemplo.attachments.joinToString(", ")}",
+                    text = "Anexos: ${email.attachments.joinToString(", ")}",
                     style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp)
                 )
             }
@@ -224,55 +294,12 @@ fun EmailFooter() {
                 Text(
                     text = "Responder",
                     color = Color.White,
-                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                 )
             }
         }
     }
 }
-
-@Composable
-fun EmailDetailRow(icon: ImageVector, text: String) {
-    Column {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = text,
-                style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp)
-            )
-        }
-        Divider(modifier = Modifier.padding(vertical = 8.dp))
-    }
-}
-
-val emailExemplo = Email(
-    id = 0,
-    remetente = "Ceriani Almeida",
-    destinatario = "Para: gr-gerentes",
-    cc = "",
-    //listOf("cc@example.com"),
-    bcc = "",
-    //listOf("bcc@example.com"),
-    subject = "Assunto",
-    body = """
-        Prezado(a),
-
-        Espero que esta mensagem o(a) encontre bem. Gostaria de compartilhar algumas atualizações importantes sobre nosso projeto.
-
-        Aqui estão alguns dos pontos mais recentes:
-        - Concluímos a fase de design e estamos avançando para a implementação.
-        - A integração com o sistema legado foi bem-sucedida, permitindo uma transição suave.
-        - Realizamos várias sessões de teste de usuário e o feedback tem sido positivo.
-        - Concluímos a fase de design e estamos avançando para a implementação.
-        - A integração com o sistema legado foi bem-sucedida, permitindo uma transição suave.
-
-        """.trimIndent(),
-    attachments = listOf("anexo.pdf"),
-    timestamp = LocalDateTime.now(),
-    isRead = false,
-    isFavorite = false,
-    priority = Priority.NORMAL,
-    isSelected = false,
-    marcadorId = 1
-)

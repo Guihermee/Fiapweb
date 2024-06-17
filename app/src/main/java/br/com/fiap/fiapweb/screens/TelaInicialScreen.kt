@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -62,7 +64,9 @@ import br.com.fiap.fiapweb.model.Email
 import br.com.fiap.fiapweb.model.HistoricoDeBusca
 import br.com.fiap.fiapweb.model.Marcadores
 import br.com.fiap.fiapweb.model.Priority
+import br.com.fiap.fiapweb.utils.Converters
 import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
+import br.com.fiap.fiapweb.viewModel.TelaLerEmailViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import kotlin.random.Random
@@ -85,6 +89,8 @@ fun TelaInicialScreen(
     val selectedItemIndex by telaInicialViewModel.selectedItemIndex.observeAsState(initial = 0)
     val listNavigationItem = NavigationItemRepository().getNavigationItemList()
     val iconDraftSelected by telaInicialViewModel.iconDraftSelected.observeAsState(initial = false)
+    val filtroState by telaInicialViewModel.filtroState.observeAsState(initial = false)
+
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
@@ -135,7 +141,16 @@ fun TelaInicialScreen(
             ModalDrawerSheet {
                 val coroutineScope = rememberCoroutineScope()
 
+                // Aqui fica todos os conteudos do Sidebar Menu
+                Image(
+                    painter = painterResource(id = R.drawable.fiap_logo_sem_fundo),
+                    contentDescription = "Logo do Fiapweb",
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .size(100.dp)
+                )
                 Divider()
+                Spacer(modifier = Modifier.height(8.dp))
                 // Itens do sidebar
                 listNavigationItem.forEachIndexed { index, navigationItem ->
                     NavigationItemView(
@@ -403,6 +418,9 @@ fun TelaInicialScreen(
                             // Titulo Do email
                             Text(tituloDaCaixaDeEntrada, modifier = Modifier.padding(16.dp))
 
+                            if (filtroState) {
+
+                            }
                             // Filtro
                             Button(
                                 onClick = { telaInicialViewModel.onshowDialogFiltrosChange(true) },
@@ -428,7 +446,7 @@ fun TelaInicialScreen(
                             onDismissRequest = {
                                 telaInicialViewModel.onshowDialogFiltrosChange(false)
                             },
-                            onAplicarRequest = {}
+                            telaInicialViewModel
                         )
                     }
                     if (showDialogPerfil) {
@@ -507,7 +525,13 @@ fun TelaInicialScreen(
                                         }
 
                                         if(!onSelected){
-                                            navController.navigate("telaLeituraEmail")
+                                            listaDeEmailSendoManipulada.mapIndexed { index, email ->
+                                                if (index == indexDoEmail) {
+                                                    val emailToJson = Converters().emailToJson(email)
+                                                    navController.navigate("telaLeituraEmail?email=${emailToJson}")
+                                                }
+                                            }
+
                                         }
 
                                     },

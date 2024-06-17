@@ -3,17 +3,34 @@ package br.com.fiap.fiapweb.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import br.com.fiap.fiapweb.model.Email
 import br.com.fiap.fiapweb.model.Marcadores
 
 class TelaLerEmailViewModel : ViewModel(){
 
 
     // bookMarkState (icone do header ler email)
-    private val _bookMarkState = MutableLiveData<Boolean>()
-    val bookMarkState: LiveData<Boolean> = _bookMarkState
+    private val _modalCriarState = MutableLiveData<Boolean>()
+    val modalCriarState: LiveData<Boolean> = _modalCriarState
 
-    fun onBookMarkStateChange(newValue: Boolean) {
-        _bookMarkState.value = newValue
+    fun onModalCriarStateChange(newValue: Boolean) {
+        _modalCriarState.value = newValue
+    }
+
+    // modalAdicionarState
+    private val _modalAdicionarState = MutableLiveData<Boolean>()
+    val modalAdicionarState: LiveData<Boolean> = _modalAdicionarState
+
+    fun onModalAdicionarStateChange(newValue: Boolean) {
+        _modalAdicionarState.value = newValue
+    }
+
+    // modal modalAIGenerateResumeState
+    private val _modalAIGenerateResumeState = MutableLiveData<Boolean>()
+    val modalAIGenerateResumeState: LiveData<Boolean> = _modalAIGenerateResumeState
+
+    fun onModalAIGenerateResumeStateChange(newValue: Boolean) {
+        _modalAIGenerateResumeState.value = newValue
     }
 
     // bookmarkNomeField
@@ -62,6 +79,14 @@ class TelaLerEmailViewModel : ViewModel(){
 
     fun onListaDropdownChange(newValue: List<Marcadores>) {
         _listaDropdown.value = newValue
+    }
+
+    // Email
+    private val _email = MutableLiveData<Email>()
+    val email:LiveData<Email> = _email
+
+    fun onEmailChange(newValue: Email) {
+        _email.value = newValue
     }
 
 }

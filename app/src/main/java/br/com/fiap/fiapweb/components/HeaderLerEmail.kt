@@ -18,8 +18,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
-import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
+import br.com.fiap.fiapweb.Repository.MarcadoresRepository
 import br.com.fiap.fiapweb.viewModel.TelaLerEmailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,6 +30,12 @@ fun HeaderLerEmail(
     telaLerEmailViewModel: TelaLerEmailViewModel,
     navController: NavController
 ) {
+
+    val context = LocalContext.current
+    val marcadoresRepository = MarcadoresRepository(context)
+    val listaMarcadores = marcadoresRepository.listar()
+    val listaMarcadorSemGenerico = listaMarcadores.filterNot { it.nome == "Generico" }
+    val verificaListaMarcador = listaMarcadorSemGenerico.isEmpty()
 
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -51,7 +58,15 @@ fun HeaderLerEmail(
 
         },
         actions = {
-            IconButton(onClick = { telaLerEmailViewModel.onBookMarkStateChange(true) }) {
+            IconButton(onClick = {
+                if (verificaListaMarcador) {
+                    telaLerEmailViewModel.onModalCriarStateChange(true)
+                } else {
+                    telaLerEmailViewModel.onModalAdicionarStateChange(true)
+                }
+
+            }
+            ) {
                 Icon(
                     imageVector = Icons.Outlined.BookmarkAdd,
                     contentDescription = "Bookmark Icon")

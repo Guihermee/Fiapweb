@@ -12,7 +12,7 @@ suspend fun getOpenAICompletion(prompt: String, model: String = "gpt-3.5-turbo")
             val request = OpenAIRequest(
                 model = model,
                 messages = listOf(Message(role = "user", content = prompt)),
-                max_tokens = 100,
+                max_tokens = 200,
                 temperature = 0.7
             )
             val response = RetrofitInstance.api.getCompletion(request)

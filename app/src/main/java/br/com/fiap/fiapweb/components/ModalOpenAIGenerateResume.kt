@@ -30,12 +30,11 @@ import androidx.compose.ui.window.Dialog
 import br.com.fiap.fiapweb.viewModel.ModalOpenAIViewModel
 
 @Composable
-fun ModalOpenAICompletion(
+fun ModalOpenAIResume(
     onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit,
-    modalOpenAIViewModel: ModalOpenAIViewModel
+    response: String
 ) {
-    val promptValue by modalOpenAIViewModel.promptValue.observeAsState(initial = "")
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
             modifier = Modifier
@@ -61,28 +60,18 @@ fun ModalOpenAICompletion(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Gerar email com IA",
+                        text = "Gerar resumo do Email",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Digite a baixo como gostaria que fosse sua mensagem",
+                        text = "Abaixo aparecerá o Resumo quando o GERAR for clicado",
                         fontSize = 12.sp,
                         textAlign = TextAlign.Center
                     )
                 }
-                TextField(
-                    value = promptValue,
-                    onValueChange = {
-                        if (it.length <= 150) {
-                            modalOpenAIViewModel.onPromptValueChange(it)
-                        }
-                    },
-                    placeholder = { Text(text = "Digite aqui") }
-                )
-                Text(text = "${promptValue.count()}/150")
-                Text(text = "OBS: Você pode alterar depois!", fontSize = 12.sp)
+                Text(text = response)
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -96,8 +85,7 @@ fun ModalOpenAICompletion(
                     }
                     TextButton(
                         onClick = { onConfirmation() },
-                        modifier = Modifier.padding(8.dp),
-                        enabled = promptValue.isNotEmpty()
+                        modifier = Modifier.padding(8.dp)
                     ) {
                         Text("Gerar")
                     }

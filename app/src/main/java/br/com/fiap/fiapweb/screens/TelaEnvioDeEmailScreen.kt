@@ -132,10 +132,7 @@ fun TelaEnvioDeEmailScreen(
                     onConfirmation = {
                         scope.launch {
                             val response = getOpenAICompletion(prompt = modalOpenAIViewModel.promptValue.value!!)
-                            val teste1 = modalOpenAIViewModel.promptValue.value!!
-                            Log.i("FIAP", "TelaEnvioDeEmailScreen: ${teste1}")
                             envioDeEmailViewModel.onResponseAIChange(response)
-                            val teste = modalOpenAIViewModel.promptValue.value!!
                             envioDeEmailViewModel.onEmailBodyFieldValueChanged(response)
                             envioDeEmailViewModel.onModalOpenAICompletionChange(false)
                         }
