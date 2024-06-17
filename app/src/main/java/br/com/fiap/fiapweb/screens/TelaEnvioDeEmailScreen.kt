@@ -24,6 +24,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -32,10 +33,15 @@ import br.com.fiap.fiapweb.components.EmailAdress
 import br.com.fiap.fiapweb.components.EmailBody
 import br.com.fiap.fiapweb.components.HeaderEscreverEmail
 import br.com.fiap.fiapweb.components.ModalOpenAICompletion
+import br.com.fiap.fiapweb.model.Categoria
+import br.com.fiap.fiapweb.model.Email
+import br.com.fiap.fiapweb.model.Priority
+import br.com.fiap.fiapweb.Repository.EmailRepository
 import br.com.fiap.fiapweb.service.getOpenAICompletion
 import br.com.fiap.fiapweb.viewModel.EnvioDeEmailViewModel
 import br.com.fiap.fiapweb.viewModel.ModalOpenAIViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 @Composable
 fun TelaEnvioDeEmailScreen(
@@ -52,6 +58,14 @@ fun TelaEnvioDeEmailScreen(
     val responseAI by envioDeEmailViewModel.responseAI.observeAsState(initial = "")
     var showCcCcoFields by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val emailRepository = EmailRepository(context)
+
+    // Estado para controlar exibição do modal de erro
+    var showErrorModal by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+
+
 
     Scaffold(
 
@@ -61,7 +75,27 @@ fun TelaEnvioDeEmailScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 FloatingActionButton(
-                    onClick = { /* Ação do primeiro botão */ },
+                    onClick = {
+                              val emailEnviado = Email(
+                                  id = 0,
+                                  remetente = "",
+                                  destinatario = toFieldValue,
+                                  cc = ccFieldValue,
+                                  bcc = ccoFieldValue,
+                                  subject = subjectFieldValue,
+                                  body = emailBodyFieldValue,
+                                  attachments = emptyList(),
+                                  timestamp = LocalDateTime.now(),
+                                  isRead = false,
+                                  isFavorite = false,
+                                  priority = Priority.LOW,
+                                  isSelected = false,
+                                  categoria = Categoria.ENVIADOS,
+                                  marcadorId = 1 )
+                        emailRepository.salvar(emailEnviado)
+                        navController.navigate("telaInicial")
+                              },
+
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 ) {

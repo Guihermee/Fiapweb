@@ -24,6 +24,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import br.com.fiap.fiapweb.Repository.EmailRepository
 
 
 @Composable
@@ -36,7 +38,10 @@ fun EmailAdress(
     showDropDownIcon: Boolean = false,
     onDropDownClick: (() -> Unit)? = null
 
-) { var showCcCcoFields by remember { mutableStateOf(false)  }
+) {
+//    val context = LocalContext.current
+//    val emailRepository = EmailRepository(context)
+    var showCcCcoFields by remember { mutableStateOf(false)  }
 
     Row(
         modifier = Modifier.fillMaxWidth(),

@@ -250,8 +250,10 @@ val emailExemplo = Email(
     id = 0,
     remetente = "Ceriani Almeida",
     destinatario = "Para: gr-gerentes",
-    cc = listOf("cc@example.com"),
-    bcc = listOf("bcc@example.com"),
+    cc = "",
+    //listOf("cc@example.com"),
+    bcc = "",
+    //listOf("bcc@example.com"),
     subject = "Assunto",
     body = """
         Prezado(a),

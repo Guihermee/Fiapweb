@@ -25,8 +25,10 @@ data class Email(
     val id: Long,
     val remetente: String,
     val destinatario: String,
-    val cc: List<String> = emptyList(), // Lista de endereços de email para cópia carbono
-    val bcc: List<String> = emptyList(), // Lista de endereços de email para cópia carbono oculta
+    val cc: String,
+    //List<String> = emptyList(), // Lista de endereços de email para cópia carbono
+    val bcc: String,
+    //List<String> = emptyList(), // Lista de endereços de email para cópia carbono oculta
     val subject: String,
     val body: String,
     val attachments: List<String> = emptyList(),

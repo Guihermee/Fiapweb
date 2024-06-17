@@ -111,8 +111,10 @@ fun TelaInicialScreen(
             id = 0, // O ID será gerado automaticamente
             remetente = "remetente$random@example.com",
             destinatario = "destinatario$random@example.com",
-            cc = listOf("cc$random@example.com"),
-            bcc = listOf("bcc$random@example.com"),
+            cc = "",
+            //listOf("cc$random@example.com"),
+            bcc = "",
+            //listOf("bcc$random@example.com"),
             subject = "Assunto $random",
             body = "Corpo do email $random",
             attachments = listOf("anexo$random.pdf"),
