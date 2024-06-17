@@ -41,4 +41,12 @@ class EmailRepository(context: Context) {
         return db.listarEmailPorFavoritos()
     }
 
+    fun listarEmailsFavoritos(): List<Email> {
+        return db.buscarEmailsFavoritos()
+    }
+
+    fun listarEmailsPeloMarcador(id: Long): List<Email> {
+        return db.buscarEmailPeloMarcador(id)
+    }
+
 }
