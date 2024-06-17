@@ -126,6 +126,7 @@ fun ModalFiltros(
                                                         emailMarcadores
                                                     )
                                                     telaInicialViewModel.onshowDialogFiltrosChange(false)
+                                                    telaInicialViewModel.onFiltroStateChange(true)
                                                 }
                                             }
                                         }

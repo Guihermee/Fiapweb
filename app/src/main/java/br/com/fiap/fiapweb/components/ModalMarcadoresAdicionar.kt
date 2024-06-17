@@ -93,7 +93,6 @@ fun ModalMarcadoresAdicionar(
                             })
                         }
                     }
-
                 }
                 Row(
                     modifier = Modifier
@@ -117,8 +116,6 @@ fun ModalMarcadoresAdicionar(
                             scope.launch {
                                 snackbarHostState.showSnackbar("Marcador adicionado no Email com sucesso!")
                             }
-
-
                         },
                         modifier = Modifier.padding(8.dp),
                     ) {

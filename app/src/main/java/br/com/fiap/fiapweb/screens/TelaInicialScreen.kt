@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material.icons.outlined.MarkEmailRead
@@ -418,26 +420,63 @@ fun TelaInicialScreen(
                             // Titulo Do email
                             Text(tituloDaCaixaDeEntrada, modifier = Modifier.padding(16.dp))
 
+                            // Excluir filtro e Filtrar
                             if (filtroState) {
+                                // Excluir Filtro
+                                Button(
+                                    onClick = {
+                                        telaInicialViewModel.onListaCompletaEmailDbChange(
+                                            telaInicialViewModel.getListaEmailPorCategoriaDb(
+                                                context, categoria
+                                            )
+                                        )
+                                        telaInicialViewModel.onFiltroStateChange(false)
+                                    },
+                                    modifier = Modifier.padding(end = 16.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.background,
+                                        contentColor = MaterialTheme.colorScheme.onBackground
+                                    )
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.Close,
+                                        contentDescription = "Close Icon",
+                                        modifier = Modifier.padding(end = 8.dp)
+                                    )
+                                    Text(text = "Excluir Filtro")
+                                }
+                            } else {
+                                // Filtro
+                                Button(
+                                    onClick = { telaInicialViewModel.onshowDialogFiltrosChange(true) },
+                                    modifier = Modifier.padding(end = 16.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.background,
+                                        contentColor = MaterialTheme.colorScheme.onBackground
+                                    )
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.FilterAlt,
+                                        contentDescription = "Filter Icon",
+                                        modifier = Modifier.padding(end = 8.dp)
+                                    )
+                                    Text(text = "Filtrar")
+                                }
+                            }
 
-                            }
-                            // Filtro
-                            Button(
-                                onClick = { telaInicialViewModel.onshowDialogFiltrosChange(true) },
-                                modifier = Modifier.padding(end = 16.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.background,
-                                    contentColor = MaterialTheme.colorScheme.onBackground
-                                )
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Outlined.FilterAlt,
-                                    contentDescription = "Filter Icon",
-                                    modifier = Modifier.padding(end = 8.dp)
-                                )
-                                Text(text = "Filtros")
-                            }
                         }
+                    }
+
+                    if (filtroState) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(imageVector = Icons.Default.Warning, contentDescription = "Warning Icon", tint = MaterialTheme.colorScheme.error)
+                            Text(text = "Filtro Ativado ")
+                        }
+
                     }
 
                     // Dialogs
