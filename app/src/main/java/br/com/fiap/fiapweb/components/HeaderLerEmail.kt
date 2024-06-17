@@ -6,6 +6,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.EditCalendar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
+import androidx.navigation.NavController
 import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
 import br.com.fiap.fiapweb.viewModel.TelaLerEmailViewModel
 
@@ -24,7 +26,8 @@ import br.com.fiap.fiapweb.viewModel.TelaLerEmailViewModel
 @Composable
 fun HeaderLerEmail(
     onClickVoltar: () -> Unit,
-    telaLerEmailViewModel: TelaLerEmailViewModel
+    telaLerEmailViewModel: TelaLerEmailViewModel,
+    navController: NavController
 ) {
 
     TopAppBar(
@@ -49,7 +52,17 @@ fun HeaderLerEmail(
         },
         actions = {
             IconButton(onClick = { telaLerEmailViewModel.onBookMarkStateChange(true) }) {
-                Icon(imageVector = Icons.Outlined.BookmarkAdd, contentDescription = "Bookmark Icon")
+                Icon(
+                    imageVector = Icons.Outlined.BookmarkAdd,
+                    contentDescription = "Bookmark Icon")
+            }
+
+            IconButton(onClick = { navController.navigate("telaAdicionarEvento") }) {
+                Icon(
+                    imageVector = Icons.Outlined.EditCalendar,
+                    contentDescription = "Adicionar Evento ao Calendário",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
             IconButton(onClick = { /* do something */ }) {
                 Icon(
@@ -58,6 +71,7 @@ fun HeaderLerEmail(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
+
             IconButton(onClick = { /* do something */ }) {
                 Icon(
                     imageVector = Icons.Filled.MoreVert,
