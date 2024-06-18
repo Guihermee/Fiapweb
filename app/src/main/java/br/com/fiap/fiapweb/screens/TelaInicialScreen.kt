@@ -567,6 +567,15 @@ fun TelaInicialScreen(
                                         if (!onSelected) {
                                             listaDeEmailSendoManipulada.mapIndexed { index, email ->
                                                 if (index == indexDoEmail) {
+                                                    val emailAlteradoParaLido = email.copy(isRead = true)
+                                                    usuarioRepository.atualizar(emailAlteradoParaLido)
+
+                                                    telaInicialViewModel.atualizarListaEmailPorCategoria(
+                                                        context,
+                                                        categoria
+                                                    )
+
+
                                                     val emailToJson =
                                                         Converters().emailToJson(email)
                                                     navController.navigate("telaLeituraEmail?email=${emailToJson}")

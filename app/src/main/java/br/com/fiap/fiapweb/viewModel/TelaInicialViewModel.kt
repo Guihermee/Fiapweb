@@ -125,6 +125,17 @@ class TelaInicialViewModel : ViewModel() {
         onListaCompletaEmailDbChange(listaAtualizadoDoBD)
     }
 
+    fun changeEmailCategoria(
+        context: Context,
+        email: Email,
+        categoria: Categoria
+    ) {
+        val emailDeletado = email.copy(categoria = categoria)
+        atualizarEmail(context, emailDeletado)
+        val listaAtualizadoDoBD = getListaCompletaEmailDb(context)
+        onListaCompletaEmailDbChange(listaAtualizadoDoBD)
+    }
+
     fun changeAllEmailToOrNotRead(
         context: Context,
         listaDosEmails: List<Email>,

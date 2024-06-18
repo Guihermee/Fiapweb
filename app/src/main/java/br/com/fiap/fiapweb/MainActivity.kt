@@ -71,6 +71,7 @@ class MainActivity : ComponentActivity() {
                             TelaLerEmailScreen(
                                 navController,
                                 TelaLerEmailViewModel(),
+                                TelaInicialViewModel(),
                                 email
                             )
                         }

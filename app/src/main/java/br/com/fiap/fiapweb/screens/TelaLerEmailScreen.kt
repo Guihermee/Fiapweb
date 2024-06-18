@@ -53,6 +53,7 @@ import br.com.fiap.fiapweb.components.formatDate
 import br.com.fiap.fiapweb.model.Email
 import br.com.fiap.fiapweb.service.getOpenAICompletion
 import br.com.fiap.fiapweb.utils.Converters
+import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
 import br.com.fiap.fiapweb.viewModel.TelaLerEmailViewModel
 import kotlinx.coroutines.launch
 
@@ -60,6 +61,7 @@ import kotlinx.coroutines.launch
 fun TelaLerEmailScreen(
     navController: NavController,
     telaLerEmailViewModel: TelaLerEmailViewModel,
+    telaInicialViewModel: TelaInicialViewModel,
     emailString: String
 ) {
     val modalCriarState by telaLerEmailViewModel.modalCriarState.observeAsState(initial = false)
@@ -78,7 +80,11 @@ fun TelaLerEmailScreen(
             HeaderLerEmail(
                 onClickVoltar = { navController.navigate("telaInicial") },
                 telaLerEmailViewModel,
-                navController
+                telaInicialViewModel,
+                navController,
+                email,
+                snackbarHostState = snackbarHostState,
+                scope = scope
             )
         },
         floatingActionButton = {

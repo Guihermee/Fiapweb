@@ -11,6 +11,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -18,15 +19,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import br.com.fiap.fiapweb.Repository.EmailRepository
 import br.com.fiap.fiapweb.Repository.MarcadoresRepository
+import br.com.fiap.fiapweb.model.Categoria
+import br.com.fiap.fiapweb.model.Email
+import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
 import br.com.fiap.fiapweb.viewModel.TelaLerEmailViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HeaderLerEmail(
     onClickVoltar: () -> Unit,
     telaLerEmailViewModel: TelaLerEmailViewModel,
-    navController: NavController
+    telaInicialViewModel: TelaInicialViewModel,
+    navController: NavController,
+    email: Email,
+    scope: CoroutineScope,
+    snackbarHostState: SnackbarHostState
 ) {
 
     val context = LocalContext.current
@@ -76,7 +87,17 @@ fun HeaderLerEmail(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            IconButton(onClick = { /* do something */ }) {
+            IconButton(onClick = {
+                telaInicialViewModel.changeEmailCategoria(
+                    context,
+                    email,
+                    Categoria.LIXEIRA
+                )
+                scope.launch {
+                    snackbarHostState.showSnackbar("Email movido para a Lixeira com sucesso!")
+                }
+                navController.navigate("telaInicial")
+            }) {
                 Icon(
                     imageVector = Icons.Outlined.Delete,
                     contentDescription = "Localized description",
