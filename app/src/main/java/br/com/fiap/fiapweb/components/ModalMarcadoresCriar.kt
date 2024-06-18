@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material3.Card
@@ -23,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -41,7 +39,6 @@ fun ModalMarcadoresCriar(
     val context = LocalContext.current
     val marcadoresRepository = MarcadoresRepository(context)
     val bookmarkNomeField by telaLerEmailViewModel.bookmarkNomeField.observeAsState(initial = "")
-    val bookmarkCorField by telaLerEmailViewModel.bookmarkCorField.observeAsState(initial = "")
 
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
@@ -67,14 +64,6 @@ fun ModalMarcadoresCriar(
                     placeholder = { Text(text = "Ex: Estudos") }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                TextField(
-                    value = bookmarkCorField,
-                    onValueChange = { telaLerEmailViewModel.onBookmarkCorFieldChange(it) },
-                    label = { Text(text = "Cor do marcador") },
-                    placeholder = { Text(text = "Ex: Preto") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                )
-                Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -90,8 +79,7 @@ fun ModalMarcadoresCriar(
                         onClick = {
                             val marcador = Marcadores(
                                 id = 0,
-                                nome = bookmarkNomeField,
-                                cor = bookmarkCorField.toInt()
+                                nome = bookmarkNomeField
                             )
                             marcadoresRepository.salvar(marcador)
                             telaLerEmailViewModel.onVerificaListaMarcadoresChange(false)

@@ -16,10 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -27,7 +24,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import br.com.fiap.fiapweb.viewModel.ModalOpenAIViewModel
 
 @Composable
 fun ModalOpenAIResume(
@@ -65,11 +61,15 @@ fun ModalOpenAIResume(
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "Abaixo aparecerá o Resumo quando o GERAR for clicado",
-                        fontSize = 12.sp,
-                        textAlign = TextAlign.Center
-                    )
+                    if (response.isEmpty()) {
+                        Text(
+                            text = "Abaixo aparecerá o Resumo quando o GERAR for clicado",
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    } else {
+                        Text(text = "RESUMO GERADO")
+                    }
                 }
                 Text(text = response)
                 Row(
@@ -85,7 +85,8 @@ fun ModalOpenAIResume(
                     }
                     TextButton(
                         onClick = { onConfirmation() },
-                        modifier = Modifier.padding(8.dp)
+                        modifier = Modifier.padding(8.dp),
+                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     ) {
                         Text("Gerar")
                     }

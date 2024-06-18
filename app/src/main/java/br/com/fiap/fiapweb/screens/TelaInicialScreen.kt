@@ -45,7 +45,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -68,7 +67,6 @@ import br.com.fiap.fiapweb.model.Marcadores
 import br.com.fiap.fiapweb.model.Priority
 import br.com.fiap.fiapweb.utils.Converters
 import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
-import br.com.fiap.fiapweb.viewModel.TelaLerEmailViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import kotlin.random.Random
@@ -106,8 +104,7 @@ fun TelaInicialScreen(
     if (listaMarcadores.isEmpty()) {
         val marcadorInicial = Marcadores(
             id = 0, // Gerado automaticamente
-            nome = "Generico",
-            cor = R.color.cinza_escuro
+            nome = "Generico"
         )
         marcadorRepository.salvar(marcadorInicial)
     }
@@ -473,7 +470,11 @@ fun TelaInicialScreen(
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(imageVector = Icons.Default.Warning, contentDescription = "Warning Icon", tint = MaterialTheme.colorScheme.error)
+                            Icon(
+                                imageVector = Icons.Default.Warning,
+                                contentDescription = "Warning Icon",
+                                tint = MaterialTheme.colorScheme.error
+                            )
                             Text(text = "Filtro Ativado ")
                         }
 
@@ -563,10 +564,11 @@ fun TelaInicialScreen(
                                             }
                                         }
 
-                                        if(!onSelected){
+                                        if (!onSelected) {
                                             listaDeEmailSendoManipulada.mapIndexed { index, email ->
                                                 if (index == indexDoEmail) {
-                                                    val emailToJson = Converters().emailToJson(email)
+                                                    val emailToJson =
+                                                        Converters().emailToJson(email)
                                                     navController.navigate("telaLeituraEmail?email=${emailToJson}")
                                                 }
                                             }

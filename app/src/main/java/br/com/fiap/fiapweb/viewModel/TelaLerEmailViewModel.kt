@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import br.com.fiap.fiapweb.model.Email
 import br.com.fiap.fiapweb.model.Marcadores
 
-class TelaLerEmailViewModel : ViewModel(){
+class TelaLerEmailViewModel : ViewModel() {
 
 
     // bookMarkState (icone do header ler email)
@@ -33,6 +33,14 @@ class TelaLerEmailViewModel : ViewModel(){
         _modalAIGenerateResumeState.value = newValue
     }
 
+    // responseResume (resposta do Resumo do Email da Inteligencia artificial)
+    private val _responseResume = MutableLiveData<String>()
+    val responseResume: LiveData<String> = _responseResume
+
+    fun onResponseResumeChange(newValue: String) {
+        _responseResume.value = newValue
+    }
+
     // bookmarkNomeField
     private val _bookmarkNomeField = MutableLiveData<String>()
     val bookmarkNomeField: LiveData<String> = _bookmarkNomeField
@@ -41,17 +49,9 @@ class TelaLerEmailViewModel : ViewModel(){
         _bookmarkNomeField.value = newValue
     }
 
-    // bookmarkCorField
-    private val _bookmarkCorField = MutableLiveData<String>()
-    val bookmarkCorField:LiveData<String> = _bookmarkCorField
-
-    fun onBookmarkCorFieldChange(newValue: String) {
-        _bookmarkCorField.value = newValue
-    }
-
     // verificaListaMarcadores
     private val _verificaListaMarcadores = MutableLiveData<Boolean>()
-    val verificaListaMarcadores:LiveData<Boolean> = _verificaListaMarcadores
+    val verificaListaMarcadores: LiveData<Boolean> = _verificaListaMarcadores
 
     fun onVerificaListaMarcadoresChange(newValue: Boolean) {
         _verificaListaMarcadores.value = newValue
@@ -59,7 +59,7 @@ class TelaLerEmailViewModel : ViewModel(){
 
     // dropdownState
     private val _dropdownState = MutableLiveData<Boolean>()
-    val dropdownState:LiveData<Boolean> = _dropdownState
+    val dropdownState: LiveData<Boolean> = _dropdownState
 
     fun onDropdownStateChange(newValue: Boolean) {
         _dropdownState.value = newValue
@@ -67,7 +67,7 @@ class TelaLerEmailViewModel : ViewModel(){
 
     // selectedMarcador
     private val _selectedMarcador = MutableLiveData<Marcadores>()
-    val selectedMarcador:LiveData<Marcadores> = _selectedMarcador
+    val selectedMarcador: LiveData<Marcadores> = _selectedMarcador
 
     fun onSelectedMarcadorChange(newValue: Marcadores) {
         _selectedMarcador.value = newValue
@@ -75,7 +75,7 @@ class TelaLerEmailViewModel : ViewModel(){
 
     // lista do dropdown
     private val _listaDropdown = MutableLiveData<List<Marcadores>>()
-    val listaDropdown:LiveData<List<Marcadores>> = _listaDropdown
+    val listaDropdown: LiveData<List<Marcadores>> = _listaDropdown
 
     fun onListaDropdownChange(newValue: List<Marcadores>) {
         _listaDropdown.value = newValue
@@ -83,10 +83,6 @@ class TelaLerEmailViewModel : ViewModel(){
 
     // Email
     private val _email = MutableLiveData<Email>()
-    val email:LiveData<Email> = _email
-
-    fun onEmailChange(newValue: Email) {
-        _email.value = newValue
-    }
+    val email: LiveData<Email> = _email
 
 }

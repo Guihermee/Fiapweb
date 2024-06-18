@@ -62,6 +62,7 @@ fun TelaLerEmailScreen(
     val modalCriarState by telaLerEmailViewModel.modalCriarState.observeAsState(initial = false)
     val modalAdiconarState by telaLerEmailViewModel.modalAdicionarState.observeAsState(initial = false)
     val modalAIGenerateResumeState by telaLerEmailViewModel.modalAIGenerateResumeState.observeAsState(initial = false)
+    val responseResume by telaLerEmailViewModel.responseResume.observeAsState(initial = "")
     val email = Converters().jsonToEmail(emailString)
 
     val scope = rememberCoroutineScope()
@@ -76,7 +77,7 @@ fun TelaLerEmailScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*todo*/ }) {
+            FloatingActionButton(onClick = { telaLerEmailViewModel.onModalAIGenerateResumeStateChange(true) }) {
                 Icon(imageVector = Icons.Outlined.AutoAwesome, contentDescription = "Generate Icon")
             }
         },
@@ -100,7 +101,7 @@ fun TelaLerEmailScreen(
                 ModalOpenAIResume(
                     onDismissRequest = { telaLerEmailViewModel.onModalAIGenerateResumeStateChange(false) },
                     onConfirmation = { /*TODO*/ },
-                    response = ""
+                    response = responseResume
                 )
             }
 
