@@ -29,7 +29,6 @@ import br.com.fiap.fiapweb.Repository.MarcadoresRepository
 import br.com.fiap.fiapweb.model.Marcadores
 import br.com.fiap.fiapweb.viewModel.TelaLerEmailViewModel
 
-
 @Composable
 fun ModalMarcadoresCriar(
     onDismissRequest: () -> Unit,

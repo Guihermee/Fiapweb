@@ -33,10 +33,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.fiap.fiapweb.Repository.EmailRepository
 import br.com.fiap.fiapweb.Repository.MarcadoresRepository
 import br.com.fiap.fiapweb.model.Email
-import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -52,7 +50,7 @@ fun EmailView(
     val context = LocalContext.current
     val usuarioRepository = MarcadoresRepository(context)
 
-        Row(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp)
@@ -117,7 +115,7 @@ fun EmailView(
                     fontWeight = FontWeight.Medium,
                     color = if (email.isRead) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onBackground,
                     maxLines = 1
-                    )
+                )
                 Text(
                     text = email.subject,
                     modifier = Modifier
@@ -164,8 +162,7 @@ fun EmailView(
                 if (email.marcadorId.toInt() != 1) {
                     val marcador = usuarioRepository.listarMarcadorPorId(email.marcadorId)
                     Text(text = marcador.nome)
-                } else
-                {
+                } else {
                     // Estrela
                     IconButton(onClick = onEstrelaClick) {
                         if (email.isFavorite) {

@@ -15,8 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
@@ -55,7 +53,6 @@ fun HeaderLerEmail(
                     )
                 }
             }
-
         },
         actions = {
             IconButton(onClick = {
@@ -69,9 +66,9 @@ fun HeaderLerEmail(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.BookmarkAdd,
-                    contentDescription = "Bookmark Icon")
+                    contentDescription = "Bookmark Icon"
+                )
             }
-
             IconButton(onClick = { navController.navigate("telaAdicionarEvento") }) {
                 Icon(
                     imageVector = Icons.Outlined.EditCalendar,
@@ -93,7 +90,6 @@ fun HeaderLerEmail(
                     contentDescription = "Localized description",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-
             }
         }
     )

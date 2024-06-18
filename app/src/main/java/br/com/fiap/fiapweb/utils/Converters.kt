@@ -3,6 +3,7 @@ package br.com.fiap.fiapweb.utils
 import androidx.room.TypeConverter
 import br.com.fiap.fiapweb.model.Email
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
@@ -13,7 +14,6 @@ import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import com.google.gson.GsonBuilder
 
 class Converters {
 
@@ -70,7 +70,6 @@ class Converters {
     }
 
 
-
 }
 
 fun createGson(): Gson {
@@ -99,4 +98,3 @@ object LocalDateTimeAdapter : JsonSerializer<LocalDateTime>, JsonDeserializer<Lo
         return LocalDateTime.parse(json!!.asString, formatter)
     }
 }
-

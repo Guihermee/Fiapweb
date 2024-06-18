@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class EnvioDeEmailViewModel: ViewModel() {
+class EnvioDeEmailViewModel : ViewModel() {
 
     private val _toFieldValue = MutableLiveData<String>()
     val toFieldValue: LiveData<String> = _toFieldValue
@@ -21,15 +21,15 @@ class EnvioDeEmailViewModel: ViewModel() {
     private val _ccoFieldValue = MutableLiveData<String>()
     val ccoFieldValue: LiveData<String> = _ccoFieldValue
 
-    fun onToFieldValueChanged(novoToFieldValue: String){
+    fun onToFieldValueChanged(novoToFieldValue: String) {
         _toFieldValue.value = novoToFieldValue
     }
 
-    fun onSubjectFieldValueChanged(novoSubjectFieldValue: String){
+    fun onSubjectFieldValueChanged(novoSubjectFieldValue: String) {
         _subjectFieldValue.value = novoSubjectFieldValue
     }
 
-    fun onEmailBodyFieldValueChanged(novoEmailBodyFieldValue: String){
+    fun onEmailBodyFieldValueChanged(novoEmailBodyFieldValue: String) {
         _emailBodyFieldValue.value = novoEmailBodyFieldValue
     }
 
@@ -47,14 +47,6 @@ class EnvioDeEmailViewModel: ViewModel() {
 
     fun onModalOpenAICompletionChange(modalOpenAINovoValor: Boolean) {
         _modalOpenAICompletion.value = modalOpenAINovoValor
-    }
-
-    // Prompt
-    private val _promptValue = MutableLiveData<String>()
-    val promptValue: LiveData<String> = _promptValue
-
-    fun onPromptValueChange(promptNovoValor: String) {
-        _promptValue.value = promptNovoValor
     }
 
     // responseAI

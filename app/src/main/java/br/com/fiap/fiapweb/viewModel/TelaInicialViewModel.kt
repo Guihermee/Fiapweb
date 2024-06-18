@@ -108,8 +108,7 @@ class TelaInicialViewModel : ViewModel() {
     ) {
         for (deletado in listaASerDeletada) {
 
-            var listaASerPercorrida: List<Email>
-            listaASerPercorrida = if (categoria == Categoria.EMAIL) {
+            val listaASerPercorrida: List<Email> = if (categoria == Categoria.EMAIL) {
                 getListaCompletaEmailDb(context)
             } else {
                 _listaCompletaEmailDb.value!!
@@ -165,9 +164,6 @@ class TelaInicialViewModel : ViewModel() {
     // isSearching
     private val _isSearching = MutableStateFlow(false)
     val isSearching = _isSearching.asStateFlow()
-
-    private val _searchText = MutableStateFlow("")
-    val searchText = _searchText.asStateFlow()
 
     fun onToogleSearch() {
         _isSearching.value = !_isSearching.value
@@ -226,15 +222,11 @@ class TelaInicialViewModel : ViewModel() {
 
     // Email
     private val _email = MutableLiveData<Email>()
-    val email:LiveData<Email> = _email
-
-    fun onEmailChange(newValue: Email) {
-        _email.value = newValue
-    }
+    val email: LiveData<Email> = _email
 
     // marcadorVazio (verifica se o filtro aplicado do marcador está vazio)
     private val _marcadorVazio = MutableLiveData<Boolean>()
-    val marcadorVazio:LiveData<Boolean> = _marcadorVazio
+    val marcadorVazio: LiveData<Boolean> = _marcadorVazio
 
     fun onMarcadorVazioChange(newValue: Boolean) {
         _marcadorVazio.value = newValue
@@ -242,7 +234,7 @@ class TelaInicialViewModel : ViewModel() {
 
     // filtroState
     private val _filtroState = MutableLiveData<Boolean>()
-    val filtroState:LiveData<Boolean> = _filtroState
+    val filtroState: LiveData<Boolean> = _filtroState
 
     fun onFiltroStateChange(newValue: Boolean) {
         _filtroState.value = newValue

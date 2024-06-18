@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.fiap.fiapweb.model.NavigationItem
 
-
 @Composable
 fun NavigationItemView(
     navigationItem: NavigationItem,

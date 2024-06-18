@@ -121,7 +121,7 @@ fun TelaInicialScreen(
             bcc = "",
             //listOf("bcc$random@example.com"),
             subject = "Assunto $random",
-            body = "Corpo do email $random",
+            body = "Hello World",
             attachments = listOf("anexo$random.pdf"),
             timestamp = LocalDateTime.now(),
             isRead = random == 1,
@@ -318,7 +318,7 @@ fun TelaInicialScreen(
                                 }
                             }
                         },
-                        IconDraft = if (iconDraftSelected) Icons.Outlined.MarkEmailUnread else Icons.Outlined.MarkEmailRead,
+                        iconDraft = if (iconDraftSelected) Icons.Outlined.MarkEmailUnread else Icons.Outlined.MarkEmailRead,
                         onDraftClick = {
                             val listaDosSelecionados =
                                 usuarioRepository.listarEmailPorSelecionados()

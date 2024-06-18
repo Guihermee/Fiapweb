@@ -37,7 +37,7 @@ const val apiKey = "sk-proj-lLVf6OinCD06gqPardXdT3BlbkFJdAvrCDBUhv9v3rURIf0r"
 object RetrofitInstance {
     private val client = OkHttpClient.Builder().addInterceptor { chain ->
         val request = chain.request().newBuilder()
-            .addHeader("Authorization", "Bearer ${apiKey}")
+            .addHeader("Authorization", "Bearer $apiKey")
             .build()
         chain.proceed(request)
     }.build()

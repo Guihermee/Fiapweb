@@ -2,12 +2,10 @@ package br.com.fiap.fiapweb.model
 
 
 import androidx.room.ColumnInfo
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import androidx.room.Relation
 import java.time.LocalDateTime
 
 @Entity(
@@ -20,7 +18,7 @@ import java.time.LocalDateTime
     )],
     indices = [Index(value = ["marcador_id"])]
 )
-data class Email (
+data class Email(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val remetente: String,
@@ -39,15 +37,6 @@ data class Email (
     @ColumnInfo(name = "is_selected") val isSelected: Boolean = false,
     val categoria: Categoria = Categoria.EMAIL,
     @ColumnInfo(name = "marcador_id") val marcadorId: Long
-)
-
-data class EmailWithMarcadores(
-    @Embedded val email: Email,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "marcador_id"
-    )
-    val marcadores: Marcadores
 )
 
 enum class Priority {

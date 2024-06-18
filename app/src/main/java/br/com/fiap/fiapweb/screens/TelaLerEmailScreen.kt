@@ -21,6 +21,7 @@ import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -50,8 +51,10 @@ import br.com.fiap.fiapweb.components.ModalMarcadoresCriar
 import br.com.fiap.fiapweb.components.ModalOpenAIResume
 import br.com.fiap.fiapweb.components.formatDate
 import br.com.fiap.fiapweb.model.Email
+import br.com.fiap.fiapweb.service.getOpenAICompletion
 import br.com.fiap.fiapweb.utils.Converters
 import br.com.fiap.fiapweb.viewModel.TelaLerEmailViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun TelaLerEmailScreen(
@@ -61,7 +64,9 @@ fun TelaLerEmailScreen(
 ) {
     val modalCriarState by telaLerEmailViewModel.modalCriarState.observeAsState(initial = false)
     val modalAdiconarState by telaLerEmailViewModel.modalAdicionarState.observeAsState(initial = false)
-    val modalAIGenerateResumeState by telaLerEmailViewModel.modalAIGenerateResumeState.observeAsState(initial = false)
+    val modalAIGenerateResumeState by telaLerEmailViewModel.modalAIGenerateResumeState.observeAsState(
+        initial = false
+    )
     val responseResume by telaLerEmailViewModel.responseResume.observeAsState(initial = "")
     val email = Converters().jsonToEmail(emailString)
 
@@ -77,7 +82,11 @@ fun TelaLerEmailScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { telaLerEmailViewModel.onModalAIGenerateResumeStateChange(true) }) {
+            FloatingActionButton(onClick = {
+                telaLerEmailViewModel.onModalAIGenerateResumeStateChange(
+                    true
+                )
+            }) {
                 Icon(imageVector = Icons.Outlined.AutoAwesome, contentDescription = "Generate Icon")
             }
         },
@@ -99,8 +108,19 @@ fun TelaLerEmailScreen(
             // Modal da AI
             if (modalAIGenerateResumeState) {
                 ModalOpenAIResume(
-                    onDismissRequest = { telaLerEmailViewModel.onModalAIGenerateResumeStateChange(false) },
-                    onConfirmation = { /*TODO*/ },
+                    onDismissRequest = {
+                        telaLerEmailViewModel.onModalAIGenerateResumeStateChange(
+                            false
+                        )
+                    },
+                    onConfirmation = {
+                        scope.launch {
+                            val prompt = "Gere um resumo curto do seguinte Email: ${email.body}"
+                            val response = getOpenAICompletion(prompt = prompt)
+
+                            telaLerEmailViewModel.onResponseResumeChange(response)
+                        }
+                    },
                     response = responseResume
                 )
             }
@@ -289,16 +309,19 @@ fun EmailFooter(email: Email) {
             horizontalArrangement = Arrangement.Center
         ) {
             Button(
-                onClick = { /* Ação para responder a todos */ },
-                modifier = Modifier.clip(CircleShape)
+                onClick = { /* TODO Ação para responder a todos */ },
+                modifier = Modifier.clip(CircleShape),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
             ) {
                 Text(
                     text = "Responder",
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
-                    )
+                    ),
                 )
             }
         }

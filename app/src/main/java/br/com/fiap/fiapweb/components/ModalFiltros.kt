@@ -50,7 +50,6 @@ fun ModalFiltros(
     }
     val verificarMarcadoresEmpty = items.filterNot { it.nome == "Generico" }.isEmpty()
     val emailRepository = EmailRepository(context)
-
     val marcadorVazio by telaInicialViewModel.marcadorVazio.observeAsState(initial = false)
 
     Dialog(onDismissRequest = { onDismissRequest() }) {
@@ -64,7 +63,8 @@ fun ModalFiltros(
             Box {
                 Column(
                     modifier = Modifier
-                        .fillMaxSize().padding(8.dp),
+                        .fillMaxSize()
+                        .padding(8.dp),
                     verticalArrangement = Arrangement.SpaceAround,
                     horizontalAlignment = Alignment.CenterHorizontally
 
@@ -94,7 +94,6 @@ fun ModalFiltros(
                             )
                         }
                     }
-
                     if (!verificarMarcadoresEmpty) {
                         Divider(color = Color.Gray, thickness = 1.dp)
                         LazyColumn(
@@ -125,7 +124,9 @@ fun ModalFiltros(
                                                     telaInicialViewModel.onListaCompletaEmailDbChange(
                                                         emailMarcadores
                                                     )
-                                                    telaInicialViewModel.onshowDialogFiltrosChange(false)
+                                                    telaInicialViewModel.onshowDialogFiltrosChange(
+                                                        false
+                                                    )
                                                     telaInicialViewModel.onFiltroStateChange(true)
                                                 }
                                             }

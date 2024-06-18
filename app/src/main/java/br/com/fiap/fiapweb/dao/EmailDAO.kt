@@ -35,7 +35,7 @@ interface EmailDAO {
     @Query("SELECT * FROM tbl_email WHERE is_favorito = 1 ORDER BY timestamp DESC")
     fun listarEmailPorFavoritos(): List<Email>
 
-    @Query("SELECT * FROM tbl_email WHERE is_favorito = true")
+    @Query("SELECT * FROM tbl_email WHERE is_favorito = 1")
     fun buscarEmailsFavoritos(): List<Email>
 
     @Query("SELECT * FROM tbl_email WHERE marcador_id = :id")

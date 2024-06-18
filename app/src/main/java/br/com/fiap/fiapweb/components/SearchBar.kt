@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.sp
 import br.com.fiap.fiapweb.R
 import br.com.fiap.fiapweb.Repository.EmailRepository
 import br.com.fiap.fiapweb.Repository.HistoricoDeBuscaRespository
-import br.com.fiap.fiapweb.model.HistoricoDeBusca
 import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -53,7 +52,6 @@ fun SearchBarHeader(
     // Instância do HistoricoRepository
     val context = LocalContext.current
     val historicoRepository = HistoricoDeBuscaRespository(context)
-    val usuarioRepository = EmailRepository(context)
 
     // Barra de pesquisa
     SearchBar(
@@ -115,7 +113,6 @@ fun SearchBarHeader(
             }
         }
     ) {
-
         val listaHistoricoDb = historicoRepository.db.listarHistorico()
         val listaHistorico by telaInicialViewModel.listaHistorico.observeAsState(initial = listaHistoricoDb)
 
@@ -171,4 +168,3 @@ fun SearchBarHeader(
         }
     }
 }
-

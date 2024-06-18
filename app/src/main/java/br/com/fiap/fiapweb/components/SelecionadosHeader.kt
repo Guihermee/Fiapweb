@@ -9,7 +9,6 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.CheckBox
 import androidx.compose.material.icons.outlined.CheckBoxOutlineBlank
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Drafts
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,14 +26,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.fiap.fiapweb.viewModel.TelaInicialViewModel
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelecionadosHeader(
     telaInicialViewModel: TelaInicialViewModel,
     qtdEmailSelecionado: Int,
     onDeleteClick: () -> Unit,
-    IconDraft: ImageVector,
+    iconDraft: ImageVector,
     onDraftClick: () -> Unit,
     onSelectAllClick: () -> Unit,
     todosEmailSelecionados: Boolean
@@ -90,7 +88,7 @@ fun SelecionadosHeader(
             }
             IconButton(onClick = onDraftClick) {
                 Icon(
-                    imageVector = IconDraft,
+                    imageVector = iconDraft,
                     contentDescription = "Localized description",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )

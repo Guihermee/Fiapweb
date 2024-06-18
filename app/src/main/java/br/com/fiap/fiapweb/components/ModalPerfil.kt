@@ -33,7 +33,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -104,7 +103,7 @@ fun ModalItem(icon: ImageVector, label: String, onClick: () -> Unit) {
 @Composable
 fun ModalPerfil(
     onDismissRequest: () -> Unit,
-    ) {
+) {
     Dialog(onDismissRequest = { onDismissRequest() }) {
 
         Card(
@@ -121,7 +120,10 @@ fun ModalPerfil(
                 Column(
                     modifier = Modifier
                         .align(Alignment.Center)
-                        .background(MaterialTheme.colorScheme.background, shape = RoundedCornerShape(16.dp))
+                        .background(
+                            MaterialTheme.colorScheme.background,
+                            shape = RoundedCornerShape(16.dp)
+                        )
                         .padding(16.dp)
                         .width(300.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -176,10 +178,4 @@ fun ModalPerfil(
             }
         }
     }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun SidebarPreviw() {
-    ModalPerfil {}
 }

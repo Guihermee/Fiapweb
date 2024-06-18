@@ -86,7 +86,7 @@ fun ModalOpenAIResume(
                     TextButton(
                         onClick = { onConfirmation() },
                         modifier = Modifier.padding(8.dp),
-                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        enabled = response.isEmpty()
                     ) {
                         Text("Gerar")
                     }

@@ -1,7 +1,6 @@
 package br.com.fiap.fiapweb.screens
 
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +28,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import br.com.fiap.fiapweb.Repository.EmailRepository
 import br.com.fiap.fiapweb.components.EmailAdress
 import br.com.fiap.fiapweb.components.EmailBody
 import br.com.fiap.fiapweb.components.HeaderEscreverEmail
@@ -36,7 +36,6 @@ import br.com.fiap.fiapweb.components.ModalOpenAICompletion
 import br.com.fiap.fiapweb.model.Categoria
 import br.com.fiap.fiapweb.model.Email
 import br.com.fiap.fiapweb.model.Priority
-import br.com.fiap.fiapweb.Repository.EmailRepository
 import br.com.fiap.fiapweb.service.getOpenAICompletion
 import br.com.fiap.fiapweb.viewModel.EnvioDeEmailViewModel
 import br.com.fiap.fiapweb.viewModel.ModalOpenAIViewModel
@@ -55,17 +54,10 @@ fun TelaEnvioDeEmailScreen(
     val ccFieldValue by envioDeEmailViewModel.ccFieldValue.observeAsState(initial = "")
     val ccoFieldValue by envioDeEmailViewModel.ccoFieldValue.observeAsState(initial = "")
     val modalOpenAICompletion by envioDeEmailViewModel.modalOpenAICompletion.observeAsState(initial = false)
-    val responseAI by envioDeEmailViewModel.responseAI.observeAsState(initial = "")
     var showCcCcoFields by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val emailRepository = EmailRepository(context)
-
-    // Estado para controlar exibição do modal de erro
-    var showErrorModal by remember { mutableStateOf(false) }
-    var errorMessage by remember { mutableStateOf("") }
-
-
 
     Scaffold(
 
@@ -76,25 +68,26 @@ fun TelaEnvioDeEmailScreen(
             ) {
                 FloatingActionButton(
                     onClick = {
-                              val emailEnviado = Email(
-                                  id = 0,
-                                  remetente = "email@teste.com.br",
-                                  destinatario = toFieldValue,
-                                  cc = ccFieldValue,
-                                  bcc = ccoFieldValue,
-                                  subject = subjectFieldValue,
-                                  body = emailBodyFieldValue,
-                                  attachments = emptyList(),
-                                  timestamp = LocalDateTime.now(),
-                                  isRead = false,
-                                  isFavorite = false,
-                                  priority = Priority.LOW,
-                                  isSelected = false,
-                                  categoria = Categoria.ENVIADOS,
-                                  marcadorId = 1 )
+                        val emailEnviado = Email(
+                            id = 0,
+                            remetente = "email@teste.com.br",
+                            destinatario = toFieldValue,
+                            cc = ccFieldValue,
+                            bcc = ccoFieldValue,
+                            subject = subjectFieldValue,
+                            body = emailBodyFieldValue,
+                            attachments = emptyList(),
+                            timestamp = LocalDateTime.now(),
+                            isRead = false,
+                            isFavorite = false,
+                            priority = Priority.LOW,
+                            isSelected = false,
+                            categoria = Categoria.ENVIADOS,
+                            marcadorId = 1
+                        )
                         emailRepository.salvar(emailEnviado)
                         navController.navigate("telaInicial")
-                              },
+                    },
 
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
@@ -112,7 +105,6 @@ fun TelaEnvioDeEmailScreen(
                 }
             }
         },
-
         topBar = {
             HeaderEscreverEmail(
                 textContent = "",
@@ -131,7 +123,8 @@ fun TelaEnvioDeEmailScreen(
                     onDismissRequest = { envioDeEmailViewModel.onModalOpenAICompletionChange(false) },
                     onConfirmation = {
                         scope.launch {
-                            val response = getOpenAICompletion(prompt = modalOpenAIViewModel.promptValue.value!!)
+                            val response =
+                                getOpenAICompletion(prompt = modalOpenAIViewModel.promptValue.value!!)
                             envioDeEmailViewModel.onResponseAIChange(response)
                             envioDeEmailViewModel.onEmailBodyFieldValueChanged(response)
                             envioDeEmailViewModel.onModalOpenAICompletionChange(false)
@@ -150,7 +143,6 @@ fun TelaEnvioDeEmailScreen(
 
                 EmailAdress(
                     value = toFieldValue,
-                    modifier = Modifier,
                     keyboardType = KeyboardType.Email,
                     text = "Para: ",
                     updateValue = { envioDeEmailViewModel.onToFieldValueChanged(it) },
@@ -158,11 +150,9 @@ fun TelaEnvioDeEmailScreen(
                     onDropDownClick = { showCcCcoFields = !showCcCcoFields }
                 )
                 Divider()
-
                 if (showCcCcoFields) {
                     EmailAdress(
                         value = ccFieldValue,
-                        modifier = Modifier,
                         keyboardType = KeyboardType.Email,
                         text = "Cc: ",
                         updateValue = { envioDeEmailViewModel.onCcFieldValueChanged(it) }
@@ -171,27 +161,21 @@ fun TelaEnvioDeEmailScreen(
 
                     EmailAdress(
                         value = ccoFieldValue,
-                        modifier = Modifier,
                         keyboardType = KeyboardType.Email,
                         text = "Cco: ",
                         updateValue = { envioDeEmailViewModel.onCcoFieldValueChanged(it) }
                     )
                     Divider()
                 }
-
                 EmailAdress(
                     value = subjectFieldValue,
-                    modifier = Modifier,
                     keyboardType = KeyboardType.Text,
                     text = "Assunto: ",
                     updateValue = { envioDeEmailViewModel.onSubjectFieldValueChanged(it) }
                 )
                 Divider()
-
                 EmailBody(
                     value = emailBodyFieldValue,
-                    modifier = Modifier
-                        .fillMaxWidth(),
                     keyboardType = KeyboardType.Text,
                     updateValue = { envioDeEmailViewModel.onEmailBodyFieldValueChanged(it) }
                 )
